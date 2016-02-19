@@ -1,0 +1,241 @@
+body{
+
+    background-attachment: scroll;
+
+    background-image: url("images/bg_main.png");
+
+    background-position: left top;
+
+    background-repeat: repeat;
+
+	color: #444;
+
+    font: 12px/1.8 "Helvetica Neue",Helvetica,Arial,sans-serif;
+
+}
+
+
+
+div#wrap{
+
+    background: #fff none repeat scroll 0 0; IE6-9 */
+
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+
+    margin: 40px auto;
+
+    box-sizing: border-box;
+
+    margin: 0 auto;
+
+    max-width: 90%;
+
+    min-width: 200px;
+
+    width: 1040px;
+
+}
+
+
+
+.row::after, .col::after, .clr::after, .group::after {
+
+    clear: both;
+
+    content: "";
+
+    display: block;
+
+    height: 0;
+
+    visibility: hidden;
+
+}
+
+
+
+#navbar {
+
+    background: #383838 none repeat scroll 0 0;
+
+    border-bottom: 5px solid #eee;
+
+    position: relative;
+
+}
+
+
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+
+    display: block;
+
+}
+
+
+
+
+
+.nav-menu {
+
+    border-right: 1px solid rgba(0, 0, 0, 1);
+
+    float: left;
+
+}
+
+.dropdown-menu {
+
+    list-style: outside none none;
+
+    margin: 0;
+
+    padding: 0;
+
+}
+
+ol, ul {
+
+    list-style: outside none none;
+
+}
+
+
+
+.nav-menu > li:first-child {
+
+    border-left: medium none;
+
+}
+
+.nav-menu li {
+
+    float: left;
+
+    position: relative;
+
+}
+
+.dropdown-menu > li {
+
+    display: block;
+
+    float: left;
+
+}
+
+.dropdown-menu li {
+
+    position: relative;
+
+}
+
+
+
+.nav-menu li:first-child > a, .dropdown-menu li:first-child > a:hover {
+
+    border-left: medium none;
+
+}
+
+.nav-menu > li > a {
+
+    border-left: 1px solid rgba(0, 0, 0, 1);
+
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+}
+
+
+
+.nav-menu > li > a:hover, .nav-menu > .current-menu-item > a, .navigation .current-menu-parent > a, .navigation .current-menu-parent > a:hover, .nav-menu > .current-menu-item > a:hover {
+
+    background: #f15a23 none repeat scroll 0 0;
+
+    color: #fff;
+
+    text-decoration: none;
+
+}
+
+.nav-menu a {
+
+    display: block;
+
+    position: relative;
+
+    text-align: left;
+
+}
+
+.nav-menu a {
+
+    color: #fff;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    height: 50px;
+
+    line-height: 50px;
+
+    padding: 0 30px;
+
+    text-decoration: none;
+
+    transition: all 0.2s ease-in-out 0s;
+
+}
+
+
+
+#main {
+
+    //background: #fff none repeat scroll 0 0;
+
+	background: #ffffff; /* Old browsers */
+
+	background: -moz-linear-gradient(left, #ffffff 0%, #ffffff 73%, #d8d8d8 99%); /* FF3.6-15 */
+
+	background: -webkit-linear-gradient(left, #ffffff 0%,#ffffff 73%,#d8d8d8 99%); /* Chrome10-25,Safari5.1-6 */
+
+	background: linear-gradient(to right, #ffffff 0%,#ffffff 73%,#d8d8d8 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#d8d8d8',GradientType=1 ); /* IE6-9 */
+
+    padding: 25px;
+
+}
+
+.row {
+
+    box-sizing: border-box;
+
+}
+
+
+
+.zubra, .price_tab tr.zubra {
+
+    background-color: #c1d5e8;
+
+}
+
+.masthead-search {
+
+    border: 1px solid;
+
+    padding: 10px;
+
+    width: 300px;
+
+}
+
+
+
+.fancybox-inner{
+
+	height: auto !important;
+
+}
