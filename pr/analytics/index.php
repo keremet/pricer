@@ -61,9 +61,9 @@ if(is_array($shops_)){
 $query_array = array();
 $query = "select ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".date_buy as `дата покупки`,
  ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".price as цена,
- ".$GLOBALS['site_settings']['db']['tables']['users'].".login as покупатель,
  ".$GLOBALS['site_settings']['db']['tables']['products'].".name as товар,
- ".$GLOBALS['site_settings']['db']['tables']['shops'].".name as магазин
+ ".$GLOBALS['site_settings']['db']['tables']['shops'].".name as магазин,
+ ".$GLOBALS['site_settings']['db']['tables']['users'].".login as покупатель
  from ".$GLOBALS['site_settings']['db']['tables']['product_offers'].", ".$GLOBALS['site_settings']['db']['tables']['products'].", ".$GLOBALS['site_settings']['db']['tables']['shops'].", ".$GLOBALS['site_settings']['db']['tables']['users']."
  where ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".product = ".$GLOBALS['site_settings']['db']['tables']['products'].".id
  and ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".shop = ".$GLOBALS['site_settings']['db']['tables']['shops'].".id
