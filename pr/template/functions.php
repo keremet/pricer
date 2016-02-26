@@ -60,7 +60,7 @@ function User_Select($arFilter, $arSelect = false){
 				$query .= '`'.$v.'`';
 			}
 		}else $query .= '*';
-		$query .= " FROM `".$GLOBALS['site_settings']['db']['tables']['users']."` WHERE `id` = {?}";
+		$query .= " FROM `pr_users` WHERE `id` = {?}";
 		$ar_user = $db->selectRow($query, array($arFilter));
 	}
 	return $ar_user;
@@ -72,7 +72,7 @@ function Img_Select($arFilter, $arSelect = false){
 
 	}elseif($arFilter['user']){ // если фильтр по одному юзеру
 		if($arFilter['main']){ // eсли выбрать надо только главное фото
-			$query = "SELECT `id`, `image` FROM `".$GLOBALS['site_settings']['db']['tables']['user_images']."` WHERE `user` = {?} AND `main` = {?}";
+			$query = "SELECT `id`, `image` FROM `pr_user_images` WHERE `user` = {?} AND `main` = {?}";
 			$filter = array($arFilter['user'], $arFilter['main']);
 			$ar_rel = $db->selectRow($query, $filter);
 			$query = "SELECT ";
@@ -84,10 +84,10 @@ function Img_Select($arFilter, $arSelect = false){
 					$query .= '`'.$v.'`';
 				}
 			}else $query .= '*';
-			$query .= "FROM `".$GLOBALS['site_settings']['db']['tables']['images']."` WHERE `id` = {?}";
+			$query .= "FROM `pr_images` WHERE `id` = {?}";
 			$ar_image = $db->selectRow($query, array($ar_rel['image']));
 		}else{
-			$query = "SELECT `id`, `image` FROM `".$GLOBALS['site_settings']['db']['tables']['user_images']."` WHERE `id` = {?}";
+			$query = "SELECT `id`, `image` FROM `pr_user_images` WHERE `id` = {?}";
 			$ar_rel = $db->select($query, array($arFilter));
 		}
 	}
@@ -95,7 +95,7 @@ function Img_Select($arFilter, $arSelect = false){
 
 	}elseif($arFilter['product']){ // если фильтр по одному юзеру
 		if($arFilter['main']){ // eсли выбрать надо только главное фото
-			$query = "SELECT `id`, `image` FROM `".$GLOBALS['site_settings']['db']['tables']['product_images']."` WHERE `product` = {?} AND `main` = {?}";
+			$query = "SELECT `id`, `image` FROM `pr_product_images` WHERE `product` = {?} AND `main` = {?}";
 			$filter = array($arFilter['product'], $arFilter['main']);
 			$ar_rel = $db->selectRow($query, $filter);
 			$query = "SELECT ";
@@ -107,10 +107,10 @@ function Img_Select($arFilter, $arSelect = false){
 					$query .= '`'.$v.'`';
 				}
 			}else $query .= '*';
-			$query .= "FROM `".$GLOBALS['site_settings']['db']['tables']['images']."` WHERE `id` = {?}";
+			$query .= "FROM `pr_images` WHERE `id` = {?}";
 			$ar_image = $db->selectRow($query, array($ar_rel['image']));
 		}else{
-			$query = "SELECT `id`, `image` FROM `".$GLOBALS['site_settings']['db']['tables']['product_images']."` WHERE `id` = {?}";
+			$query = "SELECT `id`, `image` FROM `pr_product_images` WHERE `id` = {?}";
 			$ar_rel = $db->select($query, array($arFilter));
 		}
 	}

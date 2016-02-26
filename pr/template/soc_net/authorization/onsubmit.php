@@ -1,6 +1,6 @@
 <?
 $errors = array();
-$query = "SELECT `id`, `name`, `login`, `text`, `email` FROM `".$GLOBALS['site_settings']['db']['tables']['users']."` WHERE `login` = {?} AND `password` = {?}";
+$query = "SELECT `id`, `name`, `login`, `text`, `email` FROM `pr_users` WHERE `login` = {?} AND `password` = {?}";
 $row = $db->selectRow($query, array(trim(htmlspecialchars($_REQUEST['login'])), trim($_REQUEST['password'])));
 if(!$row['id']){
 	$errors[] = 'Неверный логин или пароль';

@@ -1,6 +1,6 @@
 <?
 include('options.php');
-$query = "SELECT `id`, `shop`, `creator`, `price`, `date_buy` FROM `".$GLOBALS['site_settings']['db']['tables']['product_offers']."` WHERE `product` = {?}";
+$query = "SELECT `id`, `shop`, `creator`, `price`, `date_buy` FROM `pr_product_offers` WHERE `product` = {?}";
 $product_id = (int) $_REQUEST['detail'];
 $table_offers = $db->select($query, array($product_id));
 
@@ -17,7 +17,7 @@ if(is_array($table_offers)){
 	}
 }
 
-$query = "SELECT `id`, `name` FROM `".$GLOBALS['site_settings']['db']['tables']['shops']."` WHERE `id` IN (";
+$query = "SELECT `id`, `name` FROM `pr_shops` WHERE `id` IN (";
 $i = 0;
 foreach($shops_ids as $k => $v){
 	if($i != 0){

@@ -9,16 +9,16 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');
 <?if($_FILES['user_img']){
 	$white_list = array('png', 'bmp', 'gif', 'jpg', 'jpeg');
 	if(!is_array(LoadFile('user_img', $white_list, 1048576, $_SERVER['DOCUMENT_ROOT'].'/'.$GLOBALS['site_settings']['site_folder'].$GLOBALS['site_settings']['img_path']))){
-		$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['images']." (path,alt,title,creator) VALUES ({?},{?},{?},{?})";
+		$query = "INSERT INTO pr_images (path,alt,title,creator) VALUES ({?},{?},{?},{?})";
 		$image_id = $db->query($query, array($GLOBALS['site_settings']['site_folder'].$GLOBALS['site_settings']['img_path'].$_FILES['user_img']['name'],'','',$_SESSION['user']['id']));
 		if($image_id){
-			$query = "SELECT `id` FROM `".$GLOBALS['site_settings']['db']['tables']['user_images']."` WHERE `user` = {?} AND `main` = {?}";
+			$query = "SELECT id FROM pr_user_images WHERE user = {?} AND main = {?}";
 			$old_image = $db->selectRow($query, array($_SESSION['user']['id'], 1));
 			if($old_image['id']){
-				$query = "DELETE FROM ".$GLOBALS['site_settings']['db']['tables']['user_images']." WHERE `id` = {?}";
+				$query = "DELETE FROM pr_user_images WHERE id = {?}";
 				$delete_old = $db->query($query, array($old_image['id']));
 			}
-			$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['user_images']." (user,image,alt,title,main,creator) VALUES ({?},{?},{?},{?},{?},{?})";
+			$query = "INSERT INTO pr_user_images (user,image,alt,title,main,creator) VALUES ({?},{?},{?},{?},{?},{?})";
 			$image_rel_id = $db->query($query, array($_SESSION['user']['id'],$image_id,'','',1,$_SESSION['user']['id']));
 			//rp(array($query, array($user_id,$image_id,'','',1,$_SESSION['user']['id'])));
 		}

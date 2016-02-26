@@ -168,7 +168,7 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
 	<div class="result"></div>
 	<div id="select_shop" style="display: none;"><!--style="display: none;"-->
 		<h2>Выберите магазин</h2>
-		<?$query = "SELECT `id`, `name`, `creator`, `text`, `address`, `photo`, `network`, `town`, `date_change` FROM `".$GLOBALS['site_settings']['db']['tables']['shops']."`";
+		<?$query = "SELECT `id`, `name`, `creator`, `text`, `address`, `photo`, `network`, `town`, `date_change` FROM `pr_shops`";
 		$table = $db->select($query, array());
 		?>
 		<table class="main select" id="shop_select_table"><tr><th>Название</th><th>Сеть</th><th>Город</th><th>Адрес</th></tr>
@@ -213,7 +213,7 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
 	</div>
 	<div id="select_product" style="display: none;"><!--style="display: none;"-->
 		<h2>Выберите товар</h2>
-		<?$query = "SELECT `id`, `name`, `creator`, `date_change` FROM `".$GLOBALS['site_settings']['db']['tables']['products']."` ORDER BY name ASC";
+		<?$query = "SELECT `id`, `name`, `creator`, `date_change` FROM `pr_products` ORDER BY name ASC";
 		$table = $db->select($query, array());
 		?>
 		<table class="main select" id="product_select_table"><tr><th>Название</th></tr>

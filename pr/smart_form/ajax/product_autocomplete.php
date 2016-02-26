@@ -2,7 +2,7 @@
 include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
 include($GLOBALS['site_settings']['root_path'].'/template/header/invisible.php');
 if(strlen($_REQUEST['name']) > 0){
-	$query = "SELECT `id`, `name` FROM `".$GLOBALS['site_settings']['db']['tables']['products']."` WHERE `";
+	$query = "SELECT `id`, `name` FROM `pr_products` WHERE `";
 	$query .= substr($_REQUEST['var'], 8); 
 	$query .= "` LIKE {?}";
 	$table = $db->select($query, array('%'.$_REQUEST['name'].'%'));

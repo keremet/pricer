@@ -1,7 +1,7 @@
 <?
 include('options.php');
 $product_id = (int) $_REQUEST['detail'];
-$query = "SELECT `name` FROM `".$GLOBALS['site_settings']['db']['tables']['products']."` WHERE `id` = {?}";
+$query = "SELECT `name` FROM `pr_products` WHERE `id` = {?}";
 $product = $db->selectRow($query, array($product_id));
 if(!$product['name']){
 	$errors[] = 'Неверный адрес страницы';
@@ -10,7 +10,7 @@ if(!$product['name']){
 $ar_image = Img_Select(array('product' => $product_id, 'main' => 1, array('path')));
 $product['image'] = $ar_image['path'];
 // <получаем из БД значения свойств для данного товара
-	$query = "SELECT `id`, `property`, `value`, `date_change` FROM `".$GLOBALS['site_settings']['db']['tables']['product_props_rel']."` WHERE `product` = {?}";
+	$query = "SELECT `id`, `property`, `value`, `date_change` FROM `pr_product_props_rel` WHERE `product` = {?}";
 	//echo '$query: '.$query;
 	$relations = $db->select($query, array($product_id));
 // >
@@ -21,7 +21,7 @@ foreach($table as $k => $v){
 	}
 }
 if(count($users_query) > 0){
-	$query = "SELECT `name` FROM `".$GLOBALS['site_settings']['db']['tables']['users']."` WHERE `id` = {?}";
+	$query = "SELECT `name` FROM `pr_users` WHERE `id` = {?}";
 }*/
 
 /*foreach($table as $k => $v){
@@ -37,7 +37,7 @@ foreach($relations as $k => $v){
 		$vals_id[] = $v['value'];
 	}
 }
-$query = "SELECT `id`, `name` FROM `".$GLOBALS['site_settings']['db']['tables']['product_props']."` WHERE `id` IN (";
+$query = "SELECT `id`, `name` FROM `pr_product_props` WHERE `id` IN (";
 $i = 0;
 //	Добавляем вопросики за каждое свойство.
 foreach($props_id as $k => $v){
@@ -49,7 +49,7 @@ foreach($props_id as $k => $v){
 $query .= ")";
 $props_array = $db->select($query, $props_id);
 
-$query = "SELECT `id`, `name`, `property` FROM `".$GLOBALS['site_settings']['db']['tables']['product_props_values']."` WHERE `id` IN (";
+$query = "SELECT `id`, `name`, `property` FROM `pr_product_props_values` WHERE `id` IN (";
 $i = 0;
 //	Добавляем вопросики за каждое значение свойств.
 foreach($vals_id as $k => $v){

@@ -36,13 +36,13 @@ if(!count($errors) > 0){
 
 		// <создание товара
 
-		$query = "SELECT `id` FROM `".$GLOBALS['site_settings']['db']['tables']['products']."` WHERE `name` = {?}";
+		$query = "SELECT `id` FROM `pr_products` WHERE `name` = {?}";
 
 		$product_id = $db->selectCell($query, array($_REQUEST['product_name']));
 
 		if(!$product_id){ // если товара с таким именем нет, то создаём его
 
-			$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['products']." (name,creator) VALUES ({?},{?})";
+			$query = "INSERT INTO pr_products (name,creator) VALUES ({?},{?})";
 
 			$product_id = $db->query($query, array($_REQUEST['product_name'],$_SESSION['user']['id']));
 
@@ -58,13 +58,13 @@ if(!count($errors) > 0){
 
 	if(!$_REQUEST['shop_id']){ // если магазин не выбран
 
-		$query = "SELECT `id` FROM `".$GLOBALS['site_settings']['db']['tables']['shops']."` WHERE `name` = {?} AND `address` = {?} AND `network` = {?} AND `town` = {?}";
+		$query = "SELECT `id` FROM `pr_shops` WHERE `name` = {?} AND `address` = {?} AND `network` = {?} AND `town` = {?}";
 
 		$shop_id = $db->selectCell($query, array($_REQUEST['shop_name'],$_REQUEST['shop_address'],$_REQUEST['shop_network'],$_REQUEST['shop_town']));
 
 		if(!$shop_id){// если магазина с такими параметрами нет, то создаём его
 
-			$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['shops']." (name,address,creator,network,town,text) VALUES ({?},{?},{?},{?},{?},{?})";
+			$query = "INSERT INTO pr_shops (name,address,creator,network,town,text) VALUES ({?},{?},{?},{?},{?},{?})";
 
 			$shop_id = $db->query($query, array($_REQUEST['shop_name'],$_REQUEST['shop_address'],$_SESSION['user']['id'],$_REQUEST['shop_network'],$_REQUEST['shop_town'],$_REQUEST['shop_text']));
 
@@ -82,7 +82,7 @@ if(!count($errors) > 0){
 
 		$date_buy = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
 
-		$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['product_offers']." (product,shop,price,creator,date_buy) VALUES ({?},{?},{?},{?},{?})"; 
+		$query = "INSERT INTO pr_product_offers (product,shop,price,creator,date_buy) VALUES ({?},{?},{?},{?},{?})"; 
 
 		$offer_id = $db->query($query, array($product_id,$shop_id,$_REQUEST['price'],$_SESSION['user']['id'],$date_buy));
 

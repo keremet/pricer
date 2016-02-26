@@ -2,7 +2,7 @@
 unset($table);
 $errors = array();
 
-$query = "SELECT `id` FROM `".$GLOBALS['site_settings']['db']['tables']['products']."` WHERE `name` = {?}";
+$query = "SELECT `id` FROM `pr_products` WHERE `name` = {?}";
 $id = $db->selectCell($query, array($_REQUEST['product_name']));
 if($id){
 	$errors[] = 'Товар с таким названием уже есть';
@@ -27,7 +27,7 @@ if(count($errors) <= 0){
 		//$prop_names_str = implode(",", $prop_names);
 		//echo '$prop_names_str: '.$prop_names_str;
 		if((is_array($prop_names)) && (count($prop_names) > 0)){
-			$query = "SELECT `id`, `name` FROM `".$GLOBALS['site_settings']['db']['tables']['product_props']."` WHERE `name` IN (";
+			$query = "SELECT `id`, `name` FROM `pr_product_props` WHERE `name` IN (";
 			$ipn = 0;
 			//	Добавляем вопросики за каждое свойство.
 			foreach($prop_names as $k => $v){
@@ -66,7 +66,7 @@ if(count($errors) <= 0){
 
 	//<добавляем в базу несуществующие св-ва
 	foreach($no_pres_props as $k => $v){
-		$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['product_props']." (name,creator) VALUES ({?},{?})";
+		$query = "INSERT INTO pr_product_props (name,creator) VALUES ({?},{?})";
 		$prop_id = $db->query($query, array($v,$_SESSION['user']['id']));
 		//echo '';
 		if($prop_id){
@@ -78,7 +78,7 @@ if(count($errors) <= 0){
 	rp($pres_props_array);*/
 
 	$query_arr = array();
-	$query = "SELECT `id`, `name`, `property` FROM `".$GLOBALS['site_settings']['db']['tables']['product_props_values']."` WHERE ";
+	$query = "SELECT `id`, `name`, `property` FROM `pr_product_props_values` WHERE ";
 	$i = 0;
 	foreach($pres_props_ids as $k => $v){
 		$query_arr[] = $v;
@@ -144,7 +144,7 @@ if(count($errors) <= 0){
 	if((is_array($no_pres_props_vals_array)) && (count($no_pres_props_vals_array) > 0)){
 		foreach ($no_pres_props_vals_array as $k => $v){
 			if($v['name']){
-				$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['product_props_values']." (name,property,creator) VALUES ({?},{?},{?})";
+				$query = "INSERT INTO pr_product_props_values (name,property,creator) VALUES ({?},{?},{?})";
 				$val_id = $db->query($query, array($v['name'],$v['property'],$_SESSION['user']['id']));
 				//echo '';
 				if($val_id){
@@ -156,12 +156,12 @@ if(count($errors) <= 0){
 	/*echo '<br>Существующие значения свойств после добавления: <br>';
 	rp($pres_props_vals_array);*/
 	//>
-	$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['products']." (name,creator) VALUES ({?},{?})";
+	$query = "INSERT INTO pr_products (name,creator) VALUES ({?},{?})";
 	$product_id = $db->query($query, array($_REQUEST['product_name'],$_SESSION['user']['id']));
 	if($product_id){
 		if(is_array($pres_props_vals_array)){
 			foreach($pres_props_vals_array as $k => $v){
-				$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['product_props_rel']." (product,property,value,creator) VALUES ({?},{?},{?},{?})";
+				$query = "INSERT INTO pr_product_props_rel (product,property,value,creator) VALUES ({?},{?},{?},{?})";
 				//echo '$query'.$query.'<br>';
 				$rel_id = $db->query($query, array($product_id,$v['property'],$v['id'],$_SESSION['user']['id']));
 			}
@@ -169,21 +169,21 @@ if(count($errors) <= 0){
 		if($_FILES['image']){
 			$white_list = array('png', 'bmp', 'gif', 'jpg', 'jpeg');
 			if(!is_array(LoadFile('image', $white_list, 1048576, $_SERVER['DOCUMENT_ROOT'].'/'.$GLOBALS['site_settings']['site_folder'].$GLOBALS['site_settings']['img_path']))){
-				$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['images']." (path,alt,title,creator) VALUES ({?},{?},{?},{?})";
+				$query = "INSERT INTO pr_images (path,alt,title,creator) VALUES ({?},{?},{?},{?})";
 				$image_id = $db->query($query, array($GLOBALS['site_settings']['site_folder'].$GLOBALS['site_settings']['img_path'].$_FILES['image']['name'],'','',$_SESSION['user']['id']));
 				if($image_id){
-					$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['product_images']." (product,image,alt,title,main,creator) VALUES ({?},{?},{?},{?},{?},{?})";
+					$query = "INSERT INTO pr_product_images (product,image,alt,title,main,creator) VALUES ({?},{?},{?},{?},{?},{?})";
 					$image_rel_id = $db->query($query, array($product_id,$image_id,'','',1,$_SESSION['user']['id']));
 					//rp(array($query, array($user_id,$image_id,'','',1,$_SESSION['user']['id'])));
 				}
 			}
 		}
 		/*if($_REQUEST['product_type']){
-			$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['product-props_relation']." (product,property,value,creator) VALUES ({?},{?},{?},{?})";
+			$query = "INSERT INTO pr_product_props_rel (product,property,value,creator) VALUES ({?},{?},{?},{?})";
 			$rel_id = $db->query($query, array($product_id,1,$_REQUEST['product_type'],$_SESSION['user']['id']));
 		}
 		if($_REQUEST['ves_upakovki']){
-			$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['product-props_relation']." (product,property,value,creator) VALUES ({?},{?},{?},{?})";
+			$query = "INSERT INTO pr_product_props_rel (product,property,value,creator) VALUES ({?},{?},{?},{?})";
 			$rel_id = $db->query($query, array($product_id,1,$_REQUEST['product_type'],$_SESSION['user']['id']));
 		}*/
 	}
@@ -192,7 +192,7 @@ if(count($errors) > 0){
 	$alert = implode(", ", $errors);
 	echo "<script>alert('Ошибка: ".$alert."');</script>";
 }else{
-	//$query = "INSERT INTO ".$GLOBALS['site_settings']['db']['tables']['products']." (name,address,user) VALUES ({?},{?},{?})";
+	//$query = "INSERT INTO pr_products (name,address,user) VALUES ({?},{?},{?})";
 	//$product_id = $db->query($query, array($_REQUEST['shop_name'],$_REQUEST['shop_address'],$_SESSION['user']['id']));
 	if($product_id){
 		echo "<script>alert('Товар добавлен!');</script>"; 

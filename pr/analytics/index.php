@@ -28,19 +28,16 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
 		$(this).remove();
 	});
 </script>
-<?$query = "SELECT id, login, name FROM `".$GLOBALS['site_settings']['db']['tables']['users']."` order by login";
-$users_ = $db->select($query, array());
+<?
+$users_ = $db->select("SELECT id, login, name FROM pr_users order by login");
 $arUsers = array();
 if(is_array($users_)){
 	foreach($users_ as $k => $v){
 		$arUsers[$v['id']] = $v['login'];
 	}
 }
-//rp($arUsers);
-//rp($users_);
 
-$query = "SELECT id, name FROM `".$GLOBALS['site_settings']['db']['tables']['products']."` order by name";
-$prods_ = $db->select($query, array());
+$prods_ = $db->select("SELECT id, name FROM pr_products order by name");
 $arProds = array();
 if(is_array($prods_)){
 	foreach($prods_ as $k => $v){
@@ -48,8 +45,7 @@ if(is_array($prods_)){
 	}
 }
 
-$query = "SELECT `id`, `name`, `address`, `network`, `town` FROM `".$GLOBALS['site_settings']['db']['tables']['shops']."` order by name";
-$shops_ = $db->select($query, array());
+$shops_ = $db->select("SELECT id, name, address, network, town FROM pr_shops order by name");
 $arShops = array();
 if(is_array($shops_)){
 	foreach($shops_ as $k => $v){
@@ -57,30 +53,30 @@ if(is_array($shops_)){
 	}
 }
 
-//$query = "SELECT * FROM `".$GLOBALS['site_settings']['db']['tables']['product_offers']."`";
 $query_array = array();
-$query = "select ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".date_buy as `дата покупки`,
- ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".price as цена,
- ".$GLOBALS['site_settings']['db']['tables']['products'].".name as товар,
- ".$GLOBALS['site_settings']['db']['tables']['shops'].".name as магазин,
- ".$GLOBALS['site_settings']['db']['tables']['users'].".login as покупатель
- from ".$GLOBALS['site_settings']['db']['tables']['product_offers'].", ".$GLOBALS['site_settings']['db']['tables']['products'].", ".$GLOBALS['site_settings']['db']['tables']['shops'].", ".$GLOBALS['site_settings']['db']['tables']['users']."
- where ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".product = ".$GLOBALS['site_settings']['db']['tables']['products'].".id
- and ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".shop = ".$GLOBALS['site_settings']['db']['tables']['shops'].".id
- and ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".creator = ".$GLOBALS['site_settings']['db']['tables']['users'].".id";
+$query = 
+"select pr_product_offers.date_buy as `дата покупки`,
+   pr_product_offers.price as цена,
+   pr_products.name as товар,
+   pr_shops.name as магазин,
+   pr_users.login as покупатель
+ from pr_product_offers, pr_products, pr_shops, pr_users
+ where pr_product_offers.product = pr_products.id
+   and pr_product_offers.shop = pr_shops.id
+   and pr_product_offers.creator = pr_users.id";
 
 if(is_array($_GET['filter']) && in_array('date', $_GET['filter'])){
 	if($_GET['date_from']){
 		$pieces = explode("/", $_GET['date_from']);
 		$date_from = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
-		$query .= " and ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".date_buy >= {?}";
+		$query .= " and pr_product_offers.date_buy >= {?}";
 		$query_array[] = $date_from;
 		//echo $date_from;
 	}
 	if($_GET['date_to']){
 		$pieces = explode("/", $_GET['date_to']);
 		$date_to = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
-		$query .= " and ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".date_buy <= {?}";
+		$query .= " and pr_product_offers.date_buy <= {?}";
 		$query_array[] = $date_to;
 		//echo $date_to;
 	}
@@ -88,17 +84,17 @@ if(is_array($_GET['filter']) && in_array('date', $_GET['filter'])){
 
 if(is_array($_GET['filter']) && in_array('price', $_GET['filter'])){
 	if($_GET['price_from']){
-		$query .= " and ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".price >= {?}";
+		$query .= " and pr_product_offers.price >= {?}";
 		$query_array[] = $_GET['price_from'];
 	}
 	if($_GET['price_to']){
-		$query .= " and ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".price <= {?}";
+		$query .= " and pr_product_offers.price <= {?}";
 		$query_array[] = $_GET['price_to'];
 	}
 }
 
 if(is_array($_GET['product'])){
-	$query .= " and ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".product IN (";
+	$query .= " and pr_product_offers.product IN (";
 	$i = 0;
 	foreach($_GET['product'] as $k => $v){
 		if($i != 0){
@@ -111,7 +107,7 @@ if(is_array($_GET['product'])){
 }
 
 if(is_array($_GET['shops'])){
-	$query .= " and ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".shop IN (";
+	$query .= " and pr_product_offers.shop IN (";
 	$i = 0;
 	foreach($_GET['shops'] as $k => $v){
 		if($i != 0){
@@ -124,7 +120,7 @@ if(is_array($_GET['shops'])){
 }
 
 if(is_array($_GET['users'])){
-	$query .= " and ".$GLOBALS['site_settings']['db']['tables']['product_offers'].".creator IN (";
+	$query .= " and pr_product_offers.creator IN (";
 	$i = 0;
 	foreach($_GET['users'] as $k => $v){
 		if($i != 0){
@@ -135,28 +131,11 @@ if(is_array($_GET['users'])){
 	}
 	$query .= ")";
 }
-//echo $query;
- $table_offers = $db->select($query, $query_array);
 
-//rp($table_offers);
-//$final_table = array();
+$table_offers = $db->select($query, $query_array);
+
 $ti = 0;
-/*foreach($table_offers as $k => $v){
-	//rp ($v);
-	foreach($v as $k2 => $v2){
-		if($k2 == 'product'){ 
-			$final_table[$ti][$k2] = $prods[$v2];
-		}elseif($k2 == 'shop'){ 
-			$final_table[$ti][$k2] = $shops[$v2];
-		}elseif($k2 == 'creator'){ 
-			$final_table[$ti][$k2] = $users[$v2];
-		}else{ 
-			$final_table[$ti][$k2] = $v2;
-		//}
-	}
-	$ti ++;
-}*/
-//rp($_GET);?>
+?>
 <form method="get" style="padding-bottom: 15px">
 	<b onclick="if($(this).next('fieldset').is(':hidden')){ $(this).next('fieldset').show(200); $(this).next('fieldset').find('input[type=checkbox]').attr('checked', 'checked');} else {$(this).next('fieldset').hide(200); $(this).next('fieldset').find('input[type=checkbox]').removeAttr('checked')}">
 		<a id="select_product_button" class="fancybox" href="#select_product">Фильтровать по товару</a><br>
@@ -250,7 +229,7 @@ $ti = 0;
 		<?}?>
 		</tr>
 	<?}
-	//echo rp($final_table);?>
+	?>
 	</tbody>
 </table>
 <?}?>

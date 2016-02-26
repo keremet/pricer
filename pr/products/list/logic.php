@@ -1,7 +1,7 @@
 <?
 include('options.php');
 
-$table = $db->select("SELECT id, name, creator, text, photo, date_change FROM ".$GLOBALS['site_settings']['db']['tables']['products'], array());
+$table = $db->select("SELECT id, name, creator, text, photo, date_change FROM pr_products");
 foreach($table as $k => $v){
 	$ar_image = Img_Select(array('product' => $v['id'], 'main' => 1, array('path')));
 	$table[$k]['image'] = $ar_image['path'];
@@ -13,7 +13,7 @@ $users_query = array();
 	}
 }*/
 if(count($users_query) > 0){
-	$query = "SELECT `name` FROM `".$GLOBALS['site_settings']['db']['tables']['users']."` WHERE `id` = {?}";
+	$query = "SELECT `name` FROM `pr_users` WHERE `id` = {?}";
 }
 ?>
 <pre><?//print_r($users_query)?></pre>

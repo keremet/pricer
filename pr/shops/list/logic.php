@@ -1,6 +1,6 @@
 <?
 include('options.php');
-$table = $db->select("SELECT id, name, creator, text, address, photo, network, town, date_change FROM ".$GLOBALS['site_settings']['db']['tables']['shops'], array());
+$table = $db->select("SELECT id, name, creator, text, address, photo, network, town, date_change FROM pr_shops");
 if($table){
 	$users_query = array();
 	foreach($table as $k => $v){
@@ -9,7 +9,7 @@ if($table){
 		}
 	}
 	if(count($users_query) > 0){
-		$query = "SELECT `name` FROM `".$GLOBALS['site_settings']['db']['tables']['users']."` WHERE `id` = {?}";
+		$query = "SELECT name FROM pr_users WHERE id = {?}";
 	}
 	include('view.php');
 }
