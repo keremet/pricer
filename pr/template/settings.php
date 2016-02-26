@@ -4,16 +4,6 @@ $GLOBALS['site_settings']['current_address'] = $_SERVER['REQUEST_URI']; // ад�
 
 $GLOBALS['site_settings']['server'] = $_SERVER['SERVER_NAME']; // Текущий домен
 
-//	<Настройки подключения к БД
-
-	$GLOBALS['site_settings']['db']['db_name'] = 'pr'; //имя БД
-
-	$GLOBALS['site_settings']['db']['user_name'] = 'pr'; //имя пользователя БД
-
-	$GLOBALS['site_settings']['db']['user_password'] = 'pr_password'; //пароль пользователя БД
-
-	$GLOBALS['site_settings']['db']['host'] = 'localhost'; //месторасположение БД
-
 //		<названия таблиц
 
 		$GLOBALS['site_settings']['db']['tables']['users'] = 'pr_users'; 

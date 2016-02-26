@@ -4,9 +4,7 @@
 </head>
 <body>
 <?php
-	include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-	include($GLOBALS['site_settings']['root_path'].'/template/settings.php');
-	include($GLOBALS['site_settings']['root_path'].'/template/db_connect.php');
+	include('../template/db_connect.php');
 
 	foreach($_POST as $k => $v){
 		if((substr($k, 0, 4)=='prod') && $v != ''){
