@@ -5,10 +5,10 @@
 <body>
  <h1>Выберите магазин</h1>
  <?php
-	include('../template/db_connect.php');
+	include('../db/connect.php');
 
-	foreach($db->select("SELECT id, concat_ws(' - ', name, network, address, town) as shop FROM pr_shops order by name") as $k => $v){
-		echo '<p><a href="prices.php?shopid='.$v['id'].'">'.$v['shop'].'</a></p>';
+	foreach($db->query("SELECT id, concat_ws(' - ', name, network, address, town) as shop FROM pr_shops order by name") as $row){
+		echo '<p><a href="prices.php?shopid='.$row['id'].'">'.$row['shop'].'</a></p>';
 	}
  ?>
 </body>
