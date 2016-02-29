@@ -6,7 +6,7 @@ $GLOBALS['site_settings']['META']['DESCRIPTION'] = 'Кировцены - ана�
 $GLOBALS['site_settings']['META']['KEYWORDS'] = 'Киров, цены, продукты';
 include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');
 ?><h1>Личный кабинет</h1>
-<?if($_FILES['user_img']){
+<!--?if($_FILES['user_img']){
 	$white_list = array('png', 'bmp', 'gif', 'jpg', 'jpeg');
 	if(!is_array(LoadFile('user_img', $white_list, 1048576, $_SERVER['DOCUMENT_ROOT'].'/'.$GLOBALS['site_settings']['site_folder'].$GLOBALS['site_settings']['img_path']))){
 		$query = "INSERT INTO pr_images (path,alt,title,creator) VALUES ({?},{?},{?},{?})";
@@ -23,7 +23,7 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');
 			//rp(array($query, array($user_id,$image_id,'','',1,$_SESSION['user']['id'])));
 		}
 	}
-}?>
+}?-->
 <script>
 	function trim( str, charlist ) {
 		charlist = !charlist ? ' \s\xA0' : charlist.replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '\$1');
@@ -60,7 +60,7 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');
 			input = $('#edit_'+name+'_button').siblings('input');
 			name_ajax = $(input).attr('name');
 			value_ajax = $(input).val();
-			if(name == 'email'){
+/*			if(name == 'email'){
 				var re = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
 				var myMail = value_ajax;
 				var valid = re.test(myMail);
@@ -68,7 +68,7 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');
 					alert('Некорректный email');
 					return false;
 				}
-			}
+			} проверка некорректная*/
 			$.post(
 				'edit_ajax.php',
 				{
@@ -143,20 +143,21 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');
 	}
 </script>
 	<?
-	if($_SESSION['user']['id']){
-		//echo '<pre>'; print_r($_SESSION['user']); echo '</pre>';
-		
-		//rp(Img_Select(array('user_obj' => $_SESSION['user']['id'], 'main' => 1), array('path')));
-		$my_img = Img_Select(array('user' => $_SESSION['user']['id'], 'main' => 1, array('path')));
-		$user_props = User_Select($_SESSION['user']['id'], array('name', 'login', 'text', 'email'));?>
+	if($_SESSION['user']['id'] == null){
+		echo "<script>document.location.href = 'http://".$GLOBALS['site_settings']['server'].$GLOBALS['site_settings']['site_folder']."/';</script>";
+	}else{
+//		$my_img = Img_Select(array('user' => $_SESSION['user']['id'], 'main' => 1, array('path')));
+		$stmt = $db->prepare("SELECT name, login, text, email FROM pr_users where id = ?");
+		$stmt->execute(array($_SESSION['user']['id']));		
+		$user_props = $stmt->fetch();?>
 		<div style=" height: 140px; width: 140px; background-color: #EDEDED; border: 2px solid #AAAAAA; position: relative; display: inline-block; margin: 20px">
-			<?if($my_img){?>
+			<!--?if($my_img){?>
 				<a class="fancybox" href="<?=$my_img['path']?>">
 					<img style=" max-width: 140px; max-height: 100%; margin:auto; position: absolute; top: 0; left: 0; bottom: 0; right: 0;" src="<?=$my_img['path']?>">
 				</a>
-			<?}else{?>
+			?}else{?>
 				<button style="margin:auto; position: absolute; top: 40%; left: 0; bottom: 40%; right: 0;" onclick="$('#imgSel').click(); return false" >Добавить фото</button>
-			<?}?>
+			?}?-->
 			<div style="position: absolute; margin-left: 160px; width: 600px;">
 				<div>
 					<h3 style="display: inline-block; margin-top: 0px;">
@@ -194,9 +195,9 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');
 			<form style="display: none" id="img_form" method="post" enctype="multipart/form-data">
 				<input style="display: none" type="file" id="imgSel" name="user_img" onchange="ImgSend('img_form'); return false";><br>
 			</form>
-			<?if($my_img){?>
+			<!--?if($my_img){?>
 				<input type="submit" onclick="$('#imgSel').click(); return false" name="Сменить фото" value="Сменить фото">
-			<?}?>
+			?}?-->
 		</div><div>
 			<h3 style="display: inline-block; margin-bottom: 0px;">
 				<b>Информация о себе: </b>
@@ -214,10 +215,8 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');
 			<input type="hidden" name="user" value="exit">
 			<button type="submit">Выйти из аккаунта</button>
 		</form>
-	<?}else{
-		echo "<script>document.location.href = 'http://".$GLOBALS['site_settings']['server'].$GLOBALS['site_settings']['site_folder']."/';</script>";
-	}	
-	
+	<?	
+	}
 	?>
 <?include($GLOBALS['site_settings']['root_path'].'/template/footer/index.php');?>
 

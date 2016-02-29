@@ -29,25 +29,21 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
 	});
 </script>
 <?
-$users_ = $db->select("SELECT id, login, name FROM pr_users order by login");
+$users_ = $db->query("SELECT id, login, name FROM pr_users order by login")->fetchAll();
 $arUsers = array();
-if(is_array($users_)){
+if($users_){
 	foreach($users_ as $k => $v){
 		$arUsers[$v['id']] = $v['login'];
 	}
 }
 
-$prods_ = $db->select("SELECT id, name FROM pr_products order by name");
 $arProds = array();
-if(is_array($prods_)){
-	foreach($prods_ as $k => $v){
-		$arProds[$v['id']] = $v['name'];
-	}
-}
+foreach($db->query("SELECT id, name FROM pr_products order by name") as $row)
+	$arProds[$row['id']] = $row['name'];
 
-$shops_ = $db->select("SELECT id, name, address, network, town FROM pr_shops order by name");
+$shops_ = $db->query("SELECT id, name, address, network, town FROM pr_shops order by name")->fetchAll();
 $arShops = array();
-if(is_array($shops_)){
+if($shops_){
 	foreach($shops_ as $k => $v){
 		$arShops[$v['id']] = $v['name'];
 	}
@@ -55,11 +51,11 @@ if(is_array($shops_)){
 
 $query_array = array();
 $query = 
-"select pr_product_offers.date_buy as `дата покупки`,
-   pr_product_offers.price as цена,
-   pr_products.name as товар,
-   pr_shops.name as магазин,
-   pr_users.login as покупатель
+"select pr_product_offers.date_buy as `Дата покупки`,
+   pr_product_offers.price as Цена,
+   pr_products.name as Товар,
+   pr_shops.name as Магазин,
+   pr_users.login as Покупатель
  from pr_product_offers, pr_products, pr_shops, pr_users
  where pr_product_offers.product = pr_products.id
    and pr_product_offers.shop = pr_shops.id
@@ -69,14 +65,14 @@ if(is_array($_GET['filter']) && in_array('date', $_GET['filter'])){
 	if($_GET['date_from']){
 		$pieces = explode("/", $_GET['date_from']);
 		$date_from = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
-		$query .= " and pr_product_offers.date_buy >= {?}";
+		$query .= " and pr_product_offers.date_buy >= ?";
 		$query_array[] = $date_from;
 		//echo $date_from;
 	}
 	if($_GET['date_to']){
 		$pieces = explode("/", $_GET['date_to']);
 		$date_to = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
-		$query .= " and pr_product_offers.date_buy <= {?}";
+		$query .= " and pr_product_offers.date_buy <= ?";
 		$query_array[] = $date_to;
 		//echo $date_to;
 	}
@@ -84,11 +80,11 @@ if(is_array($_GET['filter']) && in_array('date', $_GET['filter'])){
 
 if(is_array($_GET['filter']) && in_array('price', $_GET['filter'])){
 	if($_GET['price_from']){
-		$query .= " and pr_product_offers.price >= {?}";
+		$query .= " and pr_product_offers.price >= ?";
 		$query_array[] = $_GET['price_from'];
 	}
 	if($_GET['price_to']){
-		$query .= " and pr_product_offers.price <= {?}";
+		$query .= " and pr_product_offers.price <= ?";
 		$query_array[] = $_GET['price_to'];
 	}
 }
@@ -100,7 +96,7 @@ if(is_array($_GET['product'])){
 		if($i != 0){
 			$query .= ", ";
 		}else $i = 1;
-		$query .= "{?}";
+		$query .= "?";
 		$query_array[] = $v;
 	}
 	$query .= ")";
@@ -113,7 +109,7 @@ if(is_array($_GET['shops'])){
 		if($i != 0){
 			$query .= ", ";
 		}else $i = 1;
-		$query .= "{?}";
+		$query .= "?";
 		$query_array[] = $v;
 	}
 	$query .= ")";
@@ -126,16 +122,12 @@ if(is_array($_GET['users'])){
 		if($i != 0){
 			$query .= ", ";
 		}else $i = 1;
-		$query .= "{?}";
+		$query .= "?";
 		$query_array[] = $v;
 	}
 	$query .= ")";
 }
-
-$table_offers = $db->select($query, $query_array);
-
-$ti = 0;
-?>
+?>
 <form method="get" style="padding-bottom: 15px">
 	<b onclick="if($(this).next('fieldset').is(':hidden')){ $(this).next('fieldset').show(200); $(this).next('fieldset').find('input[type=checkbox]').attr('checked', 'checked');} else {$(this).next('fieldset').hide(200); $(this).next('fieldset').find('input[type=checkbox]').removeAttr('checked')}">
 		<a id="select_product_button" class="fancybox" href="#select_product">Фильтровать по товару</a><br>
@@ -149,12 +141,12 @@ $ti = 0;
 	</div>
 	<div id="select_product" style="display: none;">
 		<table class="main select" id="product_select_table"><tr><th></th><th>Название</th></tr>
-		<?foreach($prods_ as $k => $v){
-			echo '<tr id="tr_prod_'.$v['id'].'"';
-			if(is_array($_GET['product']) && in_array($v['id'], $_GET['product'])) echo ' class="selected"';
+		<?foreach($arProds as $k => $v){
+			echo '<tr id="tr_prod_'.$k.'"';
+			if(is_array($_GET['product']) && in_array($k, $_GET['product'])) echo ' class="selected"';
 			echo '><td><input type="checkbox"';
-			if(is_array($_GET['product']) && in_array($v['id'], $_GET['product'])) echo ' checked="checked"';
-			echo ' name="product[]" onchange="$(this).closest(\'tr\').toggleClass(\'selected\'); if($(this).closest(\'tr\').hasClass(\'selected\')){ $(\'div.selected_items#selected_product\').append(\'<span class=&#34sel_item product&#34; id=&#34;sel_prod_'.$v['id'].'&#34;>'.htmlspecialchars($v['name'], ENT_QUOTES).'</span>\');} else {$(\'#sel_prod_'.$v['id'].'\').remove();}" value="'.$v['id'].'" ></td><td onclick="$(this).parent(\'tr\').find(\'input[type=checkbox]\').click();">'.htmlspecialchars($v['name'], ENT_QUOTES).'<div class="select_box">'.$v['id'].'</div></td></tr>';
+			if(is_array($_GET['product']) && in_array($k, $_GET['product'])) echo ' checked="checked"';
+			echo ' name="product[]" onchange="$(this).closest(\'tr\').toggleClass(\'selected\'); if($(this).closest(\'tr\').hasClass(\'selected\')){ $(\'div.selected_items#selected_product\').append(\'<span class=&#34sel_item product&#34; id=&#34;sel_prod_'.$k.'&#34;>'.htmlspecialchars($v, ENT_QUOTES).'</span>\');} else {$(\'#sel_prod_'.$k.'\').remove();}" value="'.$k.'" ></td><td onclick="$(this).parent(\'tr\').find(\'input[type=checkbox]\').click();">'.htmlspecialchars($v, ENT_QUOTES).'<div class="select_box">'.$k.'</div></td></tr>';
 		}?>
 		</table>
 	</div>
@@ -210,7 +202,12 @@ $ti = 0;
 	</fieldset><br>
 	<input type="submit" name="send" value="Применить фильтр" >
 </form>
-<?if(is_array($table_offers)){?>
+<?
+$stmt = $db->prepare($query);
+$stmt->execute($query_array);
+$table_offers = $stmt->fetchAll();
+
+if(is_array($table_offers)){?>
 <table id="myTable" class="main tablesorter">
 	<thead>
 		<tr>

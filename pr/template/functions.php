@@ -46,26 +46,6 @@ function LoadFile($variable, $allowed_types, $max_size, $target_folder){
 	}
 }
 
-function User_Select($arFilter, $arSelect = false){
-	global $db;
-	if(is_array($arFilter)){ //если в $arFilter введён массив, то он трактуется как массив для фильтрации
-	
-	}else{ //если в $arFilter введено integer число, то оно трактуется как id юзера 
-		$query = "SELECT ";
-		if(is_array($arSelect)){
-			$first = 1;
-			foreach ($arSelect as $k => $v){
-				if($first == 1) $first = 0;
-				else $query .= ', ';
-				$query .= '`'.$v.'`';
-			}
-		}else $query .= '*';
-		$query .= " FROM `pr_users` WHERE `id` = {?}";
-		$ar_user = $db->selectRow($query, array($arFilter));
-	}
-	return $ar_user;
-}
-
 function Img_Select($arFilter, $arSelect = false){
 	global $db;
 	if(is_array($arFilter['user'])){ // если фильтр по нескольким юзерам

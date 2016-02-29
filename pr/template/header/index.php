@@ -17,11 +17,7 @@ header( 'Content-Type: text/html; charset=utf-8' );
 $jquery_fancybox_used = true;
 
 include($GLOBALS['site_settings']['root_path'].'/template/settings.php');
-
-include($GLOBALS['site_settings']['root_path'].'/template/db_connect.php');
-
-include($GLOBALS['site_settings']['root_path'].'/template/functions.php');
-
+include($GLOBALS['site_settings']['root_path'].'/db/connect.php');
 ?>
 
 <html>
@@ -130,10 +126,10 @@ include($GLOBALS['site_settings']['root_path'].'/template/functions.php');
 					//header('Location: '.$GLOBALS['site_settings']['site_folder']);
 					//echo "<script>document.location.href='http://".$GLOBALS['site_settings']['server'].$GLOBALS['site_settings']['site_folder']."/';</script>";
 				}elseif(strlen($_COOKIE['user_login']) > 0 && strlen($_COOKIE['user_password']) > 0 && $no_user_autorise != 'Y' && !$_SESSION['user']['id']){ //≈сли в куках есть логин и пароль пользовател€, и юзер не авторизован, то авторизуем его.
-					$query = "SELECT `id`, `name`, `login`, `text`, `email` FROM `pr_users` WHERE `login` = {?} AND `password` = {?}";
-					$row = $db->selectRow($query, array(trim(htmlspecialchars($_COOKIE['user_login'])), trim($_COOKIE['user_password'])));
-					if($row['id']){
-						$_SESSION['user'] = $row;
+					$stmt = $db->prepare("SELECT id FROM pr_users WHERE login = ? AND password = ?");
+					$stmt->execute(array(trim(htmlspecialchars($_COOKIE['user_login'])), trim($_COOKIE['user_password'])));
+					if(!($user_id = $stmt->fetchColumn())){
+						$_SESSION['user']['id'] = $user_id;
 						setcookie("user_login", $_COOKIE['user_login'], time() + 3600 * 24 * 30, '/');
 						setcookie("user_password", $_COOKIE['user_password'], time() + 3600 * 24 * 30, '/');
 					}else{

@@ -168,11 +168,9 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
 	<div class="result"></div>
 	<div id="select_shop" style="display: none;"><!--style="display: none;"-->
 		<h2>Выберите магазин</h2>
-		<?$query = "SELECT `id`, `name`, `creator`, `text`, `address`, `photo`, `network`, `town`, `date_change` FROM `pr_shops`";
-		$table = $db->select($query, array());
-		?>
 		<table class="main select" id="shop_select_table"><tr><th>Название</th><th>Сеть</th><th>Город</th><th>Адрес</th></tr>
-		<?foreach($table as $k => $v){
+		<?
+		  foreach($db->query("SELECT id, name, address, network, town FROM pr_shops") as $v){
 			echo '<tr onclick="shop_select(\''.$v['id'].'\', \''.htmlspecialchars($v['name'], ENT_QUOTES).'\', \''.htmlspecialchars($v['network'], ENT_QUOTES).'\', \''.htmlspecialchars($v['town'], ENT_QUOTES).'\', \''.htmlspecialchars($v['address'], ENT_QUOTES).'\'); $(\'.fancybox-close\').click();"><td>'.$v['name'].'</td><td>'.$v['network'].'</td><td>'.$v['town'].'</td><td>'.$v['address'].'</td></tr>';
 		}?>
 		</table>
@@ -213,11 +211,8 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
 	</div>
 	<div id="select_product" style="display: none;"><!--style="display: none;"-->
 		<h2>Выберите товар</h2>
-		<?$query = "SELECT `id`, `name`, `creator`, `date_change` FROM `pr_products` ORDER BY name ASC";
-		$table = $db->select($query, array());
-		?>
 		<table class="main select" id="product_select_table"><tr><th>Название</th></tr>
-		<?foreach($table as $k => $v){
+		<?foreach($db->query("SELECT id, name FROM pr_products ORDER BY name ASC") as $v){
 			echo '<tr onclick="product_select(\''.$v['id'].'\', \''.htmlspecialchars($v['name'], ENT_QUOTES).'\'); $(\'.fancybox-close\').click();"><td>'.$v['name'].'</td></tr>';
 		}?>
 		</table>

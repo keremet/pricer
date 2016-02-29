@@ -1,43 +1,41 @@
 <?
-include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-include($GLOBALS['site_settings']['root_path'].'/template/header/invisible.php');
-//print_r($GLOBALS);
-//print_r($_REQUEST);
+session_start();
+include('../db/connect.php');
+
 if($_REQUEST['name'] == 'text'){
-	$query = "UPDATE `pr_users` SET `text`={?} WHERE `id` = {?}";
-	$id = $db->query($query, array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user']['id']));
-}elseif(strlen($_REQUEST['value']) > 0){
-	if($_REQUEST['name'] == 'login'){
-		$query = "SELECT `id` FROM `pr_users` WHERE `login` = {?}";
-		$id = $db->selectCell($query, array(trim(htmlspecialchars($_REQUEST['value']))));
-		if($id){
-			echo 'логин занят';
-		}else{
-			$query = "UPDATE `pr_users` SET `login` = {?} WHERE `id` = {?}";
-			$id = $db->query($query, array(trim(htmlspecialchars($_REQUEST['value']), $_SESSION['user']['id'])));
-		}
-	}elseif($_REQUEST['name'] == 'email'){
-		if (!preg_match("/^[\w]{1}[\w-\.]*@[\w-]+\.[a-z]{2,4}$/i",$_REQUEST['value'])){
-			echo 'Некорректный email';
-		}else{
-			$query = "SELECT `id` FROM `pr_users` WHERE `".$_REQUEST['name']."` = {?}";
-			$id_email = $db->selectCell($query, array(htmlspecialchars($_REQUEST['value'])));
-			/*
-			метод selectCell Выбирает запись только если есть только одна запись, удовлетворяющая фильтру. Если записей несколько, не выбирается не одна.
-			*/
-			if($id_email){
-				echo 'email занят';
-			}else{
-				$query = "UPDATE `pr_users` SET `email` = {?} WHERE `id` = {?}";
-				$id = $db->query($query, array(trim(htmlspecialchars($_REQUEST['value']), $_SESSION['user']['id'])));
-			}
-		}
-	}elseif($_REQUEST['name'] == 'name'){
-		$query = "UPDATE `pr_users` SET `name`={?} WHERE `id` = {?}";
-		$id = $db->query($query, array(trim(htmlspecialchars($_REQUEST['value']), $_SESSION['user']['id'])));
-	}
+	$stmt = $db->prepare("UPDATE pr_users SET text = ? WHERE id = ?");
+	if(!$stmt->execute(array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user']['id'])))
+		die('Ошибка обновления информации о себе');
 }else{
-	echo 'Пустое значение недопустимо';
+	if(strlen($_REQUEST['value']) == 0)
+		die('Пустое значение недопустимо');
+
+	if($_REQUEST['name'] == 'login'){
+		$stmt = $db->prepare("SELECT id FROM pr_users WHERE id != ? and login = ?");
+		$stmt->execute(array($_SESSION['user']['id'], trim(htmlspecialchars($_REQUEST['value']))));
+		if($stmt->fetch())
+			die('логин занят');
+
+		$stmt = $db->prepare("UPDATE pr_users SET login = ? WHERE id = ?");
+		if(!$stmt->execute(array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user']['id'])))
+			die('Ошибка обновления логина');
+	}elseif($_REQUEST['name'] == 'email'){
+/*		if (!preg_match("/^[\w]{1}[\w-\.]*@[\w-]+\.[a-z]{2,4}$/i",$_REQUEST['value']))
+			die('Некорректный email');
+		Проверка не корректная!!
+		*/
+		$stmt = $db->prepare("SELECT 1 FROM pr_users WHERE id != ? and email = ?");
+		$stmt->execute(array($_SESSION['user']['id'], htmlspecialchars($_REQUEST['value'])));
+		if($stmt->fetch())
+			die('email занят');
+		
+		$stmt = $db->prepare("UPDATE pr_users SET email = ? WHERE id = ?");
+		if(!$stmt->execute(array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user']['id'])))
+			die('Ошибка обновления email');
+	}elseif($_REQUEST['name'] == 'name'){
+		$stmt = $db->prepare("UPDATE pr_users SET name = ? WHERE id = ?");
+		if(!$stmt->execute(array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user']['id'])))
+			die('Ошибка обновления Ф.И.О.');
+	}
 }
-//print_r($_REQUEST);
 ?>
