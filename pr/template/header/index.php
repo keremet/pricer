@@ -74,7 +74,7 @@ include($GLOBALS['site_settings']['root_path'].'/db/connect.php');
 
 				<!--div style="float: left; display: inline-block; color: #D31316; font-weight: bold;"-->
 
-					<!-- rel="home" title="Кировцены - аналитика цен на продукты в Кирове" href="<?=$GLOBALS['site_settings']['site_folder']?>/">
+					<!-- rel="home" title="Ценовичок - аналитика цен на товары" href="<?=$GLOBALS['site_settings']['site_folder']?>/">
 
 						<div class="logo" style="display: inline-block; float: left;">
 
@@ -84,13 +84,13 @@ include($GLOBALS['site_settings']['root_path'].'/db/connect.php');
 
 					</a-->
 
-					<a style="display: inline-block;" title="Кировцены - аналитика цен на продукты в Кирове" href="<?=$GLOBALS['site_settings']['site_folder']?>/">
+					<a style="display: inline-block;" title="Ценовичок - аналитика цен на товары" href="<?=$GLOBALS['site_settings']['site_folder']?>/">
 
 						<img alt="" style="padding: 20px; height: 80px;" src="<?=$GLOBALS['site_settings']['site_folder'];?>/images/logo.jpg">
 
 						<span style="position: absolute; color: #842816; text-decoration: none;" >
 
-							<b><span style="display: inline-block; font-size: 46px; margin-top: 20px;">Кировцены&nbsp;-&nbsp;</span><span style="display: inline-block; font-size: 34px; margin-bottom: 0;"> аналитика цен на продукты</span></b>
+							<b><span style="display: inline-block; font-size: 46px; margin-top: 20px;">Ценовичок&nbsp;-&nbsp;</span><span style="display: inline-block; font-size: 34px; margin-bottom: 0;"> аналитика цен на товары</span></b>
 
 							<!--br><span style="display: inline-block; margin-bottom: 0; font-size: 20px;">Второй ряд</span-->
 

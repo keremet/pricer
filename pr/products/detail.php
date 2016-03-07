@@ -1,8 +1,8 @@
 <?
 include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-$GLOBALS['site_settings']['TAB_TITLE'] = 'Кировцены - Товары';
-$GLOBALS['site_settings']['META']['TITLE'] = 'Кировцены - Товары';
-$GLOBALS['site_settings']['META']['DESCRIPTION'] = 'Кировцены - аналитика цен на продукты в Кирове';
+$GLOBALS['site_settings']['TAB_TITLE'] = 'Ценовичок - Товары';
+$GLOBALS['site_settings']['META']['TITLE'] = 'Ценовичок - Товары';
+$GLOBALS['site_settings']['META']['DESCRIPTION'] = 'Ценовичок - аналитика цен на товары';
 $GLOBALS['site_settings']['META']['KEYWORDS'] = 'Киров, цены, продукты';
 include('../template/header/index.php');
 

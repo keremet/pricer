@@ -1,8 +1,8 @@
 <?
 include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-$GLOBALS['site_settings']['TAB_TITLE'] = 'Кировцены - Аналитика';
-$GLOBALS['site_settings']['META']['TITLE'] = 'Кировцены - Аналитика';
-$GLOBALS['site_settings']['META']['DESCRIPTION'] = 'Кировцены - аналитика цен на продукты в Кирове';
+$GLOBALS['site_settings']['TAB_TITLE'] = 'Ценовичок - Аналитика';
+$GLOBALS['site_settings']['META']['TITLE'] = 'Ценовичок - Аналитика';
+$GLOBALS['site_settings']['META']['DESCRIPTION'] = 'Ценовичок - аналитика цен на товары';
 $GLOBALS['site_settings']['META']['KEYWORDS'] = 'Киров, цены, продукты, новости';
 include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
 <script type="text/javascript" src="<?=$GLOBALS['site_settings']['site_folder'];?>/template/input_calendar/tcal.js"></script>
