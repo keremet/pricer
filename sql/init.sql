@@ -21,6 +21,9 @@ CREATE TABLE `pr_products` (
   `name` text COLLATE utf8_unicode_ci NOT NULL,
   `photo` text COLLATE utf8_unicode_ci NOT NULL,
   `text` text COLLATE utf8_unicode_ci NOT NULL,
+  `ed_izm_id` int(11) NOT NULL,
+  `in_box` double,
+  `min_kolvo` double,
   `creator` int(11) NOT NULL,
   `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -45,31 +48,6 @@ CREATE TABLE `pr_product_offers` (
   `price` float NOT NULL,
   `date_buy` date NOT NULL,
   `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `pr_product_props` (
-  `id` int(11) NOT NULL,
-  `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `name` text COLLATE utf8_unicode_ci NOT NULL,
-  `creator` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `pr_product_props_rel` (
-  `id` int(11) NOT NULL,
-  `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `sort` int(11) NOT NULL,
-  `product` int(11) NOT NULL,
-  `property` int(11) NOT NULL,
-  `value` int(11) NOT NULL,
-  `creator` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `pr_product_props_values` (
-  `id` int(11) NOT NULL,
-  `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `name` text COLLATE utf8_unicode_ci NOT NULL,
-  `creator` int(11) NOT NULL,
-  `property` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `pr_shops` (
@@ -118,6 +96,10 @@ CREATE TABLE `pr_user_images` (
   `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `pr_ed_izm` (
+  `id` int(11) NOT NULL,
+  `name` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `pr_images`
   ADD PRIMARY KEY (`id`);
@@ -132,15 +114,6 @@ ALTER TABLE `pr_product_offers`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `product` (`product`,`shop`,`creator`,`date_buy`);
 
-ALTER TABLE `pr_product_props`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `pr_product_props_rel`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `pr_product_props_values`
-  ADD PRIMARY KEY (`id`);
-
 ALTER TABLE `pr_shops`
   ADD PRIMARY KEY (`id`);
 
@@ -151,6 +124,9 @@ ALTER TABLE `pr_users`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `pr_user_images`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `pr_ed_izm`
   ADD PRIMARY KEY (`id`);
 
 
@@ -162,12 +138,6 @@ ALTER TABLE `pr_product_images`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `pr_product_offers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `pr_product_props`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `pr_product_props_rel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `pr_product_props_values`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `pr_shops`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `pr_shop_images`
@@ -175,6 +145,8 @@ ALTER TABLE `pr_shop_images`
 ALTER TABLE `pr_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `pr_user_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `pr_ed_izm`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

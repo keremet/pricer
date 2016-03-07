@@ -1,7 +1,7 @@
 <?
 $menu_items = array(
 	'Новости' => '/', 
-	'Продукты' => '/products/', 
+	'Товары' => '/products/', 
 	'Магазины' => '/shops/', 
 	'Умная форма' => '/smart_form/', 
 	'Аналитика' => '/analytics/', 
