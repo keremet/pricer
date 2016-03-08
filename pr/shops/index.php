@@ -1,10 +1,7 @@
 <?
-include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-$GLOBALS['site_settings']['TAB_TITLE'] = 'Ценовичок - Магазины';
-$GLOBALS['site_settings']['META']['TITLE'] = 'Ценовичок - Магазины';
-$GLOBALS['site_settings']['META']['DESCRIPTION'] = 'Ценовичок - аналитика цен на товары';
-$GLOBALS['site_settings']['META']['KEYWORDS'] = 'Киров, цены, продукты';
-include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
+include '../template/header.php';
+headerOut('Ценовичок - Магазины', 'Ценовичок - Магазины', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты', '..', 'Магазины');
+?>
 	<h1>Магазины</h1>
 	<table class="main"><tr><th>Название</th><th>Сеть</th><th>Город</th><th>Адрес</th></tr>
 	<?
@@ -14,4 +11,4 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
 	?>
 	</table>
 	<?include('new/logic.php');?>
-<?include($GLOBALS['site_settings']['root_path'].'/template/footer/index.php');?>
+<?include('../template/footer.php');?>

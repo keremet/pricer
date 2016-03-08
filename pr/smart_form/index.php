@@ -1,11 +1,8 @@
 <?
-include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-$GLOBALS['site_settings']['TAB_TITLE'] = 'Ценовичок - Умная форма';
-$GLOBALS['site_settings']['META']['TITLE'] = 'Ценовичок - Умная форма';
-$GLOBALS['site_settings']['META']['DESCRIPTION'] = 'Ценовичок - аналитика цен на товары';
-$GLOBALS['site_settings']['META']['KEYWORDS'] = 'Киров, цены, продукты';
-include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
-<script type="text/javascript" src="<?=$GLOBALS['site_settings']['site_folder'];?>/template/input_calendar/tcal.js"></script>
+include '../template/header.php';
+headerOut('Ценовичок - Умная форма', 'Ценовичок - Умная форма', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты', '..', 'Умная форма');
+?>
+<script type="text/javascript" src="../template/input_calendar/tcal.js"></script>
 <script>
 	$(document).ready(function(){
 		$('.ac_input').keyup(function(){
@@ -160,11 +157,9 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
 		});
 	}
 </script>
-<link rel="stylesheet" href="<?=$GLOBALS['site_settings']['site_folder'];?>/template/input_calendar/tcal.css"/>
+<link rel="stylesheet" href="../template/input_calendar/tcal.css"/>
 <?if($_SESSION['user']['id']){?>
 	<h1>Умная форма</h1>
-	<!--img src="<?=$GLOBALS['site_settings']['site_folder']?>/images/doing.png" style="width: 100%;">
-	<img src="<?=$GLOBALS['site_settings']['site_folder']?>/images/tost.png" style="width: 100%;"-->
 	<div class="result"></div>
 	<div id="select_shop" style="display: none;"><!--style="display: none;"-->
 		<h2>Выберите магазин</h2>
@@ -295,5 +290,5 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
 			</div>
 		</fieldset>
 	</form>
-<?}else{ echo 'Доступ запрещён. Авторизуйтесь.';}?>
-<?include($GLOBALS['site_settings']['root_path'].'/template/footer/index.php');?>
+<?}else{ echo 'Доступ запрещён. Авторизуйтесь.';}
+include('../template/footer.php');?>

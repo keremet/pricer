@@ -1,6 +1,6 @@
 <?
-include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-include($GLOBALS['site_settings']['root_path'].'/template/header/invisible.php');
+session_start();
+include('../../template/connect.php');
 
 $errors = array();
 /*if(!$_REQUEST['shop_name']){

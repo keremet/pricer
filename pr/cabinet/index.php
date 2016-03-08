@@ -1,11 +1,8 @@
 <?
-include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-$GLOBALS['site_settings']['TAB_TITLE'] = 'Ценовичок - Личный кабинет';
-$GLOBALS['site_settings']['META']['TITLE'] = 'Ценовичок';
-$GLOBALS['site_settings']['META']['DESCRIPTION'] = 'Ценовичок - аналитика цен на товары';
-$GLOBALS['site_settings']['META']['KEYWORDS'] = 'Киров, цены, продукты';
-include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');
-?><h1>Личный кабинет</h1>
+include '../template/header.php';
+headerOut('Ценовичок - Личный кабинет', 'Ценовичок', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты', '..', 'Личный кабинет');
+?>
+<h1>Личный кабинет</h1>
 <!--?if($_FILES['user_img']){
 	$white_list = array('png', 'bmp', 'gif', 'jpg', 'jpeg');
 	if(!is_array(LoadFile('user_img', $white_list, 1048576, $_SERVER['DOCUMENT_ROOT'].'/'.$GLOBALS['site_settings']['site_folder'].$GLOBALS['site_settings']['img_path']))){
@@ -144,7 +141,7 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');
 </script>
 	<?
 	if($_SESSION['user']['id'] == null){
-		echo "<script>document.location.href = 'http://".$GLOBALS['site_settings']['server'].$GLOBALS['site_settings']['site_folder']."/';</script>";
+		echo "<script>document.location.href = '../';</script>";
 	}else{
 //		$my_img = Img_Select(array('user' => $_SESSION['user']['id'], 'main' => 1, array('path')));
 		$stmt = $db->prepare("SELECT name, login, text, email FROM pr_users where id = ?");
@@ -217,6 +214,5 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');
 		</form>
 	<?	
 	}
-	?>
-<?include($GLOBALS['site_settings']['root_path'].'/template/footer/index.php');?>
+include('../template/footer.php');?>
 

@@ -1,6 +1,6 @@
 <?
-include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-include($GLOBALS['site_settings']['root_path'].'/template/header/invisible.php');
+session_start();
+include('../../template/connect.php');
 
 $errors = array();
 $query = "SELECT `id` FROM `pr_products` WHERE `name` = {?}";

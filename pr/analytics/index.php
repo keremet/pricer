@@ -1,12 +1,9 @@
 <?
-include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-$GLOBALS['site_settings']['TAB_TITLE'] = 'Ценовичок - Аналитика';
-$GLOBALS['site_settings']['META']['TITLE'] = 'Ценовичок - Аналитика';
-$GLOBALS['site_settings']['META']['DESCRIPTION'] = 'Ценовичок - аналитика цен на товары';
-$GLOBALS['site_settings']['META']['KEYWORDS'] = 'Киров, цены, продукты, новости';
-include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
-<script type="text/javascript" src="<?=$GLOBALS['site_settings']['site_folder'];?>/template/input_calendar/tcal.js"></script>
-<link rel="stylesheet" href="<?=$GLOBALS['site_settings']['site_folder'];?>/template/input_calendar/tcal.css"/>
+include '../template/header.php';
+headerOut('Ценовичок - Аналитика', 'Ценовичок - Аналитика', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты, новости', '..', 'Аналитика');
+?>
+<script type="text/javascript" src="../template/input_calendar/tcal.js"></script>
+<link rel="stylesheet" href="../template/input_calendar/tcal.css"/>
 <script>
 	$('body').on('click','.sel_item', function(){
 		if($(this).hasClass('product')){ //alert('продукт');
@@ -229,5 +226,5 @@ if(is_array($table_offers)){?>
 	?>
 	</tbody>
 </table>
-<?}?>
-<?include($GLOBALS['site_settings']['root_path'].'/template/footer/index.php');?>
+<?}
+include('../template/footer.php');?>

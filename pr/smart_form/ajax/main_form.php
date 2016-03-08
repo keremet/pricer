@@ -1,6 +1,6 @@
 <?
 session_start();
-include('../../db/connect.php');
+include('../../template/connect.php');
 
 if(!$_REQUEST['price']){
 	die('не введена цена');

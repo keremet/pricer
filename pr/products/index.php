@@ -1,10 +1,7 @@
 <?
-include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-$GLOBALS['site_settings']['TAB_TITLE'] = 'Ценовичок - Товары';
-$GLOBALS['site_settings']['META']['TITLE'] = 'Ценовичок - Товары';
-$GLOBALS['site_settings']['META']['DESCRIPTION'] = 'Ценовичок - аналитика цен на товары';
-$GLOBALS['site_settings']['META']['KEYWORDS'] = 'Киров, цены, продукты';
-include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
+include '../template/header.php';
+headerOut('Ценовичок - Товары', 'Ценовичок - Товары', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты', '..', 'Товары');
+?>
 	<h1>Товары</h1>
 	<?
 	foreach($db->query("SELECT id, name, photo FROM pr_products order by name") as $v){ ?>
@@ -29,4 +26,4 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
 			<button type="submit">Добавить продукт</button>
 		</form>
 	<?}
-include('../template/footer/index.php');?>
+include('../template/footer.php');?>

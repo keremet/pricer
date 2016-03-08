@@ -4,7 +4,7 @@
 </head>
 <body>
 <?php
-	include('../db/connect.php');
+	include('../template/connect.php');
 
 	$stmt = $db->prepare("INSERT INTO pr_product_offers (product,shop,price,creator,date_buy) VALUES (?, ?, ?, 1, CURDATE())");
 	foreach($_POST as $k => $v){

@@ -6,7 +6,7 @@
  <form method=post action="save.php">
 	<p><input type="submit" value="Отправить">	
   <?php
-	include('../db/connect.php');
+	include('../template/connect.php');
 	
 	$stmt = $db->prepare("SELECT concat_ws(' - ', name, network, address, town) FROM pr_shops where id = ?");
 	$stmt->execute(array($_GET['shopid']));

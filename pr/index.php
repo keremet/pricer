@@ -1,17 +1,7 @@
 <?
-include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-$GLOBALS['site_settings']['TAB_TITLE'] = 'Ценовичок';
-$GLOBALS['site_settings']['META']['TITLE'] = 'Ценовичок';
-$GLOBALS['site_settings']['META']['DESCRIPTION'] = 'Ценовичок - аналитика цен на товары';
-$GLOBALS['site_settings']['META']['KEYWORDS'] = 'Киров, цены, продукты';
-include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
-	<?
-	/*echo '<pre>'; print_r($db); echo '</pre>';
-		echo '<pre>'; print_r($_SERVER); echo '</pre>';
-	echo '<pre>'; print_r($GLOBALS['site_settings']); echo '</pre>';
-	echo '<pre>'; print_r($_SESSION); echo '</pre>';*/
-	//rp($GLOBALS);
-	?>
+include 'template/header.php';
+headerOut('Ценовичок', 'Ценовичок', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты', '.', 'Новости');
+?>
 <h2 style="color: #7A918B; margin: 0 5px;">Доработки на 11.2.2016.</h2>
 <div style="margin:-10px 300px 10px 5px; border: 2px solid #7A918B; border-radius: 0 7px 7px 7px; padding: 0 5px">
 	<p><ol><li>1. В разделе аналитики таблицу цен можно сортировать по любому параметру по возрастанию или по убыванию</li>
@@ -71,4 +61,4 @@ include($GLOBALS['site_settings']['root_path'].'/template/header/index.php');?>
 	<i>15.10.2015.</i>
 </div>
 
-<?include($GLOBALS['site_settings']['root_path'].'/template/footer/index.php');?>
+<?include('template/footer.php');?>

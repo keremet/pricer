@@ -1,10 +1,6 @@
 <?
-include($_SERVER['DOCUMENT_ROOT'].'/beacon.php');
-$GLOBALS['site_settings']['TAB_TITLE'] = 'Ценовичок - Товары';
-$GLOBALS['site_settings']['META']['TITLE'] = 'Ценовичок - Товары';
-$GLOBALS['site_settings']['META']['DESCRIPTION'] = 'Ценовичок - аналитика цен на товары';
-$GLOBALS['site_settings']['META']['KEYWORDS'] = 'Киров, цены, продукты';
-include('../template/header/index.php');
+include '../template/header.php';
+headerOut('Ценовичок - Товары', 'Ценовичок - Товары', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты', '..', 'Товары');
 
 function showProduct($product_name, $product_photo, $ed_izm, $ed_izm_id, $in_box, $min_kolvo, $readonly){
 	?>	
@@ -73,5 +69,5 @@ if(isset($_REQUEST['id'])){
 }
 ?>
 <p><a href='index.php'>Назад к списку товаров</a></p>
-<? include('../template/footer/index.php'); ?>
+<? include('../template/footer.php'); ?>
 
