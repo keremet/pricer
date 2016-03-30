@@ -42,11 +42,12 @@ if (isset($_REQUEST['id'])) {
 				exit();
 			}			
 		}
+		//TODO: Дописать удаление предыдущей картинки
 	}
 	echo "<script>alert('Товар изменен');document.location.href='index.php';</script>";
 } else {
-	$stmt = $db->prepare("INSERT pr_products(name, ed_izm_id, in_box, min_kolvo) values(?, ?, ?, ?)");
-	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doNull($_REQUEST['in_box']), doNull($_REQUEST['min_kolvo'])))){
+	$stmt = $db->prepare("INSERT pr_products(name, ed_izm_id, in_box, min_kolvo, main_clsf_id, creator) values(?, ?, ?, ?, ?, ?)");
+	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doNull($_REQUEST['in_box']), doNull($_REQUEST['min_kolvo']), $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
 		echo 'Ошибка добавления товара'; print_r($stmt->errorInfo());
 		exit();
 	}

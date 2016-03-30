@@ -26,7 +26,8 @@ headerOut('Ценовичок - Товары', 'Ценовичок - Товар�
 							'url' : 'tree.php?operation=get_node',
 							'data' : function (node) {
 								return { 'id' : node.id };
-							}
+							}/*,
+							"error": function (jqXHR, textStatus, errorThrown) { $('#tree').html("<h3>There was an error while loading data for this tree</h3><p>" + jqXHR.responseText + "</p>"); }*/
 						},
 						'check_callback' : function(o, n, p, i, m) {
 							if(m && m.dnd && m.pos !== 'i') { return false; }
@@ -45,25 +46,27 @@ headerOut('Ценовичок - Товары', 'Ценовичок - Товар�
 					'contextmenu' : {
 						'items' : function(node) {
 							var tmp = $.jstree.defaults.contextmenu.items();
-							tmp.rename.label = "Переименовать";
+
 							tmp.remove.label = "Удалить";
 							tmp.ccp.label = "Редактирование";
 							tmp.ccp.submenu.copy.label = "Копировать";
 							tmp.ccp.submenu.cut.label = "Вырезать";
-							tmp.ccp.submenu.paste.label = "Вставить";
-
-							tmp.create.action = function (data) {
-									var inst = $.jstree.reference(data.reference),
-										obj = inst.get_node(data.reference);
-									inst.create_node(obj, { type : "default" }, "last", function (new_node) {
-										setTimeout(function () { inst.edit(new_node); },0);
-									});
-								}
-							tmp.create.label = "Добавить каталог";
 							
 							if(this.get_type(node) === "file") {
 								delete tmp.create;
 								delete tmp.rename;
+								delete tmp.ccp.submenu.paste;
+							}else{
+								tmp.create.action = function (data) {
+										var inst = $.jstree.reference(data.reference),
+											obj = inst.get_node(data.reference);
+										inst.create_node(obj, { type : "default" }, "last", function (new_node) {
+											setTimeout(function () { inst.edit(new_node); },0);
+										});
+									}
+								tmp.create.label = "Добавить каталог";
+								tmp.rename.label = "Переименовать";
+								tmp.ccp.submenu.paste.label = "Вставить";
 							}
 							return tmp;
 						}
