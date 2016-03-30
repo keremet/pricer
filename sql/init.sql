@@ -67,9 +67,9 @@ CREATE TABLE `pr_products` (
 CREATE TABLE `pr_shops` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` text COLLATE utf8_unicode_ci NOT NULL,
-  `photo` text COLLATE utf8_unicode_ci NOT NULL,
-  `text` text COLLATE utf8_unicode_ci NOT NULL,
-  `address` text COLLATE utf8_unicode_ci NOT NULL,
+  `photo` text COLLATE utf8_unicode_ci,
+  `text` text COLLATE utf8_unicode_ci,
+  `address` text COLLATE utf8_unicode_ci,
   `town_id` int(11),
   `network_id` int(11),
   `main_clsf_id` int(11) NOT NULL,
