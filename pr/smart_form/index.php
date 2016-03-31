@@ -163,46 +163,9 @@ headerOut('Ценовичок - Умная форма', 'Ценовичок - У
 	<div class="result"></div>
 	<div id="select_shop" style="display: none;"><!--style="display: none;"-->
 		<h2>Выберите магазин</h2>
-		<table class="main select" id="shop_select_table"><tr><th>Название</th><th>Сеть</th><th>Город</th><th>Адрес</th></tr>
 		<?
-		  foreach($db->query("SELECT id, name, address, network, town FROM pr_shops") as $v){
-			echo '<tr onclick="shop_select(\''.$v['id'].'\', \''.htmlspecialchars($v['name'], ENT_QUOTES).'\', \''.htmlspecialchars($v['network'], ENT_QUOTES).'\', \''.htmlspecialchars($v['town'], ENT_QUOTES).'\', \''.htmlspecialchars($v['address'], ENT_QUOTES).'\'); $(\'.fancybox-close\').click();"><td>'.$v['name'].'</td><td>'.$v['network'].'</td><td>'.$v['town'].'</td><td>'.$v['address'].'</td></tr>';
-		}?>
-		</table>
-		<button onclick="$('#new_shop_popup').css('display', ''); return false;">Новый магазин</button><br>
-		<form id="new_shop_popup" style="display: none;" action="" method="post">
-			<h2>Добавление нового магазина</h2>
-			Название :<br>
-			<input type="text" name="shop_name" placeholder="Название магазина" value="<?=$_REQUEST['shop_name']?>"><br><br>
-			Торговая сеть :<br>
-			<input type="text" name="shop_network" placeholder="Торговая сеть" value="<?=$_REQUEST['shop_network']?>"><br><br>
-			Город :<br>
-			<input type="text" name="shop_town" placeholder="Город" value="<?=$_REQUEST['shop_town']?>"><br><br>
-			Адрес:<br>
-			<textarea name="shop_address" placeholder="Адрес магазина"><?=$_REQUEST['shop_address']?></textarea><br><br>
-			Комментарий:<br>
-			<textarea name="shop_text" placeholder="Комментарий"><?=$_REQUEST['shop_text']?></textarea><br><br>
-			<input type="submit" name="new_shop" value="Добавить магазин" onclick="AjaxFormRequest('new_shop_popup', 'ajax/shop_new_ajax.php'); return false;"><br><br>
-		</form>
-		<!--a href="#new_shop" onclick="$('.fancybox-close').click();" >Добавить новый магазин</a-->
-		<!--button onclick="$('#new_shop_link').click(); return false;">Добавить новый</button-->
-	</div>
-	
-	<div id="new_shop" style="display: none;"><!--style="display: none;"-->
-		<form id="new_shop_popup_2" action="" method="post">
-			<h2>Добавление нового магазина</h2>
-			Название :<br>
-			<input type="text" name="shop_name" placeholder="Название магазина" value="<?=$_REQUEST['shop_name']?>"><br><br>
-			Торговая сеть :<br>
-			<input type="text" name="shop_network" placeholder="Торговая сеть" value="<?=$_REQUEST['shop_network']?>"><br><br>
-			Город :<br>
-			<input type="text" name="shop_town" placeholder="Город" value="<?=$_REQUEST['shop_town']?>"><br><br>
-			Адрес:<br>
-			<textarea name="shop_address" placeholder="Адрес магазина"><?=$_REQUEST['shop_address']?></textarea><br><br>
-			Комментарий:<br>
-			<textarea name="shop_text" placeholder="Комментарий"><?=$_REQUEST['shop_text']?></textarea><br><br>
-			<input type="submit" name="new_shop" value="Добавить магазин" onclick="AjaxFormRequest('new_shop_popup_2', 'ajax/shop_new_ajax.php'); return false;"><br><br>
-		</form>
+			include '../template/jstree/jstree.php';
+		?>
 	</div>
 	<div id="select_product" style="display: none;"><!--style="display: none;"-->
 		<h2>Выберите товар</h2>
