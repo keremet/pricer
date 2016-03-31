@@ -4,7 +4,7 @@
 				<div class="default"></div>				
 			</div>
 		</div>
-		<script src="../template/jstree/jquery.min.js"></script>
+		<!--script src="../template/jstree/jquery.min.js"></script-->
 		<script src="../template/jstree/jstree.min.js"></script>
 		
 <script>
