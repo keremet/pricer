@@ -38,7 +38,7 @@ $arProds = array();
 foreach($db->query("SELECT id, name FROM pr_products order by name") as $row)
 	$arProds[$row['id']] = $row['name'];
 
-$shops_ = $db->query("SELECT id, name, address, network, town FROM pr_shops order by name")->fetchAll();
+$shops_ = $db->query("SELECT id, name, address, network_id, town_id FROM pr_shops order by name")->fetchAll();
 $arShops = array();
 if($shops_){
 	foreach($shops_ as $k => $v){

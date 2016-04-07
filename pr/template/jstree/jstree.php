@@ -1,6 +1,9 @@
-		<div id="container" role="main">
-			<div id="tree"></div>
-			<div id="data">
+<?
+	function putTree($suf, $path){
+?>
+		<div id="container<?=$suf?>" role="main">
+			<div id="tree<?=$suf?>"></div>
+			<div id="data<?=$suf?>">
 				<div class="default"></div>				
 			</div>
 		</div>
@@ -11,14 +14,14 @@
 		$(function () {
 			$(window).resize(function () {
 				var h = Math.max($(window).height() - 0, 520);
-				$('#container, #data, #tree, #data .content').height(h).filter('.default').css('lineHeight', h + 'px');
+				$('#container<?=$suf?>, #data<?=$suf?>, #tree<?=$suf?>').height(h).filter('.default').css('lineHeight', h + 'px');
 			}).resize();
 
-			$('#tree')
+			$('#tree<?=$suf?>')
 				.jstree({
 					'core' : {
 						'data' : {
-							'url' : 'tree.php?operation=get_node',
+							'url' : '<?=$path?>tree.php?operation=get_node',
 							'data' : function (node) {
 								return { 'id' : node.id };
 							}/*,
@@ -78,13 +81,13 @@
 					'plugins' : ['state','dnd',/*'sort',*/'types','contextmenu'/*,'unique'*/]
 				})
 				.on('delete_node.jstree', function (e, data) {
-					$.get('tree.php?operation=delete_node', { 'id' : data.node.id })
+					$.get('<?=$path?>tree.php?operation=delete_node', { 'id' : data.node.id })
 						.fail(function () {
 							data.instance.refresh();
 						});
 				})
 				.on('create_node.jstree', function (e, data) {
-					$.get('tree.php?operation=create_node', { 'type' : data.node.type, 'id' : data.node.parent, 'text' : data.node.text })
+					$.get('<?=$path?>tree.php?operation=create_node', { 'type' : data.node.type, 'id' : data.node.parent, 'text' : data.node.text })
 						.done(function (d) {
 							data.instance.set_id(data.node, d.id);
 						})
@@ -93,7 +96,7 @@
 						});
 				})
 				.on('rename_node.jstree', function (e, data) {
-					$.get('tree.php?operation=rename_node', { 'id' : data.node.id, 'text' : data.text })
+					$.get('<?=$path?>tree.php?operation=rename_node', { 'id' : data.node.id, 'text' : data.text })
 						.done(function (d) {
 							data.instance.set_id(data.node, d.id);
 						})
@@ -102,7 +105,7 @@
 						});
 				})
 				.on('move_node.jstree', function (e, data) {
-					$.get('tree.php?operation=move_node', { 'id' : data.node.id, 'parent' : data.parent })
+					$.get('<?=$path?>tree.php?operation=move_node', { 'id' : data.node.id, 'parent' : data.parent })
 						.done(function (d) {
 							//data.instance.load_node(data.parent);
 							data.instance.refresh();
@@ -112,7 +115,7 @@
 						});
 				})
 				.on('copy_node.jstree', function (e, data) {
-					$.get('tree.php?operation=copy_node', { 'id' : data.original.id, 'parent' : data.parent })
+					$.get('<?=$path?>tree.php?operation=copy_node', { 'id' : data.original.id, 'parent' : data.parent })
 						.done(function (d) {
 							//data.instance.load_node(data.parent);
 							data.instance.refresh();
@@ -123,14 +126,22 @@
 				})
 				.on('changed.jstree', function (e, data) {
 					if(data && data.selected && data.selected.length) {
-						$.get('tree.php?operation=get_content&id=' + data.selected.join(':'), function (d) {
-								if(d)
-									$('#data .default').html(d.content).show();
+						$.get('<?=$path?>tree.php?operation=get_content&id=' + data.selected.join(':'), function (d) {
+								if(d){
+									$('#data<?=$suf?> .default').html(d.content).show();
+									product_select('123', '456');
+								}
 							}
 						);
 					}
 					else
-						$('#data .default').html('').show();
+						$('#data<?=$suf?> .default').html('').show();
 				});
 		});
+		
+		
+		
 		</script>
+<?
+	}
+?>

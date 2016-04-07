@@ -1,6 +1,7 @@
 <?
 include '../template/header.php';
-headerOut('Ценовичок - Умная форма', 'Ценовичок - Умная форма', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты', '..', 'Умная форма');
+headerOut('Ценовичок - Умная форма', 'Ценовичок - Умная форма', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты', '..', 'Умная форма', array('prod','shop'));
+include '../template/jstree/jstree.php';
 ?>
 <script type="text/javascript" src="../template/input_calendar/tcal.js"></script>
 <script>
@@ -161,36 +162,19 @@ headerOut('Ценовичок - Умная форма', 'Ценовичок - У
 <?if($_SESSION['user']['id']){?>
 	<h1>Умная форма</h1>
 	<div class="result"></div>
-	<div id="select_shop" style="display: none;"><!--style="display: none;"-->
+	<div id="select_shop" style="display: none;">
 		<h2>Выберите магазин</h2>
 		<?
-			include '../template/jstree/jstree.php';
+			putTree('shop', '../shops/');
 		?>
 	</div>
-	<div id="select_product" style="display: none;"><!--style="display: none;"-->
+	<div id="select_product" style="display: none;">
 		<h2>Выберите товар</h2>
-		<table class="main select" id="product_select_table"><tr><th>Название</th></tr>
-		<?foreach($db->query("SELECT id, name FROM pr_products ORDER BY name ASC") as $v){
-			echo '<tr onclick="product_select(\''.$v['id'].'\', \''.htmlspecialchars($v['name'], ENT_QUOTES).'\'); $(\'.fancybox-close\').click();"><td>'.$v['name'].'</td></tr>';
-		}?>
-		</table>
-		<button onclick="$('#new_product_popup').css('display', ''); return false;">Новый товар</button><br>
-		<form id="new_product_popup" style="display: none;" action="" method="post">
-			<h2>Добавление нового товара</h2>
-			Название :<br>
-			<input type="text" name="product_name" placeholder="Название товара" value="<?=$_REQUEST['product_name']?>"><br><br>
-			<input type="submit" name="new_product" value="Добавить товар" onclick="AjaxFormRequest('new_product_popup', 'ajax/product_new_ajax.php'); return false;"><br><br>
-		</form>
+		<?
+			putTree('prod', '../products/');
+		?>
 	</div>
 	
-	<div id="new_product" style="display: none;"><!--style="display: none;"-->
-		<form id="new_product_popup_2" action="" method="post">
-			<h2>Добавление нового товара</h2>
-			Название :<br>
-			<input type="text" name="product_name" placeholder="Название товара" value="<?=$_REQUEST['product_name']?>"><br><br>
-			<input type="submit" name="new_product" value="Добавить товар" onclick="AjaxFormRequest('new_product_popup_2', 'ajax/product_new_ajax.php'); return false;"><br><br>
-		</form>
-	</div>
 	<form id="form_main">
 		<fieldset>
 			<div style="padding: 10px;">
@@ -207,7 +191,6 @@ headerOut('Ценовичок - Умная форма', 'Ценовичок - У
 					<a id="select_shop_button" class="fancybox" style="display: none;" href="#select_shop">Выбрать магазин</a>
 					<a id="new_shop_link" class="fancybox" style="display: none;" href="#new_shop">Добавить новый магазин</a>
 					<button onclick="$('#select_shop_button').click(); return false;">Выбрать</button>
-					<!--button onclick="$('#new_shop_link').click(); return false;">Добавить новый</button-->
 			</div>
 			<div style="padding: 10px; width:80%; display: inline-block;">
 				<b>Название</b><br>
