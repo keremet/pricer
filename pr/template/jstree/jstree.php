@@ -129,7 +129,12 @@
 						$.get('<?=$path?>tree.php?operation=get_content&id=' + data.selected.join(':'), function (d) {
 								if(d){
 									$('#data<?=$suf?> .default').html(d.content).show();
-									product_select('123', '456');
+									<?if($suf=='prod'){?>
+									product_select(d.product_id, d.product_name);
+									$('#select_product').css('width','200');
+									<?}else if($suf=='shop'){?>
+									shop_select(d.shop_id, d.shop_name, '', '', d.shop_address);
+									<?}?>
 								}
 							}
 						);

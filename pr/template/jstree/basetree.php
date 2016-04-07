@@ -74,7 +74,7 @@
 						$res = array('status' => 'OK');
 						break;
 					case "get_content":
-						$res = array('content' => $showTerm($is_file, $id));
+						$res = $showTerm($is_file, $id);
 						break;
 				}
 			}

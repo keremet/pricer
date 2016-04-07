@@ -98,12 +98,10 @@ function headerOut($tabTitle, $metaTitle, $description, $keywords, $root, $curme
 						<ul id="menu-top-main" class="nav-menu dropdown-menu">
 					<?
 					foreach (array(
-						'Новости' => '/', 
+						'Аналитика' => '/analytics/',
+						'Ввод данных' => '/smart_form/', 
 						'Товары' => '/products/', 
-						'Магазины' => '/shops/', 
-						'Умная форма' => '/smart_form/', 
-						'Аналитика' => '/analytics/', 
-						'Контакты' => '/contacts/', 
+						'Магазины' => '/shops/'	
 					) as $k => $v){
 						echo '<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home'
 						  .(($curmenu == $k)?' current-menu-item':'')

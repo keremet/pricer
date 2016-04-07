@@ -13,11 +13,11 @@
 			);
 			$stmt->execute(array($id));
 			if(!($product = $stmt->fetch())){
-				return 'Товар не найден';
+				return array('content' => 'Товар не найден');
 			}
 		}else{
 			if($readonly)
-				return '';
+				return array('content' => '');
 		}
 		
 		$r = '<form action="newonsubmit.php" method="post" enctype = "multipart/form-data">'
@@ -57,8 +57,10 @@
 				$r .= '<input type="hidden" name="main_clsf_id" value="'.$id.'">';
 		}
 		$r .= '</form>';
-		return $r;
+		return ($is_file)?
+			array('content' => $r, 'product_id' => $id, 'product_name' => $product['name'])
+			:array('content' => $r, 'product_id' => '', 'product_name' => '');
 	}
-
+	
 	doTreeOperation('pr_products_main_clsf', 'pr_products', 'showProduct');
 ?>

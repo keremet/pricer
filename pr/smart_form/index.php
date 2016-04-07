@@ -1,6 +1,6 @@
 <?
 include '../template/header.php';
-headerOut('Ценовичок - Умная форма', 'Ценовичок - Умная форма', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты', '..', 'Умная форма', array('prod','shop'));
+headerOut('Ценовичок - Ввод данных', 'Ценовичок - Ввод данных', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты', '..', 'Ввод данных', array('prod','shop'));
 include '../template/jstree/jstree.php';
 ?>
 <script type="text/javascript" src="../template/input_calendar/tcal.js"></script>
@@ -128,11 +128,12 @@ include '../template/jstree/jstree.php';
 		});
 	}
 	function MainFormRequest(form_id,url) {
+		$('.result').html('');
 		jQuery.ajax({
 			url:     url, //Адрес подгружаемой страницы
 			type:     "POST", //Тип запроса
 			dataType: "html", //Тип данных
-			data: jQuery("#"+form_id).serialize(), 
+			data: jQuery("#"+form_id).serialize(),
 			success: function(response) { //Если все нормально
 				$('.result').html(response);
 				/*var vars = JSON.parse (response);
@@ -160,8 +161,6 @@ include '../template/jstree/jstree.php';
 </script>
 <link rel="stylesheet" href="../template/input_calendar/tcal.css"/>
 <?if($_SESSION['user']['id']){?>
-	<h1>Умная форма</h1>
-	<div class="result"></div>
 	<div id="select_shop" style="display: none;">
 		<h2>Выберите магазин</h2>
 		<?
@@ -197,18 +196,8 @@ include '../template/jstree/jstree.php';
 				<input style="width:100%;" class="ac_input" autocomplete="off" id="shop_name" name="shop_name" type="text" value="">
 				<div class="autocom" id="shop_name_autocom"></div>
 			</div>
-			<div class="select_box" id="shop">new</div>
+			<div class="select_box" id="shop">Не выбран</div>
 			<input type="hidden" id="selected_shop_id" name="shop_id" value="">
-			<div style="display: inline-block; width: 30%; padding: 10px">
-				<span class="network"><b>Сеть</b></span><br>
-				<input autocomplete="off" class="ac_input" name="shop_network" id="shop_network" type="text" value="" style="width:100%">
-				<div class="autocom" id="shop_network_autocom"></div>
-			</div>
-			<div style="display: inline-block; width: 30%; padding: 10px">
-				<span class="town"><b>Город</b></span><br>
-				<input autocomplete="off" class="ac_input" name="shop_town" id="shop_town" type="text" value="" style="width:100%">
-				<div class="autocom" id="shop_town_autocom"></div>
-			</div>
 			<div style="display: inline-block; width: 30%; padding: 10px">
 				<span class="address"><b>Адрес</b></span><br>
 				<input autocomplete="off" class="ac_input" name="shop_address" id="shop_address" type="text" value="" style="width:100%">
@@ -233,6 +222,7 @@ include '../template/jstree/jstree.php';
 				<div class="price_message"></div>
 				<input onchange="$('.price_message').text('');" type="text" id="offer_price" name="price" step="0.01" placeholder="Цена" value="<?=$_REQUEST['price']?>">
 				<input type="submit" name="smart_form" value="Добавить" onclick="MainFormRequest('form_main', 'ajax/main_form.php'); return false;">
+				<div class="result"></div>
 			</div>
 		</fieldset>
 	</form>

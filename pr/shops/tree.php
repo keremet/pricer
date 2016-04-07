@@ -12,11 +12,11 @@
 			);
 			$stmt->execute(array($id));
 			if(!($shop = $stmt->fetch())){
-				return 'Магазин не найден';
+				return array('content' => 'Магазин не найден');
 			}
 		}else{
 			if($readonly)
-				return '';
+				return array('content' => '');
 		}
 		
 		$r = '<form action="newonsubmit.php" method="post" enctype = "multipart/form-data">'
@@ -33,7 +33,9 @@
 				$r .= '<input type="hidden" name="main_clsf_id" value="'.$id.'">';
 		}
 		$r .= '</form>';
-		return $r;
+		return ($is_file)?
+			array('content' => $r, 'shop_id' => $id, 'shop_name' => $shop['name'], 'shop_address' => $shop['address'])
+			:array('content' => $r, 'shop_id' => '', 'shop_name' => '', 'shop_address' => '');
 	}
 
 	doTreeOperation('pr_shops_main_clsf', 'pr_shops', 'showProduct');
