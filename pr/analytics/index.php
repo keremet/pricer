@@ -48,11 +48,12 @@ if($shops_){
 
 $query_array = array();
 $query = 
-"select pr_product_offers.date_buy as `Дата покупки`,
-   pr_product_offers.price as Цена,
+"select pr_product_offers.id,
+   pr_product_offers.date_buy,
+   pr_product_offers.price,
    pr_products.name as Товар,
    pr_shops.name as Магазин,
-   pr_users.login as Покупатель
+   pr_users.login
  from pr_product_offers, pr_products, pr_shops, pr_users
  where pr_product_offers.product = pr_products.id
    and pr_product_offers.shop = pr_shops.id
@@ -199,32 +200,32 @@ if(is_array($_GET['users'])){
 	</fieldset><br>
 	<input type="submit" name="send" value="Применить фильтр" >
 </form>
-<?
-$stmt = $db->prepare($query);
-$stmt->execute($query_array);
-$table_offers = $stmt->fetchAll();
-
-if(is_array($table_offers)){?>
 <table id="myTable" class="main tablesorter">
 	<thead>
 		<tr>
-		<?if(is_array($table_offers[0])){
-			foreach($table_offers[0] as $k => $v){?>
-				<th class="header"><?=$k?></th>
-			<?}
-		}?>
+			<th class="header">Дата покупки</th>
+			<th class="header">Цена</th>
+			<th class="header">Товар</th>
+			<th class="header">Магазин</th>
+			<th class="header">Покупатель</th>
 		</tr>
 	</thead>
 	<tbody>
-	<?foreach($table_offers as $k => $v){?>
+	<?
+	$stmt = $db->prepare($query);
+	$stmt->execute($query_array);
+	
+	foreach($stmt->fetchAll() as $k => $v){?>
 		<tr>
-		<?foreach($v as $k2 => $v2){?>
-			<td><?=$v2?></td>
-		<?}?>
+			<td><?=$v['date_buy']?></td>
+			<td><?=$v['price']?></td>
+			<td><?=$v['Товар']?></td>
+			<td><?=$v['Магазин']?></td>
+			<td><?=$v['login']?></td>
+		<td><button onclick="alert('<?=$v['id']?>');">-</button></td>
 		</tr>
 	<?}
 	?>
 	</tbody>
 </table>
-<?}
-include('../template/footer.php');?>
+<?include('../template/footer.php');?>
