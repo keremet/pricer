@@ -24,6 +24,21 @@ headerOut('Ценовичок - Аналитика', 'Ценовичок - Ан�
 		}
 		$(this).remove();
 	});
+	function delete_price(id){
+		if (!confirm('Удалить цену?'))
+			return;
+		jQuery.ajax({
+			url:     'delete_price.php', //Адрес подгружаемой страницы
+			type:     "POST", //Тип запроса
+			dataType: "html", //Тип данных
+			data: {id: id}, 
+			success: function(result) {
+				alert(result);
+				if(result=='Цена удалена')
+					location.reload();
+			}
+		});
+	}
 </script>
 <?
 $users_ = $db->query("SELECT id, login, name FROM pr_users order by login")->fetchAll();
@@ -222,7 +237,7 @@ if(is_array($_GET['users'])){
 			<td><?=$v['Товар']?></td>
 			<td><?=$v['Магазин']?></td>
 			<td><?=$v['login']?></td>
-		<td><button onclick="alert('<?=$v['id']?>');">-</button></td>
+		<td><button onclick="delete_price(<?=$v['id']?>);">-</button></td>
 		</tr>
 	<?}
 	?>
