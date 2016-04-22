@@ -237,7 +237,9 @@ if(is_array($_GET['users'])){
 			<td><?=$v['Товар']?></td>
 			<td><?=$v['Магазин']?></td>
 			<td><?=$v['login']?></td>
-		<td><button onclick="delete_price(<?=$v['id']?>);">-</button></td>
+			<? if($_SESSION['user']['id']!=null) {?>
+			<td><button onclick="delete_price(<?=$v['id']?>);">-</button></td>
+			<? } ?>
 		</tr>
 	<?}
 	?>
