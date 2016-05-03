@@ -42,6 +42,7 @@ include '../template/jstree/jstree.php';
 		});
 	});
 	function get_price(shop, product){
+		$('.result').html('');
 		jQuery.ajax({
 			url:     'ajax/get_price.php', //Адрес подгружаемой страницы
 			type:     "POST", //Тип запроса
