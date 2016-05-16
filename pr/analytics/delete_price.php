@@ -7,13 +7,18 @@ if($_SESSION['user']['id']==null)
 	die('Требуется авторизация');
 
 if (isset($_REQUEST['id'])) {
-	$stmt = $db->prepare("DELETE FROM pr_product_offers WHERE id = ?");
-	if(!$stmt->execute(array($_REQUEST['id']))){
+	$stmt = $db->prepare("DELETE FROM pr_product_offers WHERE id = ? and creator=?");
+	if(!$stmt->execute(array($_REQUEST['id'], $_SESSION['user']['id']))){
 		echo 'Ошибка удаления цены'; print_r($stmt->errorInfo());
 		exit();
 	}
-	echo "Цена удалена";
+	$count = $stmt->rowCount();
+	if($count == 1){
+		echo "Цена удалена";
+	}elseif($count < 1){
+		echo "Цена не найдена";
+	}else{
+		echo "Дублирование индекса. Удалено больше 1 строки.";
+	}
 }
-
-
 ?>

@@ -64,6 +64,7 @@ if($shops_){
 $query_array = array();
 $query = 
 "select pr_product_offers.id,
+   pr_product_offers.creator,
    pr_product_offers.date_buy,
    pr_product_offers.price,
    pr_products.name as Товар,
@@ -237,7 +238,7 @@ if(is_array($_GET['users'])){
 			<td><?=$v['Товар']?></td>
 			<td><?=$v['Магазин']?></td>
 			<td><?=$v['login']?></td>
-			<? if($_SESSION['user']['id']!=null) {?>
+			<? if(($_SESSION['user']['id'] != null) && ($v['creator'] == $_SESSION['user']['id'])) {?>
 			<td><button onclick="delete_price(<?=$v['id']?>);">-</button></td>
 			<? } ?>
 		</tr>
