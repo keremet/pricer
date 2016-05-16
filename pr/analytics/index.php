@@ -34,7 +34,7 @@ headerOut('Ценовичок - Аналитика', 'Ценовичок - Ан�
 			data: {id: id}, 
 			success: function(result) {
 				alert(result);
-				if(result=='Цена удалена')
+				//if(result=='Цена удалена')
 					location.reload();
 			}
 		});
@@ -224,6 +224,7 @@ if(is_array($_GET['users'])){
 			<th class="header">Товар</th>
 			<th class="header">Магазин</th>
 			<th class="header">Покупатель</th>
+			<th class="header" style="width: 90px;">Действия</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -238,9 +239,11 @@ if(is_array($_GET['users'])){
 			<td><?=$v['Товар']?></td>
 			<td><?=$v['Магазин']?></td>
 			<td><?=$v['login']?></td>
-			<? if(($_SESSION['user']['id'] != null) && ($v['creator'] == $_SESSION['user']['id'])) {?>
-			<td><button onclick="delete_price(<?=$v['id']?>);">-</button></td>
-			<? } ?>
+			<td style="text-align: center;">
+				<?if(($_SESSION['user']['id'] != null) && ($v['creator'] == $_SESSION['user']['id'])) {?>
+					<button onclick="delete_price(<?=$v['id']?>);">Удалить цену</button>
+				<? } ?>
+			</td>
 		</tr>
 	<?}
 	?>
