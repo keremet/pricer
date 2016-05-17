@@ -48,7 +48,8 @@
 		<input '.(($readonly)?'readonly':'').' type="text" name="in_box" value="'.$product['in_box'].'"><br><br>'
 		.'Минимальное количество товара, которое можно купить(в ед. изм.)<br>
 		<input '.(($readonly)?'readonly':'').' type="text" name="min_kolvo" value="'.$product['min_kolvo'].'">';
-		
+		if($is_file)
+			$r .= '<br><br><a target="_blank" href="../analytics/?product[]='.$id.'">Перейти к ценам</a>';
 		if(!$readonly){
 			$r .= '<br><br><input type="submit" value="'.(($is_file)?'Изменить':'Добавить').' товар">';
 			if($is_file)
