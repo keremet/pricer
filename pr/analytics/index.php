@@ -68,9 +68,12 @@ $query =
    pr_product_offers.date_buy,
    pr_product_offers.price,
    pr_products.name as Товар,
+   pr_products.in_box,
+   pr_ed_izm.name as ЕдИзм,
    pr_shops.name as Магазин,
    pr_users.login
- from pr_product_offers, pr_products, pr_shops, pr_users
+ from pr_product_offers, pr_shops, pr_users, pr_products
+ left join pr_ed_izm on pr_ed_izm.id = pr_products.ed_izm_id
  where pr_product_offers.product = pr_products.id
    and pr_product_offers.shop = pr_shops.id
    and pr_product_offers.creator = pr_users.id";
@@ -221,6 +224,8 @@ if(is_array($_GET['users'])){
 		<tr>
 			<th class="header">Дата покупки</th>
 			<th class="header">Цена</th>
+			<th class="header">В упаковке</th>
+			<th class="header">Цена единицы</th>
 			<th class="header">Товар</th>
 			<th class="header">Магазин</th>
 			<th class="header">Покупатель</th>
@@ -236,6 +241,11 @@ if(is_array($_GET['users'])){
 		<tr>
 			<td><?=$v['date_buy']?></td>
 			<td><?=$v['price']?></td>
+			<td><?=($v['in_box'])?($v['in_box'].' '.$v['ЕдИзм']):($v['ЕдИзм']?'Развесной':'')?></td>
+			<td><?if($v['ЕдИзм']){
+				echo ($v['in_box'])?(round($v['price'] / $v['in_box'], 2)):$v['price'];
+				echo ' руб / '.$v['ЕдИзм'];
+				}?></td>
 			<td><?=$v['Товар']?></td>
 			<td><?=$v['Магазин']?></td>
 			<td><?=$v['login']?></td>
