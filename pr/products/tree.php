@@ -22,7 +22,7 @@
 		
 		$r = '<form action="newonsubmit.php" method="post" enctype = "multipart/form-data">'
 		  .'Название товара*<br>'
-		  .'<input '.(($readonly)?'readonly':'').' required type="text" name="product_name" value="'.$product['name'].'"><br><br>';
+		  .'<input '.(($readonly)?'readonly':'').' required type="text" name="product_name" value="'.htmlspecialchars ($product['name']).'"><br><br>';
 		if($product['photo']){
 			$r .= '<div style=" height: 140px; width: 140px; background-color: #EDEDED; border: 2px solid #AAAAAA; position: relative; display: inline-block;">'
 			  .'<a class="fancybox" href="'.$product['photo'].'"><img style=" max-width: 140px; max-height: 100%; margin:auto; position: absolute; top: 0; left: 0; bottom: 0; right: 0;" src="'.$product['photo'].'"></a>'

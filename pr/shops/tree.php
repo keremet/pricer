@@ -21,9 +21,9 @@
 		
 		$r = '<form action="newonsubmit.php" method="post" enctype = "multipart/form-data">'
 		  .'Название магазина*<br>'
-		  .'<input '.(($readonly)?'readonly':'').' required type="text" name="shop_name" value="'.$shop['name'].'"><br><br>'
+		  .'<input '.(($readonly)?'readonly':'').' required type="text" name="shop_name" value="'.htmlspecialchars ($shop['name']).'"><br><br>'
 		  .'Адрес<br>'
-		  .'<input '.(($readonly)?'readonly':'').' type="text" name="address" value="'.$shop['address'].'">';
+		  .'<input '.(($readonly)?'readonly':'').' type="text" name="address" value="'.htmlspecialchars ($shop['address']).'">';
 		
 		if(!$readonly){
 			$r .= '<br><br><input type="submit" value="'.(($is_file)?'Изменить':'Добавить').' магазин">';
