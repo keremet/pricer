@@ -6,8 +6,10 @@ include('../template/connect.php');
 if($_SESSION['user']['id']==null)
 	die('Требуется авторизация');
 
-function doNull($s){
-	return ($s == '')?null:$s;
+function doKolvo($s){
+	if($s == '')
+		return null;
+	return str_replace(',', '.', $s);
 }
 
 $stmt = $db->prepare("SELECT id FROM pr_products WHERE name = ? and id != ?");
@@ -17,7 +19,7 @@ if($stmt->fetch())
 
 if (isset($_REQUEST['id'])) {
 	$stmt = $db->prepare("UPDATE pr_products SET name = ?, ed_izm_id = ?, in_box = ?, min_kolvo = ? WHERE id = ?");
-	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doNull($_REQUEST['in_box']), doNull($_REQUEST['min_kolvo']), $_REQUEST['id']))){
+	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), doKolvo($_REQUEST['min_kolvo']), $_REQUEST['id']))){
 		echo 'Ошибка изменения товара'; print_r($stmt->errorInfo());
 		exit();
 	}
@@ -47,7 +49,7 @@ if (isset($_REQUEST['id'])) {
 	echo "<script>alert('Товар изменен');document.location.href='index.php';</script>";
 } else {
 	$stmt = $db->prepare("INSERT pr_products(name, ed_izm_id, in_box, min_kolvo, main_clsf_id, creator) values(?, ?, ?, ?, ?, ?)");
-	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doNull($_REQUEST['in_box']), doNull($_REQUEST['min_kolvo']), $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
+	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), doKolvo($_REQUEST['min_kolvo']), $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
 		echo 'Ошибка добавления товара'; print_r($stmt->errorInfo());
 		exit();
 	}
