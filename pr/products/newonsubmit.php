@@ -34,7 +34,7 @@ if (isset($_REQUEST['id'])) {
 		if($_FILES['image']['error'] != 0)
 			die('ошибка при загрузке изображения');
 		
-		$photoFileName = '/pr/uploaded/'.$_FILES['image']['name'];
+		$photoFileName = '/pricer/uploaded/'.$_FILES['image']['name'];
 		if(file_exists($_SERVER['DOCUMENT_ROOT'].$photoFileName))
 			die('Файл с таким именем уже загружен');
 		if(move_uploaded_file($_FILES['image']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].$photoFileName)){
