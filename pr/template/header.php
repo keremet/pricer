@@ -1,5 +1,6 @@
 <? 
 session_start();
+header('Content-Type: text/html; charset=utf-8');
 include 'connect.php';
 function headerOut($tabTitle, $metaTitle, $description, $keywords, $root, $curmenu, $treesuf = null){ ?>
 <html>
