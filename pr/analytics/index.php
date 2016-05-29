@@ -41,11 +41,15 @@ headerOut('Ценовичок - Аналитика', 'Ценовичок - Ан�
 	}
 </script>
 <?
-$users_ = $db->query("SELECT id, login, name FROM pr_users order by login")->fetchAll();
-$arUsers = array();
-if($users_){
-	foreach($users_ as $k => $v){
-		$arUsers[$v['id']] = $v['login'];
+$isUserAutorized = ($_SESSION['user']['id'] != null);
+
+if($isUserAutorized){
+	$users_ = $db->query("SELECT id, login, name FROM pr_users order by login")->fetchAll();
+	$arUsers = array();
+	if($users_){
+		foreach($users_ as $k => $v){
+			$arUsers[$v['id']] = $v['login'];
+		}
 	}
 }
 
@@ -63,20 +67,20 @@ if($shops_){
 
 $query_array = array();
 $query = 
-"select pr_product_offers.id,
-   pr_product_offers.creator,
-   pr_product_offers.date_buy,
-   pr_product_offers.price,
-   pr_products.name as Товар,
-   pr_products.in_box,
-   pr_ed_izm.name as ЕдИзм,
-   pr_shops.name as Магазин,
-   pr_users.login
- from pr_product_offers, pr_shops, pr_users, pr_products
+"select pr_product_offers.id
+  , pr_product_offers.creator
+  , pr_product_offers.date_buy
+  , pr_product_offers.price
+  , pr_products.name as Товар
+  , pr_products.in_box
+  , pr_ed_izm.name as ЕдИзм
+  , pr_shops.name as Магазин"
+  .(($isUserAutorized)?", pr_users.login":"").
+ " from pr_product_offers, pr_shops".(($isUserAutorized)?", pr_users":"").", pr_products
  left join pr_ed_izm on pr_ed_izm.id = pr_products.ed_izm_id
  where pr_product_offers.product = pr_products.id
-   and pr_product_offers.shop = pr_shops.id
-   and pr_product_offers.creator = pr_users.id";
+   and pr_product_offers.shop = pr_shops.id"
+   .(($isUserAutorized)?" and pr_product_offers.creator = pr_users.id":"");
 
 if(is_array($_GET['filter']) && in_array('date', $_GET['filter'])){
 	if($_GET['date_from']){
@@ -186,25 +190,27 @@ if(is_array($_GET['users'])){
 		}?>
 		</table>
 	</div>
-	<b><a id="select_user_button" class="fancybox" href="#select_user">Фильтровать по автору</a></b><br>
-	<div class="selected_items" id="selected_user">
-		<?if(is_array($_GET['users'])){
-			foreach($_GET['users'] as $k => $v){
-				echo '<span class="sel_item user" id="sel_user_'.$v.'">'.$arUsers[$v].'</span>';
-			}
-		}?>
-	</div>
-	<div id="select_user" style="display: none;">
-		<table class="main select" id="user_select_table"><tr><th></th><th>Логин</th><th>Ф.И.О.</th></tr>
-		<?foreach($users_ as $k => $v){
-			echo '<tr id="tr_user_'.$v['id'].'"';
-			if(is_array($_GET['users']) && in_array($v['id'], $_GET['users'])) echo ' class="selected"';
-			echo '><td><input type="checkbox"';
-			if(is_array($_GET['users']) && in_array($v['id'], $_GET['users'])) echo ' checked="checked"';
-			echo ' name="users[]" onchange="$(this).closest(\'tr\').toggleClass(\'selected\'); if($(this).closest(\'tr\').hasClass(\'selected\')){ $(\'div.selected_items#selected_user\').append(\'<span class=&#34sel_item user&#34; id=&#34;sel_user_'.$v['id'].'&#34;>'.htmlspecialchars($v['login'], ENT_QUOTES).'</span>\');} else {$(\'#sel_user_'.$v['id'].'\').remove();}" value="'.$v['id'].'" ></td><td onclick="$(this).parent(\'tr\').find(\'input[type=checkbox]\').click();">'.$v['login'].'<div class="select_box">'.$v['id'].'</div></td><td onclick="$(this).parent(\'tr\').find(\'input[type=checkbox]\').click();">'.$v['name'].'</td></tr>';
-		}?>
-		</table>
-	</div>
+	<?if($isUserAutorized) {?>
+		<b><a id="select_user_button" class="fancybox" href="#select_user">Фильтровать по автору</a></b><br>
+		<div class="selected_items" id="selected_user">
+			<?if(is_array($_GET['users'])){
+				foreach($_GET['users'] as $k => $v){
+					echo '<span class="sel_item user" id="sel_user_'.$v.'">'.$arUsers[$v].'</span>';
+				}
+			}?>
+		</div>
+		<div id="select_user" style="display: none;">
+			<table class="main select" id="user_select_table"><tr><th></th><th>Логин</th><th>Ф.И.О.</th></tr>
+			<?foreach($users_ as $k => $v){
+				echo '<tr id="tr_user_'.$v['id'].'"';
+				if(is_array($_GET['users']) && in_array($v['id'], $_GET['users'])) echo ' class="selected"';
+				echo '><td><input type="checkbox"';
+				if(is_array($_GET['users']) && in_array($v['id'], $_GET['users'])) echo ' checked="checked"';
+				echo ' name="users[]" onchange="$(this).closest(\'tr\').toggleClass(\'selected\'); if($(this).closest(\'tr\').hasClass(\'selected\')){ $(\'div.selected_items#selected_user\').append(\'<span class=&#34sel_item user&#34; id=&#34;sel_user_'.$v['id'].'&#34;>'.htmlspecialchars($v['login'], ENT_QUOTES).'</span>\');} else {$(\'#sel_user_'.$v['id'].'\').remove();}" value="'.$v['id'].'" ></td><td onclick="$(this).parent(\'tr\').find(\'input[type=checkbox]\').click();">'.$v['login'].'<div class="select_box">'.$v['id'].'</div></td><td onclick="$(this).parent(\'tr\').find(\'input[type=checkbox]\').click();">'.$v['name'].'</td></tr>';
+			}?>
+			</table>
+		</div>
+	<? } ?>
 	<b onclick="if($(this).next('fieldset').is(':hidden')){ $(this).next('fieldset').show(200); $(this).next('fieldset').find('input[type=checkbox]').attr('checked', 'checked');} else {$(this).next('fieldset').hide(200); $(this).next('fieldset').find('input[type=checkbox]').removeAttr('checked')}; return false;"><a href="#">Фильтровать по цене</a></b>
 	<fieldset<?if(!is_array($_GET['filter']) || !in_array('price', $_GET['filter'])) echo ' style="display:none;"'?>>
 		<input type="checkbox" name="filter[]" value="price" style="display:none"<?if(is_array($_GET['filter']) && in_array('price', $_GET['filter'])) echo ' checked="checked"'?>>
@@ -228,8 +234,10 @@ if(is_array($_GET['users'])){
 			<th class="header">Цена единицы</th>
 			<th class="header">Товар</th>
 			<th class="header">Магазин</th>
-			<th class="header">Покупатель</th>
-			<th class="header" style="width: 90px;">Действия</th>
+			<?if($isUserAutorized) {?>
+				<th class="header">Покупатель</th>
+				<th class="header" style="width: 90px;">Действия</th>
+			<? } ?>
 		</tr>
 	</thead>
 	<tbody>
@@ -248,12 +256,14 @@ if(is_array($_GET['users'])){
 				}?></td>
 			<td><?=$v['Товар']?></td>
 			<td><?=$v['Магазин']?></td>
-			<td><?=$v['login']?></td>
-			<td style="text-align: center;">
-				<?if(($_SESSION['user']['id'] != null) && ($v['creator'] == $_SESSION['user']['id'])) {?>
-					<button onclick="delete_price(<?=$v['id']?>);">Удалить цену</button>
-				<? } ?>
-			</td>
+			<?if($isUserAutorized) {?>
+				<td><?=$v['login']?></td>
+				<td style="text-align: center;">
+					<?if($v['creator'] == $_SESSION['user']['id']) {?>
+						<button onclick="delete_price(<?=$v['id']?>);">Удалить цену</button>
+					<? } ?>
+				</td>
+			<? } ?>
 		</tr>
 	<?}
 	?>
