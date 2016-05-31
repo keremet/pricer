@@ -39,12 +39,11 @@ function headerOut($tabTitle, $metaTitle, $description, $keywords, $root, $curme
 		<link rel="stylesheet" href="<?=$root?>/template/jstree/themes/default/style.min.css" />
 		<? foreach($treesuf as $suf){?>
 		<style>
-		html, body { background:#ebebeb; font-size:10px; font-family:Verdana; margin:0; padding:0; }
+		html, body {font-size:10px; font-family:Verdana;}
 		#container<?=$suf?> { min-width:320px; margin:0px auto 0 auto; background:white; border-radius:0px; padding:0px; overflow:hidden; }
 		#tree<?=$suf?> { float:left; min-width:319px; border-right:1px solid silver; overflow:auto; padding:0px 0; }
 		#data<?=$suf?> { margin-left:320px; }
 		#data<?=$suf?> { font: normal normal normal 12px/18px 'Consolas', monospace !important; }
-
 		#tree<?=$suf?> .folder { background:url('../template/jstree/file_sprite.png') right bottom no-repeat; }
 		#tree<?=$suf?> .file { background:url('../template/jstree/file_sprite.png') 0 0 no-repeat; }
 		</style>
@@ -59,16 +58,16 @@ function headerOut($tabTitle, $metaTitle, $description, $keywords, $root, $curme
 		<div id="wrap" class="container clr">
 
 			<header id="masthead" class="site-header clr" role="banner">
-					<a style="display: inline-block;" title="Ценовичок - аналитика цен на товары" href="<?=$root?>/">
-
+					<a style="display: table-cell;" title="Ценовичок - аналитика цен на товары" href="<?=$root?>/">
 						<img alt="" style="padding: 20px; height: 80px;" src="<?=$root?>/images/logo.jpg">
-
-						<span style="position: absolute; color: #842816; text-decoration: none;" >
-
-							<b><span style="display: inline-block; font-size: 46px; margin-top: 20px;">Ценовичок&nbsp;-&nbsp;</span><span style="display: inline-block; font-size: 34px; margin-bottom: 0;"> аналитика цен на товары</span></b>
-
+					</a>
+					<a style="display: table-cell; text-decoration: none; margin-top: 0px; vertical-align: middle;" title="Ценовичок - аналитика цен на товары" href="<?=$root?>/">
+						<span style="color: #842816; text-decoration: none;" >
+							<b>
+								<span style="font-size: 46px;">Ценовичок&nbsp;-&nbsp;</span>
+								<span style="font-size: 34px; margin-bottom: 0;"> аналитика цен на товары</span>
+							</b>
 						</span>
-
 					</a>
 			</header>
 			<div id="navbar" class="navbar clr">
