@@ -126,18 +126,24 @@
 				})
 				.on('changed.jstree', function (e, data) {
 					if(data && data.selected && data.selected.length) {
-						$.get('<?=$path?>tree.php?operation=get_content&id=' + data.selected.join(':'), function (d) {
-								if(d){
-									$('#data<?=$suf?> .default').html(d.content).show();
-									<?if($suf=='prod'){?>
-									product_select(d.product_id, d.product_name);
-									$('#select_product').css('width','200');
-									<?}else if($suf=='shop'){?>
-									shop_select(d.shop_id, d.shop_name, '', '', d.shop_address);
-									<?}?>
+						if(window.last_tree_id !== undefined && last_tree_id == data.selected.join(':')){
+							$('.fancybox-close').click();
+						}else{
+							window.last_tree_id = data.selected.join(':');
+							$.get('<?=$path?>tree.php?operation=get_content&id=' + data.selected.join(':'), function (d) {
+									if(d){
+										$('#data<?=$suf?> .default').html(d.content).show();
+										<?if($suf=='prod'){?>
+											product_select(d.product_id, d.product_name);
+											$('#select_product').css('width','200');
+										<?}else if($suf=='shop'){?>
+											shop_select(d.shop_id, d.shop_name, '', '', d.shop_address);
+										<?}?>
+									}
 								}
-							}
-						);
+							);
+						}
+
 					}
 					else
 						$('#data<?=$suf?> .default').html('').show();
