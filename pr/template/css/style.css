@@ -103,3 +103,7 @@ div.autocom{
 	cursor: pointer;
 	display: inline-block;
 }
+
+#dataprod, #dataprod, #select_shop, #select_product{
+	width: 500 px;
+}
