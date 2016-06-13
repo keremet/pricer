@@ -162,13 +162,13 @@ include '../template/jstree/jstree.php';
 </script>
 <link rel="stylesheet" href="../template/input_calendar/tcal.css"/>
 <?if($_SESSION['user']['id']){?>
-	<div id="select_shop" style="display: none;">
+	<div id="select_shop" style="display: none;" style="width: 490px;">
 		<h2>Выберите магазин</h2>
 		<?
 			putTree('shop', '../shops/');
 		?>
 	</div>
-	<div id="select_product" style="display: none;">
+	<div id="select_product" style="display: none;" style="width: 490px;">
 		<h2>Выберите товар</h2>
 		<?
 			putTree('prod', '../products/');
