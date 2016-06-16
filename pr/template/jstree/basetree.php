@@ -16,7 +16,7 @@
 				if($_GET['id']=="#"){
 			//		$res[] = array('text' => 'Мои товары', 'children' => true,  'id' => '2', 'icon' => 'folder');
 					foreach($db->query("select id, name from $tbl_dir where id_hi is null") as $v){
-						$res[] = array('text' => $v['name'], 'children' => true,  'id' => $v['id'], 'icon' => 'folder');
+						$res[] = array('text' => $v['name'], 'children' => true,  'id' => $v['id'], 'icon' => 'folder', 'state' => array('opened' => 'true'));
 					}
 				}else{
 					$stmt = $db->prepare("select id, name from $tbl_dir where id_hi=? order by name");

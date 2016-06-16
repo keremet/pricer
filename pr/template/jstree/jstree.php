@@ -73,12 +73,7 @@
 						'default' : { 'icon' : 'folder' },
 						'file' : { 'valid_children' : [], 'icon' : 'file' }
 					},
-					'unique' : {
-						'duplicate' : function (name, counter) {
-							return name + ' ' + counter;
-						}
-					},
-					'plugins' : ['state','dnd',/*'sort',*/'types','contextmenu'/*,'unique'*/]
+					'plugins' : ['dnd','types','contextmenu']
 				})
 				.on('delete_node.jstree', function (e, data) {
 					$.get('<?=$path?>tree.php?operation=delete_node', { 'id' : data.node.id })
@@ -148,9 +143,6 @@
 						$('#data<?=$suf?> .default').html('').show();
 				});
 		});
-		
-		
-		
 		</script>
 <?
 	}
