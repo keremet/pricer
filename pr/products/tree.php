@@ -1,6 +1,5 @@
 <?php
 	include '../template/jstree/basetree.php';
-
 	function showProduct($is_file, $id){
 		global $db;
 		$readonly = ($_SESSION['user']['id']==null);
@@ -20,7 +19,9 @@
 				return array('content' => '');
 		}
 		
-		$r = '<form action="newonsubmit.php" method="post" enctype = "multipart/form-data">'
+		$r = ((isset($_GET['smart_form']))
+				?'<form id="form_product" action="" method="post" onsubmit="$.post(\'../smart_form/ajax/product_new.php\', $(this).serialize(), function(data){var obj = $.parseJSON(data); if(obj.id){product_select(obj.id, obj.name);$(\'.fancybox-close\').click();}else{alert(data);}}); return false;" enctype = "multipart/form-data">'
+				:'<form action="newonsubmit.php" method="post" enctype = "multipart/form-data">')
 		  .'Название товара*<br>'
 		  .'<input '.(($readonly)?'readonly':'').' required type="text" name="product_name" value="'.htmlspecialchars ($product['name']).'"><br><br>';
 		if($product['photo']){
@@ -31,13 +32,13 @@
 		if($readonly){
 			$r .= '<br>';
 		}else{
-			$r .= 'Фото (изображение не больше 1 Мб)<br><input type="file" name="image" /><br><br>';
+			$r .= 'Фото (изображение не больше 1 Мб)<br><input type="file" style="width: 150px;" name="image" /><br><br>';
 		}
 		$r .= 'Единица измерения<br>';
 		if($readonly){
 			$r .= '<input readonly type="text" name="ed_izm" value="'.$product['ed_izm'].'">';
 		} else {
-			$r .= '<select id="ed_izm" name="ed_izm">
+			$r .= '<select id="ed_izm" name="ed_izm" style="width: 150px;" >
 				<option selected disabled>Выберите единицу измерения...</option>';
 				foreach($db->query("SELECT id, name FROM pr_ed_izm order by id") as $v){
 					$r .= '<option '.(($v['id']==$product['ed_izm_id'])?'selected':'').' value="'.$v['id'].'">'.$v['name'].'</option>';
