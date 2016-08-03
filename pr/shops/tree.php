@@ -36,8 +36,8 @@
 		}
 		$r .= '</form>';
 		return ($is_file)?
-			array('content' => $r, 'shop_id' => $id, 'shop_name' => $shop['name'], 'shop_address' => $shop['address'])
-			:array('content' => $r, 'shop_id' => '', 'shop_name' => '', 'shop_address' => '');
+			array('content' => $r, 'shop_id' => $id)
+			:array('content' => $r, 'shop_id' => '');
 	}
 
 	doTreeOperation('pr_shops_main_clsf', 'pr_shops', 'showProduct');

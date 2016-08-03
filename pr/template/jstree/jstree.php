@@ -4,7 +4,7 @@
 		<div id="container<?=$suf?>" role="main">
 			<div id="tree<?=$suf?>"></div>
 			<div id="data<?=$suf?>">
-				<div class="default" style="width: 200px;"></div>
+				<div class="default" style="width: 300px;"></div>
 			</div>
 		</div>
 		<!--script src="../template/jstree/jquery.min.js"></script-->
@@ -129,9 +129,9 @@
 									if(d){
 										$('#data<?=$suf?> .default').html(d.content).show();
 										<?if($suf=='prod'){?>
-											product_select(d.product_id, d.product_name);
+											product_select(d.product_id);
 										<?}else if($suf=='shop'){?>
-											shop_select(d.shop_id, d.shop_name, '', '', d.shop_address);
+											shop_select(d.shop_id);
 										<?}?>
 									}
 								}

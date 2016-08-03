@@ -60,8 +60,8 @@
 		}
 		$r .= '</form>';
 		return ($is_file)?
-			array('content' => $r, 'product_id' => $id, 'product_name' => $product['name'])
-			:array('content' => $r, 'product_id' => '', 'product_name' => '');
+			array('content' => $r, 'product_id' => $id)
+			:array('content' => $r, 'product_id' => '');
 	}
 	
 	doTreeOperation('pr_products_main_clsf', 'pr_products', 'showProduct');
