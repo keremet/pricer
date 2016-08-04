@@ -8,7 +8,7 @@ include '../template/jstree/jstree.php';
 	function get_price(shop, product){
 		$('.result').html('Поиск цены');
 		jQuery.ajax({
-			url:     'ajax/get_price.php', //Адрес подгружаемой страницы
+			url:     'get_price.php', //Адрес подгружаемой страницы
 			type:     "POST", //Тип запроса
 			dataType: "html", //Тип данных
 			data: {shop: shop, product: product}, 
@@ -43,13 +43,18 @@ include '../template/jstree/jstree.php';
 		}
 
 	}
-	function MainFormRequest(form_id,url) {
+	function SavePrice() {
 		$('.result').html('');
 		jQuery.ajax({
-			url:     url, //Адрес подгружаемой страницы
+			url:     'save_price.php', //Адрес подгружаемой страницы
 			type:     "POST", //Тип запроса
 			dataType: "html", //Тип данных
-			data: jQuery("#"+form_id).serialize(),
+			data: {
+				shop_id: $('#selected_shop_id').attr('value'),
+				product_id: $('#selected_product_id').attr('value'),
+				price: document.getElementById('offer_price').value,
+				date_buy: $('#date_buy').attr('value')
+			},
 			success: function(response) { //Если все нормально
 				$('.result').html(response);
 			},
@@ -61,30 +66,28 @@ include '../template/jstree/jstree.php';
 </script>
 <link rel="stylesheet" href="../template/input_calendar/tcal.css"/>
 <?if($_SESSION['user']['id']){?>	
-	<form id="form_main">
-		<div style="padding: 10px;">
-			<span>
-				<h2 style="display: inline;">Дата покупки: </h2>
-				<input type="text" readonly class="tcal" name="date_buy" value="<?=date("d/m/Y")?>">
-				<h2 style="display: inline;">Цена</h2>
-				<input onkeypress="$('.result').text('');" type="text" id="offer_price" name="price">
-				<input type="submit" name="smart_form" value="Добавить" onclick="MainFormRequest('form_main', 'ajax/main_form.php'); return false;">
-				<div class="result"></div>
-			</span>
-		</div>
-		<input type="hidden" id="selected_product_id" name="product_id" value="">
-		<input type="hidden" id="selected_shop_id" name="shop_id" value="">
-		<table>
-		<tr>
-		<td valign="top">
-			<?
-				putTree('prod', '../products/');
-			?>			
-		<td valign="top">
-			<?
-				putTree('shop', '../shops/');
-			?>
-		</table>
-	</form>
+	<div style="padding: 10px;">
+		<span>
+			<h2 style="display: inline;">Дата покупки: </h2>
+			<input type="text" readonly class="tcal" id="date_buy" name="date_buy" value="<?=date("d/m/Y")?>">
+			<h2 style="display: inline;">Цена</h2>
+			<input onkeypress="$('.result').text('');" type="text" id="offer_price" name="offer_price">
+			<input type="submit" name="smart_form" value="Добавить" onclick="SavePrice(); return false;">
+			<div class="result"></div>
+		</span>
+	</div>
+	<input type="hidden" id="selected_product_id" name="product_id" value="">
+	<input type="hidden" id="selected_shop_id" name="shop_id" value="">
+	<table>
+	<tr>
+	<td valign="top">
+		<?
+			putTree('prod', '../products/');
+		?>
+	<td valign="top">
+		<?
+			putTree('shop', '../shops/');
+		?>
+	</table>
 <?}else{ echo 'Доступ запрещён. Авторизуйтесь.';}
 include('../template/footer.php');?>

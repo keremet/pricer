@@ -1,5 +1,5 @@
 <?
-include('../../template/connect.php');
+include('../template/connect.php');
 
 $stmt = $db->prepare("SELECT price, date_buy FROM pr_product_offers WHERE shop = ? AND product = ? ORDER BY date_buy DESC LIMIT 1");
 $stmt->execute(array($_REQUEST['shop'],$_REQUEST['product']));

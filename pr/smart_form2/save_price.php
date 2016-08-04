@@ -1,6 +1,6 @@
 <?
 session_start();
-include('../../template/connect.php');
+include('../template/connect.php');
 if(!$_REQUEST['shop_id'])
 	die('Не указан магазин');
 	
