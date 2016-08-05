@@ -20,7 +20,7 @@
 		}
 		
 		$r = ((isset($_GET['smart_form']))
-				?'<form action="newonsubmit.php" method="post" onsubmit="$.post(\'../smart_form/ajax/shop_new.php\', $(this).serialize(), function(data){var obj = $.parseJSON(data); if(obj.id){shop_select(obj.id, obj.name, \'\', \'\', obj.address);$(\'.fancybox-close\').click();}else{alert(data);}}); return false;" enctype = "multipart/form-data">'
+				?'<form action="newonsubmit.php" method="post" onsubmit="$.post(\'../smart_form/ajax/shop_new.php\', $(this).serialize(), function(data){var obj = $.parseJSON(data); if(obj.id){$(\'#treeshop\').jstree(true).refresh();shop_select(obj.id);}else{alert(data);}}); return false;" enctype = "multipart/form-data">'
 				:'<form action="newonsubmit.php" method="post" enctype = "multipart/form-data">')
 		  .'Название магазина*<br>'
 		  .'<input '.(($readonly)?'readonly':'').' required type="text" name="shop_name" value="'.htmlspecialchars ($shop['name']).'"><br><br>'

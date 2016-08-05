@@ -20,7 +20,7 @@
 		}
 		
 		$r = ((isset($_GET['smart_form']))
-				?'<form id="form_product" action="" method="post" onsubmit="$.post(\'../smart_form/ajax/product_new.php\', $(this).serialize(), function(data){var obj = $.parseJSON(data); if(obj.id){product_select(obj.id, obj.name);$(\'.fancybox-close\').click();}else{alert(data);}}); return false;" enctype = "multipart/form-data">'
+				?'<form id="form_product" action="" method="post" onsubmit="$.post(\'../smart_form/ajax/product_new.php\', $(this).serialize(), function(data){var obj = $.parseJSON(data); if(obj.id){$(\'#treeprod\').jstree(true).refresh();product_select(obj.id);}else{alert(data);}}); return false;" enctype = "multipart/form-data">'
 				:'<form action="newonsubmit.php" method="post" enctype = "multipart/form-data">')
 		  .'Название товара*<br>'
 		  .'<input '.(($readonly)?'readonly':'').' required type="text" name="product_name" value="'.htmlspecialchars ($product['name']).'"><br><br>';
