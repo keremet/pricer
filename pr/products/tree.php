@@ -20,8 +20,8 @@
 		}
 		
 		$r = ((isset($_GET['smart_form']))
-				?'<form id="form_product" action="" method="post" onsubmit="$.post(\'../smart_form/ajax/product_new.php\', $(this).serialize(), function(data){var obj = $.parseJSON(data); if(obj.id){$(\'#treeprod\').jstree(true).refresh();product_select(obj.id);}else{alert(data);}}); return false;" enctype = "multipart/form-data">'
-				:'<form action="newonsubmit.php" method="post" enctype = "multipart/form-data">')
+				?'<form id="form_product" action="" method="post" onsubmit="$.post(\'../products/save.php\', $(this).serialize(), function(data){var obj = $.parseJSON(data); if(obj.id){$(\'#treeprod\').jstree(true).refresh();product_select(obj.id);}else{alert(data);}}); return false;" enctype = "multipart/form-data">'
+				:'')
 		  .'Название товара*<br>'
 		  .'<input '.(($readonly)?'readonly':'').' required type="text" name="product_name" value="'.htmlspecialchars ($product['name']).'"><br><br>';
 		if($product['photo']){
@@ -58,7 +58,8 @@
 			else
 				$r .= '<input type="hidden" name="main_clsf_id" value="'.$id.'">';
 		}
-		$r .= '</form>';
+		if(isset($_GET['smart_form']))
+			$r .= '</form>';
 		return ($is_file)?
 			array('content' => $r, 'product_id' => $id)
 			:array('content' => $r, 'product_id' => '');

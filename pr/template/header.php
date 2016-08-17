@@ -99,9 +99,7 @@ function headerOut($tabTitle, $metaTitle, $description, $keywords, $root, $curme
 					<?
 					foreach (array(
 						'Аналитика' => '/analytics/',
-						'Ввод данных' => '/smart_form/', 
-						'Товары' => '/products/', 
-						'Магазины' => '/shops/'	
+						'Ввод данных' => '/smart_form/'
 					) as $k => $v){
 						echo '<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home'
 						  .(($curmenu == $k)?' current-menu-item':'')
