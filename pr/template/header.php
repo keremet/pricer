@@ -2,41 +2,43 @@
 session_start();
 header('Content-Type: text/html; charset=utf-8');
 include 'connect.php';
-function headerOut($tabTitle, $metaTitle, $description, $keywords, $root, $curmenu, $treesuf = null){ ?>
+function headerOut($curmenu, $treesuf = null){
+$tabTitle = 'Ценовичок - '.$curmenu;
+ ?>
 <html>
 	<head>
 		<title><?=$tabTitle?></title>
-		<meta name="Title" content="<?=$metaTitle?>">
+		<meta name="Title" content="<?=$tabTitle?>">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="description" content="<?=$description?>">
-		<meta name="keywords" content="<?=$keywords?>">
+		<meta name="description" content="Ценовичок - аналитика цен на товары">
+		<meta name="keywords" content="Киров, цены, продукты">
 
-		<script type="text/javascript" src="<?=$root?>/template/fancybox/lib/jquery-1.10.1.min.js"></script>
+		<script type="text/javascript" src="../template/fancybox/lib/jquery-1.10.1.min.js"></script>
 
-		<script type="text/javascript" src="<?=$root?>/template/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+		<script type="text/javascript" src="../template/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
 
-		<script type="text/javascript" src="<?=$root?>/template/fancybox/source/jquery.fancybox.js?v=2.1.5"></script>
+		<script type="text/javascript" src="../template/fancybox/source/jquery.fancybox.js?v=2.1.5"></script>
 
-		<script type="text/javascript" src="<?=$root?>/template/fancybox/script.js"></script>
+		<script type="text/javascript" src="../template/fancybox/script.js"></script>
 
-		<link rel="stylesheet" type="text/css" href="<?=$root?>/template/fancybox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+		<link rel="stylesheet" type="text/css" href="../template/fancybox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
 
-		<script type="text/javascript" src="<?=$root?>/template/tablesorter/js/jquery.tablesorter.min.js"></script>
-		<script type="text/javascript" src="<?=$root?>/template/js/default.js"></script>
+		<script type="text/javascript" src="../template/tablesorter/js/jquery.tablesorter.min.js"></script>
+		<script type="text/javascript" src="../template/js/default.js"></script>
 
-		<script type="text/javascript" src="<?=$root?>/template/js/script.js"></script>
+		<script type="text/javascript" src="../template/js/script.js"></script>
 
-		<link rel="stylesheet" href="<?=$root?>/template/css/default.css"/>
+		<link rel="stylesheet" href="../template/css/default.css"/>
 
-		<link rel="stylesheet" href="<?=$root?>/template/css/style.css"/>
+		<link rel="stylesheet" href="../template/css/style.css"/>
 		
-		<link rel="stylesheet" href="<?=$root?>/template/tablesorter/default.css"/>
-		<link rel="stylesheet" href="<?=$root?>/template/tablesorter/jquery.tabs.css"/>
-		<link rel="stylesheet" href="<?=$root?>/template/tablesorter/jquery.tabs-ie.css"/>
+		<link rel="stylesheet" href="../template/tablesorter/default.css"/>
+		<link rel="stylesheet" href="../template/tablesorter/jquery.tabs.css"/>
+		<link rel="stylesheet" href="../template/tablesorter/jquery.tabs-ie.css"/>
 		<?
 		if(!is_null($treesuf)) {
 		?>
-		<link rel="stylesheet" href="<?=$root?>/template/jstree/themes/default/style.min.css" />
+		<link rel="stylesheet" href="../template/jstree/themes/default/style.min.css" />
 		<? foreach($treesuf as $suf){?>
 		<style>
 		html, body {font-size:10px; font-family:Verdana;}
@@ -58,10 +60,10 @@ function headerOut($tabTitle, $metaTitle, $description, $keywords, $root, $curme
 		<div id="wrap" class="container clr">
 
 			<header id="masthead" class="site-header clr" role="banner">
-					<a style="display: table-cell;" title="Ценовичок - аналитика цен на товары" href="<?=$root?>/">
-						<img alt="" style="padding: 20px; height: 80px;" src="<?=$root?>/images/logo.jpg">
+					<a style="display: table-cell;" title="Ценовичок - аналитика цен на товары" href="../">
+						<img alt="" style="padding: 20px; height: 80px;" src="../images/logo.jpg">
 					</a>
-					<a style="display: table-cell; text-decoration: none; margin-top: 0px; vertical-align: middle;" title="Ценовичок - аналитика цен на товары" href="<?=$root?>/">
+					<a style="display: table-cell; text-decoration: none; margin-top: 0px; vertical-align: middle;" title="Ценовичок - аналитика цен на товары" href="../">
 						<span style="color: #842816; text-decoration: none;" >
 							<b>
 								<span style="font-size: 46px;">Ценовичок&nbsp;-&nbsp;</span>
@@ -104,14 +106,14 @@ function headerOut($tabTitle, $metaTitle, $description, $keywords, $root, $curme
 						echo '<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home'
 						  .(($curmenu == $k)?' current-menu-item':'')
 						  .'">
-							<a href="'.$root.$v.'">'.$k.'</a>
+							<a href="..'.$v.'">'.$k.'</a>
 						</li>';
 					}
 					if ($_SESSION['user']['id']){
 						echo '<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home'
 						.(($curmenu == "Личный кабинет")?' current-menu-item':'')
 						.'">
-							<a class="fancybox" href="'.$root.'/cabinet/">Личный кабинет</a>
+							<a class="fancybox" href="../cabinet/">Личный кабинет</a>
 						</li>';
 					}else{
 						echo '<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home">

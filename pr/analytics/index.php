@@ -1,6 +1,6 @@
 <?
 include '../template/header.php';
-headerOut('Ценовичок - Аналитика', 'Ценовичок - Аналитика', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты, новости', '..', 'Аналитика');
+headerOut('Аналитика');
 ?>
 <script type="text/javascript" src="../template/input_calendar/tcal.js"></script>
 <link rel="stylesheet" href="../template/input_calendar/tcal.css"/>

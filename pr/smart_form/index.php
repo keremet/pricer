@@ -1,6 +1,6 @@
 <?
 include '../template/header.php';
-headerOut('Ценовичок - Ввод данных', 'Ценовичок - Ввод данных', 'Ценовичок - аналитика цен на товары', 'Киров, цены, продукты', '..', 'Ввод данных', array('prod','shop'));
+headerOut('Ввод данных', array('prod','shop'));
 include '../template/jstree/jstree.php';
 ?>
 <script type="text/javascript" src="../template/input_calendar/tcal.js"></script>
