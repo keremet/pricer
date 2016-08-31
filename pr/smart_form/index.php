@@ -53,7 +53,8 @@ include '../template/jstree/jstree.php';
 				shop_id: $('#selected_shop_id').attr('value'),
 				product_id: $('#selected_product_id').attr('value'),
 				price: document.getElementById('offer_price').value,
-				date_buy: $('#date_buy').attr('value')
+				amount: document.getElementById('amount').value,
+				date_buy: document.getElementById('date_buy').value
 			},
 			success: function(response) { //Если все нормально
 				$('.result').html(response);
@@ -69,15 +70,17 @@ include '../template/jstree/jstree.php';
 	<div style="padding: 10px;">
 		<span>
 			<h2 style="display: inline;">Дата покупки: </h2>
-			<input type="text" readonly class="tcal" id="date_buy" name="date_buy" value="<?=date("d/m/Y")?>">
+			<input size=10 type="text" readonly class="tcal" id="date_buy" value="<?=date("d/m/Y")?>">
 			<h2 style="display: inline;">Цена</h2>
-			<input onkeypress="$('.result').text('');" type="text" id="offer_price" name="offer_price">
-			<input type="submit" name="smart_form" value="Добавить" onclick="SavePrice(); return false;">
+			<input size=8 onkeypress="$('.result').text('');" type="text" id="offer_price">
+			<h2 style="display: inline;">Количество</h2>
+			<input size=5 onkeypress="$('.result').text('');" type="text" id="amount">
+			<input type="submit" value="Добавить" onclick="SavePrice(); return false;">
 			<div class="result"></div>
 		</span>
 	</div>
-	<input type="hidden" id="selected_product_id" name="product_id" value="">
-	<input type="hidden" id="selected_shop_id" name="shop_id" value="">
+	<input type="hidden" id="selected_product_id" value="">
+	<input type="hidden" id="selected_shop_id" value="">
 	<table>
 	<tr>
 	<td valign="top">

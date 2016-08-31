@@ -73,6 +73,7 @@ $query =
   , pr_product_offers.price
   , pr_products.name as Товар
   , pr_products.in_box
+  , pr_product_offers.amount
   , pr_ed_izm.name as ЕдИзм
   , pr_shops.name as Магазин"
   .(($isUserAutorized)?", pr_users.login":"").
@@ -235,6 +236,7 @@ if(is_array($_GET['users'])){
 			<th class="header">Товар</th>
 			<th class="header">Магазин</th>
 			<?if($isUserAutorized) {?>
+				<th class="header">Кол-во</th>
 				<th class="header">Покупатель</th>
 				<th class="header" style="width: 90px;">Действия</th>
 			<? } ?>
@@ -257,6 +259,7 @@ if(is_array($_GET['users'])){
 			<td><?=$v['Товар']?></td>
 			<td><?=$v['Магазин']?></td>
 			<?if($isUserAutorized) {?>
+				<td><?=$v['amount']?></td>
 				<td><?=$v['login']?></td>
 				<td style="text-align: center;">
 					<?if($v['creator'] == $_SESSION['user']['id']) {?>

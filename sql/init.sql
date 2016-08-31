@@ -88,6 +88,7 @@ CREATE TABLE `pr_product_offers` (
   `creator` int(11) NOT NULL,
   `date_buy` date NOT NULL,
   `price` double NOT NULL,
+  `amount` double NOT NULL,
   `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    UNIQUE KEY `product` (`product`,`shop`,`creator`,`date_buy`),
    CONSTRAINT `pr_product_offers_creator` FOREIGN KEY (`creator`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
