@@ -17,8 +17,8 @@ if($stmt->fetch())
 	die('Товар с таким названием уже есть');
 
 if (isset($_REQUEST['id'])) {
-	$stmt = $db->prepare("UPDATE pr_products SET name = ?, ed_izm_id = ?, in_box = ?, min_kolvo = ? WHERE id = ?");
-	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), doKolvo($_REQUEST['min_kolvo']), $_REQUEST['id']))){
+	$stmt = $db->prepare("UPDATE pr_products SET name = ?, ed_izm_id = ?, in_box = ? WHERE id = ?");
+	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['id']))){
 		echo 'Ошибка изменения товара'; print_r($stmt->errorInfo());
 		exit();
 	}
@@ -47,8 +47,8 @@ if (isset($_REQUEST['id'])) {
 	}
 	echo json_encode(array('result' => 'Товар изменен', 'name' => $_REQUEST['product_name'], 'id' => $_REQUEST['id']));
 } else {
-	$stmt = $db->prepare("INSERT pr_products(name, ed_izm_id, in_box, min_kolvo, main_clsf_id, creator) values(?, ?, ?, ?, ?, ?)");
-	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), doKolvo($_REQUEST['min_kolvo']), $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
+	$stmt = $db->prepare("INSERT pr_products(name, ed_izm_id, in_box, main_clsf_id, creator) values(?, ?, ?, ?, ?, ?)");
+	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
 		echo 'Ошибка добавления товара'; print_r($stmt->errorInfo());
 		exit();
 	}

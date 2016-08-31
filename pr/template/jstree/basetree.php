@@ -49,8 +49,8 @@
 					case "copy_node":
 						checkRights();
 						$stmt = $db->prepare($is_file?
-							"insert into pr_products(name, ed_izm_id, in_box, min_kolvo, main_clsf_id, creator) 
-								select name, ed_izm_id, in_box, min_kolvo, ?, ? from pr_products where id=?"
+							"insert into pr_products(name, ed_izm_id, in_box, main_clsf_id, creator) 
+								select name, ed_izm_id, in_box, ?, ? from pr_products where id=?"
 							:"insert into $tbl_dir(name, id_hi) select name, ? from pr_products_main_clsf where id=?");
 						$stmt->execute($is_file?
 							array($_GET['parent'], $_SESSION['user']['id'], $id)

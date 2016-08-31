@@ -55,7 +55,6 @@ CREATE TABLE `pr_products` (
   `text` text COLLATE utf8_unicode_ci,
   `ed_izm_id` int(11),
   `in_box` double,
-  `min_kolvo` double,
   `main_clsf_id` int(11) NOT NULL,
   `creator` int(11) NOT NULL,
   `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

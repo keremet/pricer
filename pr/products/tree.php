@@ -5,7 +5,7 @@
 		$readonly = ($_SESSION['user']['id']==null);
 		if($is_file){
 			$stmt = $db->prepare(
-				"SELECT pr_products.name, photo, pr_ed_izm.name as ed_izm, ed_izm_id, in_box, min_kolvo
+				"SELECT pr_products.name, photo, pr_ed_izm.name as ed_izm, ed_izm_id, in_box
 				FROM pr_products
 				LEFT JOIN pr_ed_izm on pr_ed_izm.id = pr_products.ed_izm_id
 				WHERE pr_products.id = ?"
@@ -46,9 +46,7 @@
 			$r .= '</select>';
 		}
 		$r .= '<br><br>Количество единиц измерения в товаре<br>
-		<input '.(($readonly)?'readonly':'').' type="text" name="in_box" value="'.$product['in_box'].'"><br><br>'
-		.'Минимальное количество товара, которое можно купить(в ед. изм.)<br>
-		<input '.(($readonly)?'readonly':'').' type="text" name="min_kolvo" value="'.$product['min_kolvo'].'">';
+		<input '.(($readonly)?'readonly':'').' type="text" name="in_box" value="'.$product['in_box'].'">';
 		if($is_file)
 			$r .= '<br><br><a target="_blank" href="../analytics/?product[]='.$id.'">Перейти к ценам</a>';
 		if(!$readonly){
