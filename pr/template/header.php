@@ -101,7 +101,8 @@ $tabTitle = 'Ценовичок - '.$curmenu;
 					<?
 					foreach (array(
 						'Аналитика' => '/analytics/',
-						'Ввод данных' => '/smart_form/'
+						'Ввод данных' => '/smart_form/',
+						'Цены товаров' => '/prices/'
 					) as $k => $v){
 						echo '<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home'
 						  .(($curmenu == $k)?' current-menu-item':'')

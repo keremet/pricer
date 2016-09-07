@@ -125,7 +125,7 @@
 							$('.fancybox-close').click();
 						}else{
 							window.last_tree_id = data.selected.join(':');
-							$.get('<?=$path?>tree.php?<?=($suf=='')?'':'smart_form=1&'?>operation=get_content&id=' + data.selected.join(':'), function (d) {
+							$.get('<?=$path?>tree.php?suf=<?=$suf?>&operation=get_content&id=' + data.selected.join(':'), function (d) {
 									if(d){
 										$('#data<?=$suf?> .default').html(d.content).show();
 										<?if($suf=='prod'){?>
