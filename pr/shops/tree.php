@@ -19,9 +19,18 @@
 				return array('content' => '');
 		}
 		
-		$r = ((isset($_GET['smart_form']))
-				?'<form action="" method="post" onsubmit="$.post(\'../shops/save.php\', $(this).serialize(), function(data){var obj = $.parseJSON(data); if(obj.id){$(\'#treeshop\').jstree(true).refresh();shop_select(obj.id);}else{alert(data);}}); return false;" enctype = "multipart/form-data">'
-				:'')
+		$r = '<form action="" method="post"'
+		  .' onsubmit="$.post(\'../shops/save.php\','
+		  .' $(this).serialize(),'
+		  .' function(data){'
+				.'var obj = $.parseJSON(data);'
+				.'if(obj.id){'
+					.'$(\'#treeshop\').jstree(true).refresh();'
+					.'shop_select(obj.id);'
+				.'}else{'
+					.'alert(data);'
+				.'}'
+			.'}); return false;" enctype = "multipart/form-data">'				
 		  .'Название магазина*<br>'
 		  .'<input '.(($readonly)?'readonly':'').' required type="text" name="shop_name" value="'.htmlspecialchars ($shop['name']).'"><br><br>'
 		  .'Адрес<br>'
@@ -34,8 +43,7 @@
 			else
 				$r .= '<input type="hidden" name="main_clsf_id" value="'.$id.'">';
 		}
-		if(isset($_GET['smart_form']))
-			$r .= '</form>';
+		$r .= '</form>';
 		return ($is_file)?
 			array('content' => $r, 'shop_id' => $id)
 			:array('content' => $r, 'shop_id' => '');

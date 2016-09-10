@@ -47,7 +47,7 @@ if (isset($_REQUEST['id'])) {
 	}
 	echo json_encode(array('result' => 'Товар изменен', 'name' => $_REQUEST['product_name'], 'id' => $_REQUEST['id']));
 } else {
-	$stmt = $db->prepare("INSERT pr_products(name, ed_izm_id, in_box, main_clsf_id, creator) values(?, ?, ?, ?, ?, ?)");
+	$stmt = $db->prepare("INSERT pr_products(name, ed_izm_id, in_box, main_clsf_id, creator) values(?, ?, ?, ?, ?)");
 	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
 		echo 'Ошибка добавления товара'; print_r($stmt->errorInfo());
 		exit();
