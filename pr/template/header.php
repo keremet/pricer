@@ -41,10 +41,15 @@ $tabTitle = 'Ценовичок - '.$curmenu;
 		<link rel="stylesheet" href="../template/jstree/themes/default/style.min.css" />
 		<? foreach($treesuf as $suf){?>
 		<style>
+                .jstree-default a { white-space:normal !important; height: auto; }
+                .jstree-anchor { height: auto !important; }
+                .jstree-default li > ins { vertical-align:top; }
+                .jstree-leaf { height: auto; }
+                .jstree-leaf a{ max-width:248px; height: auto !important; }                    
 		html, body {font-size:10px; font-family:Verdana;}
 		#container<?=$suf?> { min-width:320px; margin:0px auto 0 auto; background:white; border-radius:0px; padding:0px; overflow:hidden; }
-		#tree<?=$suf?> { float:left; min-width:319px; border-right:1px solid silver; overflow:auto; padding:0px 0; }
-		#data<?=$suf?> { margin-left:320px; }
+		#tree<?=$suf?> { float:left; min-width:319px; max-width:324px; border-right:1px solid silver; overflow:auto; padding:5px 0; }
+		#data<?=$suf?> { margin-left:326px; }
 		#data<?=$suf?> { font: normal normal normal 12px/18px 'Consolas', monospace !important; }
 		#tree<?=$suf?> .folder { background:url('../template/jstree/file_sprite.png') right bottom no-repeat; }
 		#tree<?=$suf?> .file { background:url('../template/jstree/file_sprite.png') 0 0 no-repeat; }

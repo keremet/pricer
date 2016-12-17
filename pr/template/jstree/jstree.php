@@ -4,7 +4,7 @@
 		<div id="container<?=$suf?>" role="main">
 			<div id="tree<?=$suf?>"></div>
 			<div id="data<?=$suf?>">
-				<div class="default" style="width: 300px;"></div>
+				<div class="default" style="width: 200px;"></div>
 			</div>
 		</div>
 		<!--script src="../template/jstree/jquery.min.js"></script-->
