@@ -40,6 +40,13 @@ CREATE TABLE `pr_products_main_clsf` (
   CONSTRAINT `pr_products_main_clsf_id_hi` FOREIGN KEY (`id_hi`) REFERENCES `pr_products_main_clsf` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `pr_products_equ_clsf` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` text COLLATE utf8_unicode_ci NOT NULL,
+  `id_hi` int(11),
+  CONSTRAINT `pr_products_equ_clsf_id_hi` FOREIGN KEY (`id_hi`) REFERENCES `pr_products_equ_clsf` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `pr_shops_main_clsf` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` text COLLATE utf8_unicode_ci NOT NULL,
@@ -61,6 +68,13 @@ CREATE TABLE `pr_products` (
   CONSTRAINT `pr_products_ed_izm_id` FOREIGN KEY (`ed_izm_id`) REFERENCES `pr_ed_izm` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `pr_products_main_clsf_id` FOREIGN KEY (`main_clsf_id`) REFERENCES `pr_products_main_clsf` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `pr_products_creator` FOREIGN KEY (`creator`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `pr_equ_products` (
+  `product_id` int(11) NOT NULL,
+  `equ_clsf_id` int(11) NOT NULL,
+  CONSTRAINT `pr_equ_products_product_id` FOREIGN KEY (`product_id`) REFERENCES `pr_products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `pr_equ_products_equ_clsf_id` FOREIGN KEY (`equ_clsf_id`) REFERENCES `pr_products_equ_clsf` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `pr_shops` (

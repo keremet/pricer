@@ -5,17 +5,9 @@ include('../template/connect.php');
 if($_SESSION['user']['id']==null)
 	die('Требуется авторизация');
 
-
 $stmt = $db->prepare(
 "SELECT po.date_buy, po.price, po.amount, pr_products.name as Товар, pr_shops.name as Магазин
-,(
-	select poB.price
-	from pr_product_offers poB
-	where poB.product = po.product and poB.shop = 2
-		and poB.date_buy <= po.date_buy
-	order by poB.date_buy desc
-	limit 1
-)price_b
+  , pr_getBasePrice(po.product, po.date_buy, ifnull(pr_products.in_box, 1)) price_b
 FROM pr_product_offers po, pr_shops, pr_products
 WHERE po.creator = ? and po.amount > 0
   and po.shop = pr_shops.id
