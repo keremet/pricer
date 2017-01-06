@@ -3,7 +3,7 @@
 	<meta charset="utf-8">
 </head>
 <body>
- <form method=post action="save.php">
+ <form method=post action="../mob/save.php">
 	<p><input type="submit" value="Отправить">	
   <?php
 	include('../template/connect.php');
@@ -13,7 +13,12 @@
 	echo '<h1>'.$stmt->fetchColumn().'</h1>';	
 	echo '<input type="hidden" name="shopid" value="'.$_GET['shopid'].'">';
 	
-	foreach($db->query("SELECT id, name FROM pr_products order by name") as $row){
+	foreach($db->query(
+			"SELECT id, name
+			 FROM pr_products
+			 where id in (10, 278, 221, 12, 8, 199, 51, 9, 269, 155, 24, 7, 124, 91, 4, 38, 60, 3, 253, 212, 44)
+			 order by name"
+		) as $row){
 		echo '<p>'.$row['name'].' <input name="prod'.$row['id'].'" type="text" size="10">';
 	}
   ?>
