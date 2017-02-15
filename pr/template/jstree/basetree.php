@@ -24,10 +24,12 @@
 					while($v = $stmt->fetch()){
 						$res[] = array('text' => $v['name'], 'children' => true,  'id' => $v['id'], 'icon' => 'folder');
 					}
-					$stmt = $db->prepare("select id, name from $tbl_term where main_clsf_id=? order by name");
-					$stmt->execute(array($_GET['id']));
-					while($v = $stmt->fetch()){
-						$res[] = array('text' => $v['name'], 'children' => false,  'id' => 'f'.$v['id'], 'type' => 'file', 'icon' => 'file');
+					if ($tbl_term != null) {
+						$stmt = $db->prepare("select id, name from $tbl_term where main_clsf_id=? order by name");
+						$stmt->execute(array($_GET['id']));
+						while($v = $stmt->fetch()){
+							$res[] = array('text' => $v['name'], 'children' => false,  'id' => 'f'.$v['id'], 'type' => 'file', 'icon' => 'file');
+						}
 					}
 				}
 				break;

@@ -208,7 +208,8 @@ headerOut('Личный кабинет');
 				<button id="edit_text_button" onclick="textareaEdit_value('text'); return false;">Добавить</button>
 			<?}?>
 		</div><br>
-		<a href=my_economy.php>Отчет по экономии</a>
+		<a href=my_economy.php>Отчет по экономии</a><br>
+		<a href=profile.php>Профилирование</a>
 		<form action="<?=$GLOBALS['site_settings']['current_address']?>" method="get">
 			<input type="hidden" name="user" value="exit">
 			<button type="submit">Выйти из аккаунта</button>

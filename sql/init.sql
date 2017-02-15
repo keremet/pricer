@@ -109,9 +109,24 @@ CREATE TABLE `pr_product_offers` (
    CONSTRAINT `pr_product_offers_shop` FOREIGN KEY (`shop`) REFERENCES `pr_shops` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `pr_prof_els_main_clsf` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` text COLLATE utf8_unicode_ci NOT NULL,
+  `id_hi` int(11),
+  CONSTRAINT `pr_prof_els_main_clsf_id_hi` FOREIGN KEY (`id_hi`) REFERENCES `pr_prof_els_main_clsf` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
-
+CREATE TABLE `pr_consumption` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `date_buy` date NOT NULL,
+  `prof_el` int(11) NOT NULL,
+  `creator` int(11) NOT NULL,
+  `price` double NOT NULL,
+  `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   UNIQUE KEY `pr_consumption_uk` (`prof_el`,`creator`,`date_buy`),
+   CONSTRAINT `pr_consumption_creator` FOREIGN KEY (`creator`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+   CONSTRAINT `pr_consumption_prof_el` FOREIGN KEY (`prof_el`) REFERENCES `pr_prof_els_main_clsf` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
