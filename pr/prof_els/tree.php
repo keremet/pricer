@@ -6,10 +6,10 @@
 		$stmt = $db->prepare(
 			"SELECT id, date_buy, price
 			 FROM pr_consumption
-			 WHERE prof_el = ? and creator = ?
+			 WHERE clsf_id = ?
 			 ORDER BY date_buy DESC"
 		);
-		$stmt->execute(array($id, $_SESSION['user']['id']));
+		$stmt->execute(array($id));
 		while($consumption = $stmt->fetch()){
 			$r .= '<tr><td>'.$consumption['date_buy'].'<td>'.$consumption['price']
 				.'<td><button onclick="DeleteСonsumption('.$consumption['id'].');">Удалить</button>';
@@ -18,5 +18,5 @@
 		return array('content' => $r, 'product_id' => $id);
 	}
 	
-	doTreeOperation('pr_prof_els_main_clsf', null, 'showProduct');
+	doTreeOperation('pr_consumption_clsf', null, 'showProduct');
 ?>

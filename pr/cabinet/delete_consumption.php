@@ -7,8 +7,8 @@ if($_SESSION['user']['id']==null)
 	die('Требуется авторизация');
 
 if (isset($_REQUEST['id'])) {
-	$stmt = $db->prepare("DELETE FROM pr_consumption WHERE id = ? and creator=?");
-	if(!$stmt->execute(array($_REQUEST['id'], $_SESSION['user']['id']))){
+	$stmt = $db->prepare("DELETE FROM pr_consumption WHERE id = ?");
+	if(!$stmt->execute(array($_REQUEST['id']))){
 		echo 'Ошибка удаления расхода'; print_r($stmt->errorInfo());
 		exit();
 	}
