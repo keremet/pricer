@@ -9,7 +9,15 @@ include '../template/jstree/jstree.php';
 		$('#selected_product_id').attr('value', id);
 		$('.result').html('ID расхода = ' + id);
 	}
-	function SaveProfEl() {
+	function refreshСonsumptions(){
+		$.get('../prof_els/tree.php?operation=get_content&id=' + $('#selected_product_id').attr('value'), function (d) {
+					if(d){
+						$('#dataprod .default').html(d.content).show();
+					}
+				}
+			);
+	}
+	function SaveСonsumption() {
 		$('.result').html('');
 		jQuery.ajax({
 			url:     'save_consumption.php', //Адрес подгружаемой страницы
@@ -22,9 +30,24 @@ include '../template/jstree/jstree.php';
 			},
 			success: function(response) { //Если все нормально
 				$('.result').html(response);
+				refreshСonsumptions();
 			},
 			error: function(response) { //Если ошибка
 				$('.result').html('Ошибка');
+			}
+		});
+	}
+	function DeleteСonsumption(id){
+		if (!confirm('Удалить расход?'))
+			return;
+		jQuery.ajax({
+			url:     'delete_consumption.php', //Адрес подгружаемой страницы
+			type:     "POST", //Тип запроса
+			dataType: "html", //Тип данных
+			data: {id: id}, 
+			success: function(response) {
+				$('.result').html(response);
+				refreshСonsumptions();
 			}
 		});
 	}
@@ -36,8 +59,8 @@ include '../template/jstree/jstree.php';
 			<h2 style="display: inline;">Дата покупки: </h2>
 			<input size=10 type="text" readonly class="tcal" id="date_buy" value="<?=date("d/m/Y")?>">
 			<h2 style="display: inline;">Стоимость</h2>
-			<input size=8 onkeyup="calc_cost()" type="text" id="price">			
-			<input type="submit" value="Добавить" onclick="SaveProfEl(); return false;">
+			<input size=8  type="text" id="price">			
+			<input type="submit" value="Добавить" onclick="SaveСonsumption(); return false;">
 			<div class="result"></div>
 		</span>
 	</div>

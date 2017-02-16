@@ -123,7 +123,6 @@ CREATE TABLE `pr_consumption` (
   `creator` int(11) NOT NULL,
   `price` double NOT NULL,
   `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   UNIQUE KEY `pr_consumption_uk` (`prof_el`,`creator`,`date_buy`),
    CONSTRAINT `pr_consumption_creator` FOREIGN KEY (`creator`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
    CONSTRAINT `pr_consumption_prof_el` FOREIGN KEY (`prof_el`) REFERENCES `pr_prof_els_main_clsf` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
