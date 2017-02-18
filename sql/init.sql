@@ -111,7 +111,7 @@ CREATE TABLE `pr_product_offers` (
 
 CREATE TABLE `pr_consumption_clsf` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `creator` int(11) NOT NULL,
+  `creator` int(11),
   `name` text COLLATE utf8_unicode_ci NOT NULL,
   `id_hi` int(11),
   CONSTRAINT `pr_consumption_clsf_creator` FOREIGN KEY (`creator`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
