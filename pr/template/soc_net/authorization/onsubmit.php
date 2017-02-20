@@ -9,7 +9,7 @@ if(count($errors) > 0){
 	$alert = implode(", ", $errors);
 	echo "<script>alert('Ошибка: ".$alert."');</script>";
 }else{
-	echo "<script>document.location.href='../smart_form/';</script>";
+	echo "<script>document.location.href='../cabinet/profile.php';</script>";
 	$_SESSION['user']['id'] = $user_id;
 	if($_REQUEST['remember'] == 'Y'){
 		setcookie('user_login', trim(htmlspecialchars($_REQUEST['login'])), time() + 3600 * 24 * 30, '/');
