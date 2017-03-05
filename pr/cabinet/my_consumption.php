@@ -1,9 +1,9 @@
-<?session_start();
+<?//session_start();
 header( 'Content-Type: text/html; charset=utf-8' );
 include('../template/connect.php');
 
-if($_SESSION['user']['id']==null)
-	die('Требуется авторизация');
+//~ if($_SESSION['user']['id']==null)
+	//~ die('Требуется авторизация');
 
 $stmt = $db->prepare(
 "SELECT date_buy,
