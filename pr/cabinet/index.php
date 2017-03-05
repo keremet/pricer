@@ -209,7 +209,8 @@ headerOut('Личный кабинет');
 			<?}?>
 		</div><br>
 		<a href=my_economy.php>Отчет по экономии</a><br>
-		<a href=profile.php>Профилирование</a>
+		<a href=profile.php>Профилирование</a><br>
+		<a href=my_consumption.php>Мои расходы (профилирование)</a>
 		<form action="<?=$GLOBALS['site_settings']['current_address']?>" method="get">
 			<input type="hidden" name="user" value="exit">
 			<button type="submit">Выйти из аккаунта</button>
