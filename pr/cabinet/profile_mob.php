@@ -10,12 +10,13 @@
 		include('../template/connect.php');
 		$clsf_id = (isset($_GET['clsf_id']))?$_GET['clsf_id']:USER_MAIN_CLSF;
 		$stmt = $db->prepare(
-			"SELECT name
+			"SELECT name, id_hi
 			 FROM pr_consumption_clsf
 			 WHERE id = ?"
 		);
 		$stmt->execute(array($clsf_id));
-		echo ' - '. $stmt->fetchColumn();
+		$row = $stmt->fetch();
+		echo ' - '. $row['name'];
 	?>
 	</h1>
 	<form method=post action="save_consumption_mob.php">
@@ -26,13 +27,7 @@
 	</form>
 	<?php
 		if($clsf_id != USER_MAIN_CLSF){
-			$stmt = $db->prepare(
-				"SELECT id_hi
-				 FROM pr_consumption_clsf
-				 WHERE id = ?"
-			);
-			$stmt->execute(array($clsf_id));
-			echo '<p><a href="?clsf_id='.$stmt->fetchColumn().'">..</a></p>';
+			echo '<p><a href="?clsf_id='.$row['id_hi'].'">..</a></p>';
 		}
 		
 		$stmt = $db->prepare(
