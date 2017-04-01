@@ -1,6 +1,6 @@
 <?
 session_start();
-include('../db/connect.php');
+include('../template/connect.php');
 
 if($_REQUEST['name'] == 'text'){
 	$stmt = $db->prepare("UPDATE pr_users SET text = ? WHERE id = ?");

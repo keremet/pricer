@@ -78,28 +78,6 @@ $tabTitle = 'Ценовичок - '.$curmenu;
 					</a>
 			</header>
 			<div id="navbar" class="navbar clr">
-				<?if($_REQUEST['user'] == 'exit'){	//echo "<script>alert ('exit');</script>";
-					unset($_SESSION['user']);
-					//setcookie('user_login', '', time() + 3600 * 24 * 30);
-					//setcookie('user_password', '', time() - 1);
-					//setcookie('autorisation', '', time() - 1);
-					setcookie('user_login', '', time() - 1, '/');
-					setcookie('user_password', '', time() - 1, '/');
-					$no_user_autorise = 'Y';
-				}/*elseif(strlen($_COOKIE['user_login']) > 0 && strlen($_COOKIE['user_password']) > 0 && $no_user_autorise != 'Y' && !$_SESSION['user']['id']){
-					$stmt = $db->prepare("SELECT id FROM pr_users WHERE login = ? AND password = ?");
-					$stmt->execute(array(trim(htmlspecialchars($_COOKIE['user_login'])), trim($_COOKIE['user_password'])));
-					if(!($user_id = $stmt->fetchColumn())){
-						$_SESSION['user']['id'] = $user_id;
-						setcookie("user_login", $_COOKIE['user_login'], time() + 3600 * 24 * 30, '/');
-						setcookie("user_password", $_COOKIE['user_password'], time() + 3600 * 24 * 30, '/');
-					}else{
-						setcookie('user_login', '', time() - 1, '/');
-						setcookie('user_password', '', time() - 1, '/');
-						$no_user_autorise = 'Y';
-					}
-				}*/?>
-
 				<nav id="site-navigation" class="navigation main-navigation clr" role="navigation">
 					<div class="menu-top-main-container">
 						<ul id="menu-top-main" class="nav-menu dropdown-menu">

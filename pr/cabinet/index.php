@@ -140,9 +140,7 @@ headerOut('Личный кабинет');
 	}
 </script>
 	<?
-	if($_SESSION['user']['id'] == null){
-		echo "<script>document.location.href = '../';</script>";
-	}else{
+	if($_SESSION['user']['id']){
 //		$my_img = Img_Select(array('user' => $_SESSION['user']['id'], 'main' => 1, array('path')));
 		$stmt = $db->prepare("SELECT name, login, text, email FROM pr_users where id = ?");
 		$stmt->execute(array($_SESSION['user']['id']));		
