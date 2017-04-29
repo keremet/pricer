@@ -44,24 +44,36 @@
 			}
 			
 			$r = '<form id="form_product" action="" method="post"'
-				 .'onsubmit="$.post(\'../products/save.php\''
-				 .', $(this).serialize()'
-				 .', function(data){'
-						.'var obj = $.parseJSON(data);'
-						.'if(obj.id){'
-							.'$(\'#treeprod\').jstree(true).refresh();'
-							.'product_select(obj.id);'
-						.'}else{'
-							.'alert(data);'
-						.'}'
-					.'}); return false;" enctype = "multipart/form-data">'			
+				 .'onsubmit="$.ajax({
+						  type: \'POST\',
+						  processData: false,
+						  contentType: false,
+						  url: \'../products/save.php\',
+						  data:  new FormData(this),
+						  success: function(data) {
+							result = JSON.parse(data); 
+							if(result[\'photo\']){
+								$(\'#form_product\').find(\'img\').attr(\'src\', result[\'photo\']);
+								$(\'#form_product\').find(\'a\').attr(\'href\', result[\'photo\']);
+							}
+							if(result[\'error\'] == \'0\')
+								$(\'#message_product\').css(\'color\', \'green\').text(result[\'result\']);
+							else
+								$(\'#message_product\').css(\'color\', \'red\').text(result[\'result\']);
+						  }
+					}); return false;" enctype = "multipart/form-data"><div id="message_product"></div>'			
 			  .'Название товара*<br>'
 			  .'<input '.(($readonly)?'readonly':'').' required type="text" name="product_name" value="'.htmlspecialchars ($product['name']).'"><br><br>';
 			if($product['photo']){
-				$r .= '<div style=" height: 140px; width: 140px; background-color: #EDEDED; border: 2px solid #AAAAAA; position: relative; display: inline-block;">'
-				  .'<a class="fancybox" href="'.$product['photo'].'"><img style=" max-width: 140px; max-height: 100%; margin:auto; position: absolute; top: 0; left: 0; bottom: 0; right: 0;" src="'.$product['photo'].'"></a>'
-				  .'</div><br>';
+				$ph = '/pricer/uploaded/'.$product['photo'];
+			}else{
+				$ph = '/pricer/images/noph_prod.png';
 			}
+
+			$r .= '<div style=" height: 140px; width: 140px; background-color: #EDEDED; border: 2px solid #AAAAAA; position: relative; display: inline-block;">'
+			  .'<a class="fancybox" href="'.$ph.'"><img style=" max-width: 140px; max-height: 100%; margin:auto; position: absolute; top: 0; left: 0; bottom: 0; right: 0;" src="'.$ph.'"></a>'
+			  .'</div><br>';
+
 			if($readonly){
 				$r .= '<br>';
 			}else{

@@ -2,9 +2,10 @@
 header( 'Content-Type: text/html; charset=utf-8' );
 include('../template/connect.php');
 
-if($_SESSION['user']['id']==null)
-	die('Требуется авторизация');
-
+if($_SESSION['user']['id']==null){
+	echo json_encode(array('result' => 'Требуется авторизация', 'error' => '1'));
+	die();
+}
 function doKolvo($s){
 	if($s == '')
 		return null;
@@ -13,45 +14,91 @@ function doKolvo($s){
 
 $stmt = $db->prepare("SELECT id FROM pr_products WHERE name = ? and id != ?");
 $stmt->execute(array($_REQUEST['product_name'], $_REQUEST['id']));
-if($stmt->fetch())
-	die('Товар с таким названием уже есть');
-
+if($stmt->fetch()){
+	echo json_encode(array('result' => 'Товар с таким названием уже есть', 'error' => '1'));
+	die();
+}
 if (isset($_REQUEST['id'])) {
 	$stmt = $db->prepare("UPDATE pr_products SET name = ?, ed_izm_id = ?, in_box = ? WHERE id = ?");
 	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['id']))){
-		echo 'Ошибка изменения товара'; print_r($stmt->errorInfo());
+		echo json_encode(array('result' => 'Ошибка изменения товара.', 'error' => '1'));
+		//echo 'Ошибка изменения товара'; print_r($stmt->errorInfo());
 		exit();
 	}
 	if($_FILES['image']['name']){
-		if ($_FILES['image']['size'] > 1048576)
-			die('слишком большой размер файла');
+		if ($_FILES['image']['size'] > 1048576){
+			echo json_encode(array('result' => 'Слишком большой размер файла', 'error' => '1'));
+			die();
+		}
 
 		$pieces = explode(".", $_FILES['image']['name']);
-		if(!in_array(mb_strtolower($pieces[count($pieces) - 1]), array('png', 'bmp', 'gif', 'jpg', 'jpeg')) )
-			die('недопустимый тип файла');
-		
-		if($_FILES['image']['error'] != 0)
-			die('ошибка при загрузке изображения');
-		
+		if(!in_array(mb_strtolower($pieces[count($pieces) - 1]), array('png', 'bmp', 'gif', 'jpg', 'jpeg')) ){
+			echo json_encode(array('result' => 'Недопустимый тип файла', 'error' => '1'));
+			die();
+		}
+		if($_FILES['image']['error'] != 0){
+			echo json_encode(array('result' => 'Ошибка при загрузке изображения', 'error' => '1'));
+			die();
+		}
 		$photoFileName = '/pricer/uploaded/'.$_FILES['image']['name'];
-		if(file_exists($_SERVER['DOCUMENT_ROOT'].$photoFileName))
-			die('Файл с таким именем уже загружен');
-		if(move_uploaded_file($_FILES['image']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].$photoFileName)){
+		$fullPath = $_SERVER['DOCUMENT_ROOT'].$photoFileName;
+		if(file_exists($fullPath)){
+			function on_file_exist($path){
+				$result = array();
+				$pieces = explode(".", $path);
+				$ext = array_pop($pieces);
+				$pieces[0] = implode('.', $pieces);
+				$pieces[1] = $ext;
+				$pieces2 = explode("_", $pieces[0]);
+				$num =  array_pop($pieces2);
+				//echo 'окончание названия существующего файла'.$num.'<br>';
+				if(ctype_digit($num)){
+					//echo 'окончание цифровое <br>';
+					$new_num = (int) $num + 1;
+					$new_path = implode('_', $pieces2).'_'.$new_num.'.'.$pieces[1];
+					//echo 'новое название файла: '.$new_path.'<br>';
+				}else{
+					$new_path = $pieces[0].'_0.'.$pieces[1];
+				}
+				if (file_exists($new_path)) {
+					//echo 'новое название файла занято <br>';
+					$result = on_file_exist($new_path);
+				}else{
+					//echo 'новое название файла свободно <br>';
+					$result = $new_path;
+				}
+				return $result;
+			}
+			$fullPath = on_file_exist($fullPath);
+			//echo json_encode(array('result' => 'Файл с таким именем уже загружен', 'error' => '1'));
+			//die();
+		}
+		if(move_uploaded_file($_FILES['image']['tmp_name'], $fullPath)){
+			$pieces = explode("/", $fullPath);
+			$photoFileName = array_pop($pieces);
 			$stmt = $db->prepare("UPDATE pr_products SET photo = ? WHERE id = ?");
 			if(!$stmt->execute(array($photoFileName, $_REQUEST['id']))){
-				echo 'Ошибка изменения фото товара'; print_r($stmt->errorInfo());
+				echo json_encode(array('result' => 'Ошибка изменения фото товара.', 'error' => '1'));
+				//echo 'Ошибка изменения фото товара'; print_r($stmt->errorInfo());
 				exit();
 			}			
 		}
 		//TODO: Дописать удаление предыдущей картинки
 	}
-	echo json_encode(array('result' => 'Товар изменен', 'name' => $_REQUEST['product_name'], 'id' => $_REQUEST['id']));
+	$result = array('result' => 'Товар успешно изменён', 'name' => $_REQUEST['product_name'], 'id' => $db->lastInsertId(), 'error' => '0');
+	if($_FILES['image']['name'])
+		$result['photo'] = '/pricer/uploaded/'.$photoFileName;
+	echo json_encode($result);
+	exit();
 } else {
 	$stmt = $db->prepare("INSERT pr_products(name, ed_izm_id, in_box, main_clsf_id, creator) values(?, ?, ?, ?, ?)");
 	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
-		echo 'Ошибка добавления товара'; print_r($stmt->errorInfo());
+		echo json_encode(array('result' => 'Ошибка добавления товара.', 'error' => '1'));
+		//echo 'Ошибка добавления товара'; print_r($stmt->errorInfo());
 		exit();
 	}
 	//echo "<script>alert('Товар добавлен');document.location.href='index.php';</script>";
-	echo json_encode(array('result' => 'Товар добавлен', 'name' => $_REQUEST['product_name'], 'id' => $db->lastInsertId()));
+	$result = array('result' => 'Товар добавлен', 'name' => $_REQUEST['product_name'], 'id' => $db->lastInsertId(), 'error' => '0');
+	echo json_encode($result);
+	exit();
 }?>
