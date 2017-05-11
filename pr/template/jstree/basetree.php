@@ -19,10 +19,24 @@
 						$res[] = array('text' => $v['name'], 'children' => true,  'id' => $v['id'], 'icon' => 'folder', 'state' => array('opened' => 'true'));
 					}
 				}else{
-					$stmt = $db->prepare("select id, name from $tbl_dir where id_hi=? order by name");
+					$stmt = $db->prepare(
+						"select id, name,
+						 (".(($tbl_term != null)
+							  ?"select count(*) from $tbl_term tt where tt.main_clsf_id = t1.id"
+							  :"0"
+							).
+						") termCnt,
+						 (
+							select count(*) 
+							from $tbl_dir t2
+							where t2.id_hi = t1.id
+						 ) childCnt
+						 from $tbl_dir t1
+						 where id_hi=?
+						 order by name");
 					$stmt->execute(array($_GET['id']));
 					while($v = $stmt->fetch()){
-						$res[] = array('text' => $v['name'], 'children' => true,  'id' => $v['id'], 'icon' => 'folder');
+						$res[] = array('text' => $v['name'], 'children' => ($v['termCnt'] + $v['childCnt'] > 0),  'id' => $v['id'], 'icon' => 'folder');
 					}
 					if ($tbl_term != null) {
 						$stmt = $db->prepare("select id, name from $tbl_term where main_clsf_id=? order by name");
