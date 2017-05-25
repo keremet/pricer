@@ -128,6 +128,14 @@ CREATE TABLE `pr_consumption` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+CREATE TABLE `pr_tmp_consumption_sums` (
+  `index` text COLLATE utf8_unicode_ci,
+  `name` text COLLATE utf8_unicode_ci,
+  `sum_own` double,
+  `sum_child` double
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
