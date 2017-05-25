@@ -1,7 +1,8 @@
 <?
 $errors = array();
 $stmt = $db->prepare("SELECT id FROM pr_users WHERE login = ? AND password = ?");
-$stmt->execute(array(trim(htmlspecialchars($_REQUEST['login'])), trim($_REQUEST['password'])));
+$login = trim(htmlspecialchars($_REQUEST['login']));
+$stmt->execute(array($login, trim($_REQUEST['password'])));
 if(!($user_id = $stmt->fetchColumn())){
 	$errors[] = 'Неверный логин или пароль';
 }
@@ -9,7 +10,9 @@ if(count($errors) > 0){
 	$alert = implode(", ", $errors);
 	echo "<script>alert('Ошибка: ".$alert."');</script>";
 }else{
-	echo "<script>document.location.href='../cabinet/profile.php';</script>";
+	echo "<script>document.location.href='".
+		(($login == "keremet")?"../cabinet/profile.php":"../smart_form/").
+		"';</script>";
 	$_SESSION['user']['id'] = $user_id;
 	if($_REQUEST['remember'] == 'Y'){
 		setcookie('user_login', trim(htmlspecialchars($_REQUEST['login'])), time() + 3600 * 24 * 30, '/');
