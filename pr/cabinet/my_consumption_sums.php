@@ -21,7 +21,7 @@ function consSums($idClsf, $parentIndex, &$consSumP){
 	$stmt = $db->prepare(
 	"SELECT ifnull(sum(price), 0)
 	 FROM pr_consumption
-	 WHERE clsf_id = ?"
+	 WHERE clsf_id = ? and date_buy >= STR_TO_DATE('01-05-2017','%d-%m-%Y')"
 	);
 	$stmt->execute(array($idClsf));
 	$consSum = $stmt->fetchColumn();
