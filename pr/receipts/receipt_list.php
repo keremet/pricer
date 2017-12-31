@@ -5,7 +5,7 @@
 <table style="page-break-before: always;" width="600" border="0" cellpadding="1" cellspacing="1">
 <tr valign="TOP">
 	<td align="left"><a href="exit.php">Выход</a>
-	<td align="left"><a href="receipt_load.htm">Загрузка</a>
+	<td align="left"><a href="receipt_load.php">Загрузка</a>
 </table>
 <br/>
 <?php
@@ -22,19 +22,21 @@
 		,'receiptCode', 'fiscalSign'
 		,'fiscalDocumentNumber', 'requestNumber'
 		,'buyerAddress', 'senderAddress','addressToCheckFiscalSign'
-		, 'nds18', 'nds10', 'ndsNo'
+		, 'nds18', 'nds10', 'ndsNo', 'login'
 		));
 	$stmt = $db->prepare(
-		"SELECT id, DATE_FORMAT(dateTime, '%d-%m-%Y %H:%i:%s') dt
-			, buyerAddress, totalSum, addressToCheckFiscalSign, fiscalDriveNumber
-			, kktRegId, user, operationType
-			, shiftNumber, ecashTotalSum, nds18
-			, retailPlaceAddress, userInn, taxationType
-			, cashTotalSum, operator, senderAddress
-			, receiptCode, fiscalSign, nds10
-			, fiscalDocumentNumber, requestNumber, ndsNo
-		 FROM rcp_receipt
-		 ORDER BY dateTime desc
+		"SELECT r.id, DATE_FORMAT(r.dateTime, '%d-%m-%Y %H:%i:%s') dt
+			, r.buyerAddress, r.totalSum, r.addressToCheckFiscalSign, r.fiscalDriveNumber
+			, r.kktRegId, r.user, r.operationType
+			, r.shiftNumber, r.ecashTotalSum, r.nds18
+			, r.retailPlaceAddress, r.userInn, r.taxationType
+			, r.cashTotalSum, r.operator, r.senderAddress
+			, r.receiptCode, r.fiscalSign, r.nds10
+			, r.fiscalDocumentNumber, r.requestNumber, r.ndsNo
+			, u.login
+		 FROM rcp_receipt r 
+		    JOIN pr_users u on r.user_id = u.id
+		 ORDER BY r.dateTime desc
 		 ");
 	$stmt->execute();
 	while ($row = $stmt->fetch()) {
@@ -47,7 +49,7 @@
 			, $row['receiptCode'], $row['fiscalSign']
 			, $row['fiscalDocumentNumber'], $row['requestNumber']
 			, $row['buyerAddress'], $row['senderAddress'], $row['addressToCheckFiscalSign']
-			, $row['nds18'], $row['nds10'], $row['ndsNo']		
+			, $row['nds18'], $row['nds10'], $row['ndsNo'], $row['login']		
 			));
 	}
         

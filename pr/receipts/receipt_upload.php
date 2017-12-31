@@ -1,3 +1,10 @@
+<?session_start();
+header( 'Content-Type: text/html; charset=utf-8' );
+
+if($_SESSION['user']['id']==null)
+	die('Требуется авторизация');
+?>
+
 <html>
 <head>
   <meta charset="utf-8">
@@ -49,8 +56,8 @@ function addReceipts($docs)
 		$db->beginTransaction();
 		$stmt = $db->prepare('INSERT INTO rcp_receipt (buyerAddress, totalSum, addressToCheckFiscalSign, fiscalDriveNumber, rawData, ' .
 		'kktRegId, user, operationType, shiftNumber, ecashTotalSum, nds18, retailPlaceAddress, userInn, taxationType,' . 
-		'cashTotalSum, operator, senderAddress, receiptCode, fiscalSign, nds10, fiscalDocumentNumber, requestNumber, dateTime, ndsNo) VALUES (' .
-		'?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, STR_TO_DATE(?, \'%Y-%m-%dT%H:%i:%s\'), ?)');
+		'cashTotalSum, operator, senderAddress, receiptCode, fiscalSign, nds10, fiscalDocumentNumber, requestNumber, dateTime, ndsNo, user_id) VALUES (' .
+		'?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, STR_TO_DATE(?, \'%Y-%m-%dT%H:%i:%s\'), ?, '.$_SESSION['user']['id'].')');
 
 		$res = $stmt->execute(createQueryParams($receipt, array('buyerAddress', 'totalSum', 'addressToCheckFiscalSign', 
 															 'fiscalDriveNumber', 'rawData', 'kktRegId', 'user', 'operationType',
