@@ -59,15 +59,17 @@ function addReceipts($docs)
 		'cashTotalSum, operator, senderAddress, receiptCode, fiscalSign, nds10, fiscalDocumentNumber, requestNumber, dateTime, ndsNo, user_id) VALUES (' .
 		'?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, STR_TO_DATE(?, \'%Y-%m-%dT%H:%i:%s\'), ?, '.$_SESSION['user']['id'].')');
 
-		$res = $stmt->execute(createQueryParams($receipt, array('buyerAddress', 'totalSum', 'addressToCheckFiscalSign', 
+		if(!$stmt->execute(createQueryParams($receipt, array('buyerAddress', 'totalSum', 'addressToCheckFiscalSign', 
 															 'fiscalDriveNumber', 'rawData', 'kktRegId', 'user', 'operationType',
 															 'shiftNumber', 'ecashTotalSum', 'nds18', 'retailPlaceAddress',
 															 'userInn', 'taxationType', 'cashTotalSum', 'operator',
 															 'senderAddress', 'receiptCode', 'fiscalSign', 'nds10',
-															 'fiscalDocumentNumber', 'requestNumber', 'dateTime', 'ndsNo'), 'receipt'));
-
-		if(!$res) {
-			logMessage("Ошибка при добавлении чека от ".$receipt['dateTime'], $res);
+															 'fiscalDocumentNumber', 'requestNumber', 'dateTime', 'ndsNo'), 'receipt'))
+		) {
+			$err_arr = $stmt->errorInfo();
+			logMessage("Ошибка при добавлении чека от ".$receipt['dateTime']
+				, "Код ANSI ".$err_arr[0]." код из драйвера ".$err_arr[1]
+				 ."<br> сообщение ".$err_arr[2]);
 			$db->rollBack();
 			continue;
 		}
@@ -91,10 +93,11 @@ function addItems($items, $receiptId)
 		$stmt = $db->prepare(
 			'INSERT INTO rcp_item (receipt_id, sum, nds10, name, quantity, price, nds18, ndsNo)
 			 VALUES ('. $receiptId . ', ?, ?, ?, ?, ?, ?, ?)');
-		$res = $stmt->execute(createQueryParams($i, array('sum', 'nds10', 'name', 'quantity', 'price', 'nds18', 'ndsNo'), 'item'));
-		
-		if(!$res) {
-			logMessage("Ошибка при добавлении товара", $res);
+		if(!$stmt->execute(createQueryParams($i, array('sum', 'nds10', 'name', 'quantity', 'price', 'nds18', 'ndsNo'), 'item'))) {
+			$err_arr = $stmt->errorInfo();
+			logMessage("Ошибка при добавлении товара"
+				, "Код ANSI ".$err_arr[0]." код из драйвера ".$err_arr[1]
+				 ."<br> сообщение ".$err_arr[2]);
 			return 1;
 		}
 
@@ -104,10 +107,11 @@ function addItems($items, $receiptId)
 				$stmt = $db->prepare(
 					'INSERT INTO rcp_modifier (item_id, discountName, discountSum, markupName)
 					 VALUES (' . $itemId . ', ?, ?, ?)');
-				$res = $stmt->execute(createQueryParams($m, array('discountName', 'discountSum', 'markupName'), 'modifier'));
-				
-				if(!$res) {
-					logMessage("Ошибка при добавлении модификатора", $res);
+				if(!$stmt->execute(createQueryParams($m, array('discountName', 'discountSum', 'markupName'), 'modifier'))) {
+					$err_arr = $stmt->errorInfo();
+					logMessage("Ошибка при добавлении модификатора"
+						, "Код ANSI ".$err_arr[0]." код из драйвера ".$err_arr[1]
+						 ."<br> сообщение ".$err_arr[2]);
 					return 1;
 				}
 			}
