@@ -57,14 +57,18 @@ function addReceipts($docs)
 		$stmt = $db->prepare('INSERT INTO rcp_receipt (buyerAddress, totalSum, addressToCheckFiscalSign, fiscalDriveNumber, rawData, ' .
 		'kktRegId, user, operationType, shiftNumber, ecashTotalSum, nds18, retailPlaceAddress, userInn, taxationType,' . 
 		'cashTotalSum, operator, senderAddress, receiptCode, fiscalSign, nds10, fiscalDocumentNumber, requestNumber, dateTime, ndsNo, user_id) VALUES (' .
-		'?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, STR_TO_DATE(?, \'%Y-%m-%dT%H:%i:%s\'), ?, '.$_SESSION['user']['id'].')');
+		'?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, STR_TO_DATE(?, \'%Y-%m-%dT%H:%i:%s\'), ?, ?)');
 
-		if(!$stmt->execute(createQueryParams($receipt, array('buyerAddress', 'totalSum', 'addressToCheckFiscalSign', 
-															 'fiscalDriveNumber', 'rawData', 'kktRegId', 'user', 'operationType',
-															 'shiftNumber', 'ecashTotalSum', 'nds18', 'retailPlaceAddress',
-															 'userInn', 'taxationType', 'cashTotalSum', 'operator',
-															 'senderAddress', 'receiptCode', 'fiscalSign', 'nds10',
-															 'fiscalDocumentNumber', 'requestNumber', 'dateTime', 'ndsNo'), 'receipt'))
+		$exec_prms = createQueryParams($receipt
+			, array('buyerAddress', 'totalSum', 'addressToCheckFiscalSign', 
+				 'fiscalDriveNumber', 'rawData', 'kktRegId', 'user', 'operationType',
+				 'shiftNumber', 'ecashTotalSum', 'nds18', 'retailPlaceAddress',
+				 'userInn', 'taxationType', 'cashTotalSum', 'operator',
+				 'senderAddress', 'receiptCode', 'fiscalSign', 'nds10',
+				 'fiscalDocumentNumber', 'requestNumber', 'dateTime', 'ndsNo')
+			, 'receipt');
+		$exec_prms[] = $_SESSION['user']['id'];
+		if(!$stmt->execute($exec_prms)
 		) {
 			$err_arr = $stmt->errorInfo();
 			logMessage("Ошибка при добавлении чека от ".$receipt['dateTime']
@@ -91,9 +95,13 @@ function addItems($items, $receiptId)
 	
 	foreach($items as $i){
 		$stmt = $db->prepare(
-			'INSERT INTO rcp_item (receipt_id, sum, nds10, name, quantity, price, nds18, ndsNo)
-			 VALUES ('. $receiptId . ', ?, ?, ?, ?, ?, ?, ?)');
-		if(!$stmt->execute(createQueryParams($i, array('sum', 'nds10', 'name', 'quantity', 'price', 'nds18', 'ndsNo'), 'item'))) {
+			'INSERT INTO rcp_item (sum, nds10, name, quantity, price, nds18, ndsNo, receipt_id)
+			 VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+		$exec_prms = createQueryParams($i
+			, array('sum', 'nds10', 'name', 'quantity', 'price', 'nds18', 'ndsNo')
+			, 'item');
+		$exec_prms[] = $receiptId;
+		if(!$stmt->execute($exec_prms)) {
 			$err_arr = $stmt->errorInfo();
 			logMessage("Ошибка при добавлении товара"
 				, "Код ANSI ".$err_arr[0]." код из драйвера ".$err_arr[1]
@@ -105,9 +113,13 @@ function addItems($items, $receiptId)
 			$itemId = $db->lastInsertId();
 			foreach($i['modifiers'] as $m){
 				$stmt = $db->prepare(
-					'INSERT INTO rcp_modifier (item_id, discountName, discountSum, markupName)
-					 VALUES (' . $itemId . ', ?, ?, ?)');
-				if(!$stmt->execute(createQueryParams($m, array('discountName', 'discountSum', 'markupName'), 'modifier'))) {
+					'INSERT INTO rcp_modifier (discountName, discountSum, markupName, item_id)
+					 VALUES (?, ?, ?, ?)');
+				$exec_prms = createQueryParams($m
+					, array('discountName', 'discountSum', 'markupName')
+					, 'modifier');
+				$exec_prms[] = $itemId;
+				if(!$stmt->execute($exec_prms)) {
 					$err_arr = $stmt->errorInfo();
 					logMessage("Ошибка при добавлении модификатора"
 						, "Код ANSI ".$err_arr[0]." код из драйвера ".$err_arr[1]
