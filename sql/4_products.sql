@@ -28,3 +28,23 @@ from `rcp_item` `a`
 	join `rcp_receipt` `b` on `a`.`receipt_id` = `b`.`id`
 	join `pr_users` `c` on `b`.`user_id` = `c`.`id`
 	join `pr_ids` `d` on `b`.`userInn` = `d`.`inn` and `a`.`name` = `d`.`name`;
+	
+DELIMITER $$
+CREATE FUNCTION `pr_get_product_path`(`id` INT(11) UNSIGNED) RETURNS text CHARSET utf8
+    READS SQL DATA
+BEGIN
+    DECLARE cur INT DEFAULT NULL;
+    DECLARE res TEXT DEFAULT '';
+    
+    SELECT `a`.`id_hi` INTO cur FROM `pr_consumption_clsf` `a`
+    WHERE `a`.`id` = id;
+    
+    WHILE cur IS NOT NULL DO
+    	SET res := CONCAT(cur, '/', res);
+        SELECT `a`.`id_hi` INTO cur FROM `pr_consumption_clsf` `a`
+        WHERE `a`.`id` = cur;
+    END WHILE;
+
+	RETURN res;
+END$$
+DELIMITER ;
