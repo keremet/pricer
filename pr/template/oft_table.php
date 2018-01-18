@@ -13,7 +13,7 @@ class oftTable{
 	static function row($r){
 		echo "<tr>";
 		foreach ($r as $i => $value) {
-		    echo "<td>$value";
+		    echo "<td>$value</td>";
 		}
 		echo "</tr>";
 	}
@@ -31,3 +31,17 @@ class oftTable{
 };	
 
 ?>
+
+<script type="text/javascript">
+
+	function oftTableHeader(table) {
+		
+		var n = arguments.length;
+		var r = table.insertRow();
+		for(var i = 1; i < n; i++) {
+			var cell = r.insertCell();
+			cell.innerHTML =  "<i><p align=\"CENTER\"><font size=\"2\">" + arguments[i] + "</font></p></i>";
+		}
+	}
+
+</script>
