@@ -1,46 +1,42 @@
 <?php
+	define('PRODUCTS_TABLE_NAME', 'pr_consumption_clsf');
+
 	include '../template/jstree/basetree.php';
 	function showProduct($is_file, $id){
 		global $db;
 		if($_REQUEST['suf']=='prices'){
-			if($is_file){
-				$r .= '<table border=1><tr><td>Цена<td>Магазин<td>Дата';
-				$stmt = $db->prepare(
-					"SELECT s.name, po1.date_buy, min(price) pr
-					FROM pr_product_offers po1, pr_shops s
-					WHERE po1.product = ?
-					  and (po1.shop, po1.date_buy) in (
-						SELECT shop, max(date_buy)
-						FROM pr_product_offers
-						WHERE product = ?
-						GROUP BY shop
-					  )
-					  and po1.shop = s.id
-					GROUP BY s.name, po1.date_buy
-					ORDER BY pr"
-				);
-				$stmt->execute(array($id, $id));
-				while($price = $stmt->fetch()){
-					$r .= '<tr><td>'.$price['pr'].'<td>'.$price['name'].'<td>'.$price['date_buy'];
-				}
-				$r .= '</table>';
+			$r .= '<table border=1><tr><td>Цена<td>Магазин<td>Дата';
+			$stmt = $db->prepare(
+				"SELECT s.name, po1.date_buy, min(price) pr
+				FROM pr_product_offers po1, pr_shops s
+				WHERE po1.product = ?
+				  and (po1.shop, po1.date_buy) in (
+					SELECT shop, max(date_buy)
+					FROM pr_product_offers
+					WHERE product = ?
+					GROUP BY shop
+				  )
+				  and po1.shop = s.id
+				GROUP BY s.name, po1.date_buy
+				ORDER BY pr"
+			);
+			$stmt->execute(array($id, $id));
+			while($price = $stmt->fetch()){
+				$r .= '<tr><td>'.$price['pr'].'<td>'.$price['name'].'<td>'.$price['date_buy'];
 			}
+			$r .= '</table>';
 		}else{
 			$readonly = ($_SESSION['user']['id']==null);
-			if($is_file){
-				$stmt = $db->prepare(
-					"SELECT pr_products.name, photo, pr_ed_izm.name as ed_izm, ed_izm_id, in_box
-					FROM pr_products
-					LEFT JOIN pr_ed_izm on pr_ed_izm.id = pr_products.ed_izm_id
-					WHERE pr_products.id = ?"
-				);
-				$stmt->execute(array($id));
-				if(!($product = $stmt->fetch())){
-					return array('content' => 'Товар не найден');
-				}
-			}else{
-				if($readonly)
-					return array('content' => '');
+			
+			$stmt = $db->prepare(
+				"SELECT `a`.name, photo, `b`.name as ed_izm, ed_izm_id, in_box
+				FROM " . PRODUCTS_TABLE_NAME . " `a`" . 
+				"LEFT JOIN `pr_ed_izm` `b` on `b`.id = `a`.ed_izm_id
+				WHERE `a`.id = ?"
+			);
+			$stmt->execute(array($id));
+			if(!($product = $stmt->fetch())){
+				return array('content' => 'Товар не найден');
 			}
 			
 			$r = '<form id="form_product" action="" method="post"'
@@ -63,7 +59,7 @@
 						  }
 					}); return false;" enctype = "multipart/form-data"><div id="message_product"></div>'			
 			  .'Название товара*<br>'
-			  .'<input '.(($readonly)?'readonly':'').' required type="text" name="product_name" value="'.htmlspecialchars ($product['name']).'"><br><br>';
+			  .'<input '.(($readonly)?'readonly':'').' required type="text" name="product_name" value="'.htmlspecialchars($product['name']).'"><br><br>';
 			if($product['photo']){
 				$ph = '/pricer/uploaded/'.$product['photo'];
 			}else{
@@ -92,21 +88,16 @@
 			}
 			$r .= '<br><br>Количество единиц измерения в товаре<br>
 			<input '.(($readonly)?'readonly':'').' type="text" name="in_box" value="'.$product['in_box'].'">';
-			if($is_file)
 				$r .= '<br><br><a target="_blank" href="../analytics/?product[]='.$id.'">Перейти к ценам</a>';
 			if(!$readonly){
-				$r .= '<br><br><input type="submit" value="'.(($is_file)?'Изменить':'Добавить').' товар">';
-				if($is_file)
-					$r .= '<input type="hidden" name="id" value="'.$id.'">';
-				else
-					$r .= '<input type="hidden" name="main_clsf_id" value="'.$id.'">';
+				$r .= '<br><br><input type="submit" value="Изменить товар">';
+				
+			$r .= '<input type="hidden" name="id" value="'.$id.'">';
 			}
 			$r .= '</form>';
 		}
-		return ($is_file)?
-			array('content' => $r, 'product_id' => $id)
-			:array('content' => $r, 'product_id' => '');
+		return array('content' => $r, 'product_id' => $id);
 	}
 	
-	doTreeOperation('pr_products_main_clsf', 'pr_products', 'showProduct');
+	doTreeOperation('', PRODUCTS_TABLE_NAME, 'showProduct');
 ?>
