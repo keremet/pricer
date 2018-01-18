@@ -44,28 +44,50 @@
 					'contextmenu' : {
 						'items' : function(node) {
 							var tmp = $.jstree.defaults.contextmenu.items();
-
-							tmp.remove.label = "Удалить";
-							tmp.ccp.label = "Редактирование";
-							tmp.ccp.submenu.copy.label = "Копировать";
-							tmp.ccp.submenu.cut.label = "Вырезать";
-							
-							if(this.get_type(node) === "file") {
-								delete tmp.create;
+							if(node.id == '-1') {
+								delete tmp.remove;
 								delete tmp.rename;
-								delete tmp.ccp.submenu.paste;
-							}else{
-								tmp.create.action = function (data) {
-										var inst = $.jstree.reference(data.reference),
-											obj = inst.get_node(data.reference);
-										inst.create_node(obj, { type : "default" }, "last", function (new_node) {
-											setTimeout(function () { inst.edit(new_node); },0);
-										});
-									}
-								tmp.create.label = "Добавить каталог";
-								tmp.rename.label = "Переименовать";
-								tmp.ccp.submenu.paste.label = "Вставить";
+								delete tmp.ccp.submenu.copy;
+								delete tmp.ccp.submenu.cut;
 							}
+							else{
+								tmp.remove.label = "Удалить";
+								tmp.remove.action = function(data) {
+									var inst = $.jstree.reference(data.reference),
+										obj = inst.get_node(data.reference),
+										parent = inst.get_node(inst.get_parent(obj));
+										
+									if(inst.delete_node(obj)) {
+										if(parent.id != '-1' && !parent.children.length == 1) {
+											inst.set_type(parent, "file");
+											inst.set_icon(parent, "file");
+										}
+									}
+								}
+								
+								tmp.rename.label = "Переименовать";
+								
+								tmp.ccp.submenu.copy.label = "Копировать";
+								tmp.ccp.submenu.cut.label = "Вырезать";
+							}
+							
+							tmp.create.action = function (data) {
+									var inst = $.jstree.reference(data.reference),
+										obj = inst.get_node(data.reference);
+									
+									if(obj.id != '-1') {
+										inst.set_type(obj, "default");
+										inst.set_icon(obj, "folder");
+									}
+									inst.create_node(obj, { type : "file" }, "last", function (new_node) {
+										setTimeout(function () { inst.edit(new_node); },0);
+									});
+									
+							}
+							tmp.create.label = "Добавить товар";
+							
+							tmp.ccp.label = "Редактирование";
+							tmp.ccp.submenu.paste.label = "Вставить";
 							return tmp;
 						}
 					},
@@ -85,6 +107,7 @@
 					$.get('<?=$path?>tree.php?operation=create_node', { 'type' : data.node.type, 'id' : data.node.parent, 'text' : data.node.text })
 						.done(function (d) {
 							data.instance.set_id(data.node, d.id);
+							
 						})
 						.fail(function () {
 							data.instance.refresh();
