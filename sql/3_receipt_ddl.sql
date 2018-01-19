@@ -3,7 +3,7 @@ CREATE TABLE `rcp_receipt` (
   `buyerAddress` text,
   `totalSum` int(11) DEFAULT NULL,
   `addressToCheckFiscalSign` text,
-  `fiscalDriveNumber` int(20),
+  `fiscalDriveNumber` varchar(100),
   `rawData` text,
   `kktRegId` text,
   `user` text,
@@ -25,7 +25,7 @@ CREATE TABLE `rcp_receipt` (
   `dateTime` DATETIME DEFAULT NULL,
   `ndsNo` int(11) DEFAULT NULL,
   `user_id`  int(11) NOT NULL,
-   CONSTRAINT `rcp_receipt_uk` UNIQUE KEY (`dateTime`, `totalSum`, `fiscalDriveNumber`, `fiscalDocumentNumber`, `fiscalSign`),
+   CONSTRAINT `rcp_receipt_uk` UNIQUE KEY (`dateTime`, `totalSum`, `fiscalDocumentNumber`, `fiscalSign`, `fiscalDriveNumber`),
    CONSTRAINT `rcp_receipt_user_id` FOREIGN KEY (`user_id`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
