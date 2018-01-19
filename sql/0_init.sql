@@ -111,9 +111,14 @@ CREATE TABLE `pr_product_offers` (
 
 CREATE TABLE `pr_consumption_clsf` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `creator` int(11),
+  `creator` int(11) DEFAULT NULL,
   `name` text COLLATE utf8_unicode_ci NOT NULL,
-  `id_hi` int(11),
+  `id_hi` int(11) DEFAULT NULL,
+  `photo` text COLLATE utf8_unicode_ci,
+  `text` text COLLATE utf8_unicode_ci,
+  `ed_izm_id` int(11) DEFAULT NULL,
+  `in_box` double DEFAULT NULL,
+  `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT `pr_consumption_clsf_creator` FOREIGN KEY (`creator`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `pr_consumption_clsf_id_hi` FOREIGN KEY (`id_hi`) REFERENCES `pr_consumption_clsf` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
