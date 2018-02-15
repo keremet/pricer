@@ -2,11 +2,11 @@
 	include '../template/jstree/basetree.php';
 	function showProduct($is_file, $id){
 		global $db;
-		$r = '<div style="width:320px; height:800px; overflow:auto;">'
-		     . '<table border=1><tr><td>Дата<td>Сумма<td>Действия';
+		$r = '<div style="width:320px; height:800px; overflow:auto;"><table border=1>
+        <tr><td>Дата<td>Сумма<td>Действия';
 		$stmt = $db->prepare(
 			"SELECT id, date_buy, price
-			 FROM pr_consumption
+			 FROM ".DB_TABLE_PREFIX."consumption
 			 WHERE clsf_id = ?
 			 ORDER BY date_buy DESC"
 		);
@@ -19,5 +19,5 @@
 		return array('content' => $r, 'product_id' => $id);
 	}
 	
-	doTreeOperation('pr_consumption_clsf', null, 'showProduct');
+	doTreeOperation(DB_TABLE_PREFIX.'consumption_clsf', null, 'showProduct');
 ?>

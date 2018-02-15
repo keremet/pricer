@@ -10,7 +10,7 @@ if($clsf_name=='')
 
 $clsf_id = $_POST['clsf_id'];
 
-$stmt = $db->prepare("INSERT INTO pr_consumption_clsf (name, id_hi) VALUES (?, ?)"); 
+$stmt = $db->prepare("INSERT INTO ".DB_TABLE_PREFIX."consumption_clsf (name, id_hi) VALUES (?, ?)"); 
 if(!$stmt->execute(array($clsf_name, $clsf_id))){
 	print_r($stmt->errorInfo()); echo '<br>';
 	die('Ошибка при добавлении расхода');

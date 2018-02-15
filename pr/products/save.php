@@ -12,14 +12,14 @@ function doKolvo($s){
 	return str_replace(',', '.', $s);
 }
 
-$stmt = $db->prepare("SELECT id FROM pr_products WHERE name = ? and id != ?");
+$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."products WHERE name = ? and id != ?");
 $stmt->execute(array($_REQUEST['product_name'], $_REQUEST['id']));
 if($stmt->fetch()){
 	echo json_encode(array('result' => 'Товар с таким названием уже есть', 'error' => '1'));
 	die();
 }
 if (isset($_REQUEST['id'])) {
-	$stmt = $db->prepare("UPDATE pr_products SET name = ?, ed_izm_id = ?, in_box = ? WHERE id = ?");
+	$stmt = $db->prepare("UPDATE ".DB_TABLE_PREFIX."products SET name = ?, ed_izm_id = ?, in_box = ? WHERE id = ?");
 	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['id']))){
 		echo json_encode(array('result' => 'Ошибка изменения товара.', 'error' => '1'));
 		//echo 'Ошибка изменения товара'; print_r($stmt->errorInfo());
@@ -76,7 +76,7 @@ if (isset($_REQUEST['id'])) {
 		if(move_uploaded_file($_FILES['image']['tmp_name'], $fullPath)){
 			$pieces = explode("/", $fullPath);
 			$photoFileName = array_pop($pieces);
-			$stmt = $db->prepare("UPDATE pr_products SET photo = ? WHERE id = ?");
+			$stmt = $db->prepare("UPDATE ".DB_TABLE_PREFIX."products SET photo = ? WHERE id = ?");
 			if(!$stmt->execute(array($photoFileName, $_REQUEST['id']))){
 				echo json_encode(array('result' => 'Ошибка изменения фото товара.', 'error' => '1'));
 				//echo 'Ошибка изменения фото товара'; print_r($stmt->errorInfo());
@@ -91,7 +91,7 @@ if (isset($_REQUEST['id'])) {
 	echo json_encode($result);
 	exit();
 } else {
-	$stmt = $db->prepare("INSERT pr_products(name, ed_izm_id, in_box, main_clsf_id, creator) values(?, ?, ?, ?, ?)");
+	$stmt = $db->prepare("INSERT ".DB_TABLE_PREFIX."products(name, ed_izm_id, in_box, main_clsf_id, creator) values(?, ?, ?, ?, ?)");
 	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
 		echo json_encode(array('result' => 'Ошибка добавления товара.', 'error' => '1'));
 		//echo 'Ошибка добавления товара'; print_r($stmt->errorInfo());

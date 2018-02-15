@@ -1,4 +1,6 @@
 <?
+define('DB_TABLE_PREFIX', 'pr_');
+
 try {
 	$db = new PDO('mysql:host=localhost;dbname=pr', 'pr', 'pr_password');
 	$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); 

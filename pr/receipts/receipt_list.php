@@ -35,7 +35,7 @@
 			, r.fiscalDocumentNumber, r.requestNumber, r.ndsNo
 			, u.login
 		 FROM rcp_receipt r 
-		    JOIN pr_users u on r.user_id = u.id
+		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id
 		 ORDER BY r.dateTime desc
 		 ");
 	$stmt->execute();

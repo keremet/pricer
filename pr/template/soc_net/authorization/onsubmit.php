@@ -1,6 +1,6 @@
 <?
 $errors = array();
-$stmt = $db->prepare("SELECT id FROM pr_users WHERE login = ? AND password = ?");
+$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."users WHERE login = ? AND password = ?");
 $login = trim(htmlspecialchars($_REQUEST['login']));
 $stmt->execute(array($login, trim($_REQUEST['password'])));
 if(!($user_id = $stmt->fetchColumn())){

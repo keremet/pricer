@@ -7,11 +7,11 @@
 				$r .= '<table border=1><tr><td>Цена<td>Магазин<td>Дата';
 				$stmt = $db->prepare(
 					"SELECT s.name, po1.date_buy, min(price) pr
-					FROM pr_product_offers po1, pr_shops s
+					FROM ".DB_TABLE_PREFIX."product_offers po1, ".DB_TABLE_PREFIX."shops s
 					WHERE po1.product = ?
 					  and (po1.shop, po1.date_buy) in (
 						SELECT shop, max(date_buy)
-						FROM pr_product_offers
+						FROM ".DB_TABLE_PREFIX."product_offers
 						WHERE product = ?
 						GROUP BY shop
 					  )
@@ -29,10 +29,10 @@
 			$readonly = ($_SESSION['user']['id']==null);
 			if($is_file){
 				$stmt = $db->prepare(
-					"SELECT pr_products.name, photo, pr_ed_izm.name as ed_izm, ed_izm_id, in_box
-					FROM pr_products
-					LEFT JOIN pr_ed_izm on pr_ed_izm.id = pr_products.ed_izm_id
-					WHERE pr_products.id = ?"
+					"SELECT ".DB_TABLE_PREFIX."products.name, photo, ".DB_TABLE_PREFIX."ed_izm.name as ed_izm, ed_izm_id, in_box
+					FROM ".DB_TABLE_PREFIX."products
+					LEFT JOIN ".DB_TABLE_PREFIX."ed_izm on ".DB_TABLE_PREFIX."ed_izm.id = ".DB_TABLE_PREFIX."products.ed_izm_id
+					WHERE ".DB_TABLE_PREFIX."products.id = ?"
 				);
 				$stmt->execute(array($id));
 				if(!($product = $stmt->fetch())){
@@ -85,7 +85,7 @@
 			} else {
 				$r .= '<select id="ed_izm" name="ed_izm" style="width: 150px;" >
 					<option selected disabled>Выберите единицу измерения...</option>';
-					foreach($db->query("SELECT id, name FROM pr_ed_izm order by id") as $v){
+					foreach($db->query("SELECT id, name FROM ".DB_TABLE_PREFIX."ed_izm order by id") as $v){
 						$r .= '<option '.(($v['id']==$product['ed_izm_id'])?'selected':'').' value="'.$v['id'].'">'.$v['name'].'</option>';
 					}
 				$r .= '</select>';
@@ -108,5 +108,5 @@
 			:array('content' => $r, 'product_id' => '');
 	}
 	
-	doTreeOperation('pr_products_main_clsf', 'pr_products', 'showProduct');
+	doTreeOperation(DB_TABLE_PREFIX.'products_main_clsf', DB_TABLE_PREFIX.'products', 'showProduct');
 ?>

@@ -6,12 +6,12 @@ if($_SESSION['user']['id']==null)
 	die('Требуется авторизация');
 
 $stmt = $db->prepare(
-"SELECT po.date_buy, po.price, po.amount, pr_products.name as Товар, pr_shops.name as Магазин
-  , pr_getBasePrice(po.product, po.date_buy, ifnull(pr_products.in_box, 1)) price_b
-FROM pr_product_offers po, pr_shops, pr_products
+"SELECT po.date_buy, po.price, po.amount, ".DB_TABLE_PREFIX."products.name as Товар, ".DB_TABLE_PREFIX."shops.name as Магазин
+  , ".DB_TABLE_PREFIX."getBasePrice(po.product, po.date_buy, ifnull(".DB_TABLE_PREFIX."products.in_box, 1)) price_b
+FROM ".DB_TABLE_PREFIX."product_offers po, ".DB_TABLE_PREFIX."shops, ".DB_TABLE_PREFIX."products
 WHERE po.creator = ? and po.amount > 0
-  and po.shop = pr_shops.id
-  and po.product = pr_products.id
+  and po.shop = ".DB_TABLE_PREFIX."shops.id
+  and po.product = ".DB_TABLE_PREFIX."products.id
 ORDER BY po.date_buy desc"
 );
 $stmt->execute(array($_SESSION['user']['id']));

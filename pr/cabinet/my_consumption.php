@@ -10,8 +10,8 @@ $stmt = $db->prepare(
   name,
   price,
   date_change
-FROM pr_consumption, pr_consumption_clsf
-WHERE pr_consumption.clsf_id = pr_consumption_clsf.id
+FROM ".DB_TABLE_PREFIX."consumption, ".DB_TABLE_PREFIX."consumption_clsf
+WHERE ".DB_TABLE_PREFIX."consumption.clsf_id = ".DB_TABLE_PREFIX."consumption_clsf.id
 ORDER BY date_buy DESC
 LIMIT 300"
 );

@@ -44,7 +44,7 @@ headerOut('Аналитика');
 $isUserAutorized = ($_SESSION['user']['id'] != null);
 
 if($isUserAutorized){
-	$users_ = $db->query("SELECT id, login, name FROM pr_users order by login")->fetchAll();
+	$users_ = $db->query("SELECT id, login, name FROM ".DB_TABLE_PREFIX."users order by login")->fetchAll();
 	$arUsers = array();
 	if($users_){
 		foreach($users_ as $k => $v){
@@ -54,10 +54,10 @@ if($isUserAutorized){
 }
 
 $arProds = array();
-foreach($db->query("SELECT id, name FROM pr_products order by name") as $row)
+foreach($db->query("SELECT id, name FROM  ".DB_TABLE_PREFIX."products order by name") as $row)
 	$arProds[$row['id']] = $row['name'];
 
-$shops_ = $db->query("SELECT id, name, address, network_id, town_id FROM pr_shops order by name")->fetchAll();
+$shops_ = $db->query("SELECT id, name, address, network_id, town_id FROM ".DB_TABLE_PREFIX."shops order by name")->fetchAll();
 $arShops = array();
 if($shops_){
 	foreach($shops_ as $k => $v){
@@ -67,34 +67,34 @@ if($shops_){
 
 $query_array = array();
 $query = 
-"select pr_product_offers.id
-  , pr_product_offers.creator
-  , pr_product_offers.date_buy
-  , pr_product_offers.price
-  , pr_products.name as Товар
-  , pr_products.in_box
-  , pr_product_offers.amount
-  , pr_ed_izm.name as ЕдИзм
-  , pr_shops.name as Магазин"
-  .(($isUserAutorized)?", pr_users.login":"").
- " from pr_product_offers, pr_shops".(($isUserAutorized)?", pr_users":"").", pr_products
- left join pr_ed_izm on pr_ed_izm.id = pr_products.ed_izm_id
- where pr_product_offers.product = pr_products.id
-   and pr_product_offers.shop = pr_shops.id"
-   .(($isUserAutorized)?" and pr_product_offers.creator = pr_users.id":"");
+"select ".DB_TABLE_PREFIX."product_offers.id
+  , ".DB_TABLE_PREFIX."product_offers.creator
+  , ".DB_TABLE_PREFIX."product_offers.date_buy
+  , ".DB_TABLE_PREFIX."product_offers.price
+  , ".DB_TABLE_PREFIX."products.name as Товар
+  , ".DB_TABLE_PREFIX."products.in_box
+  , ".DB_TABLE_PREFIX."product_offers.amount
+  , ".DB_TABLE_PREFIX."ed_izm.name as ЕдИзм
+  , ".DB_TABLE_PREFIX."shops.name as Магазин"
+  .(($isUserAutorized)?", ".DB_TABLE_PREFIX."users.login":"").
+ " from ".DB_TABLE_PREFIX."product_offers, ".DB_TABLE_PREFIX."shops".(($isUserAutorized)?", ".DB_TABLE_PREFIX."users":"").", ".DB_TABLE_PREFIX."products
+ left join ".DB_TABLE_PREFIX."ed_izm on ".DB_TABLE_PREFIX."ed_izm.id = ".DB_TABLE_PREFIX."products.ed_izm_id
+ where ".DB_TABLE_PREFIX."product_offers.product = ".DB_TABLE_PREFIX."products.id
+   and ".DB_TABLE_PREFIX."product_offers.shop = ".DB_TABLE_PREFIX."shops.id"
+   .(($isUserAutorized)?" and ".DB_TABLE_PREFIX."product_offers.creator = ".DB_TABLE_PREFIX."users.id":"");
 
 if(is_array($_GET['filter']) && in_array('date', $_GET['filter'])){
 	if($_GET['date_from']){
 		$pieces = explode("/", $_GET['date_from']);
 		$date_from = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
-		$query .= " and pr_product_offers.date_buy >= ?";
+		$query .= " and ".DB_TABLE_PREFIX."product_offers.date_buy >= ?";
 		$query_array[] = $date_from;
 		//echo $date_from;
 	}
 	if($_GET['date_to']){
 		$pieces = explode("/", $_GET['date_to']);
 		$date_to = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
-		$query .= " and pr_product_offers.date_buy <= ?";
+		$query .= " and ".DB_TABLE_PREFIX."product_offers.date_buy <= ?";
 		$query_array[] = $date_to;
 		//echo $date_to;
 	}
@@ -102,17 +102,17 @@ if(is_array($_GET['filter']) && in_array('date', $_GET['filter'])){
 
 if(is_array($_GET['filter']) && in_array('price', $_GET['filter'])){
 	if($_GET['price_from']){
-		$query .= " and pr_product_offers.price >= ?";
+		$query .= " and ".DB_TABLE_PREFIX."product_offers.price >= ?";
 		$query_array[] = $_GET['price_from'];
 	}
 	if($_GET['price_to']){
-		$query .= " and pr_product_offers.price <= ?";
+		$query .= " and ".DB_TABLE_PREFIX."product_offers.price <= ?";
 		$query_array[] = $_GET['price_to'];
 	}
 }
 
 if(is_array($_GET['product'])){
-	$query .= " and pr_product_offers.product IN (";
+	$query .= " and ".DB_TABLE_PREFIX."product_offers.product IN (";
 	$i = 0;
 	foreach($_GET['product'] as $k => $v){
 		if($i != 0){
@@ -125,7 +125,7 @@ if(is_array($_GET['product'])){
 }
 
 if(is_array($_GET['shops'])){
-	$query .= " and pr_product_offers.shop IN (";
+	$query .= " and ".DB_TABLE_PREFIX."product_offers.shop IN (";
 	$i = 0;
 	foreach($_GET['shops'] as $k => $v){
 		if($i != 0){
@@ -138,7 +138,7 @@ if(is_array($_GET['shops'])){
 }
 
 if(is_array($_GET['users'])){
-	$query .= " and pr_product_offers.creator IN (";
+	$query .= " and ".DB_TABLE_PREFIX."product_offers.creator IN (";
 	$i = 0;
 	foreach($_GET['users'] as $k => $v){
 		if($i != 0){
