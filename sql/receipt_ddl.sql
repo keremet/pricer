@@ -1,4 +1,4 @@
-CREATE TABLE `rcp_receipt` (
+CREATE TABLE `pr_receipt` (
   `id`  int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `buyerAddress` text,
   `totalSum` int(11) DEFAULT NULL,
@@ -25,12 +25,12 @@ CREATE TABLE `rcp_receipt` (
   `dateTime` DATETIME DEFAULT NULL,
   `ndsNo` int(11) DEFAULT NULL,
   `user_id`  int(11) NOT NULL,
-   CONSTRAINT `rcp_receipt_uk` UNIQUE KEY (`dateTime`, `totalSum`, `fiscalDriveNumber`, `fiscalDocumentNumber`, `fiscalSign`),
-   CONSTRAINT `rcp_receipt_user_id` FOREIGN KEY (`user_id`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+   CONSTRAINT `pr_receipt_uk` UNIQUE KEY (`dateTime`, `totalSum`, `fiscalDriveNumber`, `fiscalDocumentNumber`, `fiscalSign`),
+   CONSTRAINT `pr_receipt_user_id` FOREIGN KEY (`user_id`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
-CREATE TABLE `rcp_item` (
+CREATE TABLE `pr_receipt_item` (
   `id`  int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `receipt_id` int(11) DEFAULT NULL,
   `sum` int(11) DEFAULT NULL,
@@ -40,14 +40,14 @@ CREATE TABLE `rcp_item` (
   `nds18` int(11) DEFAULT NULL,
   `quantity` double DEFAULT NULL,
   `ndsNo` int(11) DEFAULT NULL,
-   CONSTRAINT `rcp_item_receipt_id` FOREIGN KEY (`receipt_id`) REFERENCES `rcp_receipt` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+   CONSTRAINT `pr_receipt_item_receipt_id` FOREIGN KEY (`receipt_id`) REFERENCES `pr_receipt` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
-CREATE TABLE `rcp_modifier` (
+CREATE TABLE `pr_receipt_modifier` (
   `item_id` int(11) NOT NULL PRIMARY KEY,
   `discountName` text,
   `markupName` text,
   `discountSum` int(11) DEFAULT NULL,
-  CONSTRAINT `rcp_modifier_item_id` FOREIGN KEY (`item_id`) REFERENCES `rcp_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `pr_receipt_modifier_item_id` FOREIGN KEY (`item_id`) REFERENCES `pr_receipt_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

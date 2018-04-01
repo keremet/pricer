@@ -21,8 +21,8 @@
 	$stmt = $db->prepare(
 		"SELECT i.sum, i.nds10, i.name, i.price, i.nds18, i.id, i.quantity, i.ndsNo
 			, m.discountName, m.markupName, m.discountSum
-		 FROM rcp_item i
-		 LEFT JOIN rcp_modifier m on m.item_id = i.id
+		 FROM ".DB_TABLE_PREFIX."receipt_item i
+		 LEFT JOIN ".DB_TABLE_PREFIX."receipt_modifier m on m.item_id = i.id
 		 WHERE i.receipt_id = ?
 		 ");
 	$stmt->execute(array($_GET['id']));

@@ -54,7 +54,7 @@ function addReceipts($docs)
 		$receipt = $d['document']['receipt'];
 	
 		$db->beginTransaction();
-		$stmt = $db->prepare('INSERT INTO rcp_receipt (buyerAddress, totalSum, addressToCheckFiscalSign, fiscalDriveNumber, rawData, ' .
+		$stmt = $db->prepare('INSERT INTO '.DB_TABLE_PREFIX.'receipt (buyerAddress, totalSum, addressToCheckFiscalSign, fiscalDriveNumber, rawData, ' .
 		'kktRegId, user, operationType, shiftNumber, ecashTotalSum, nds18, retailPlaceAddress, userInn, taxationType,' . 
 		'cashTotalSum, operator, senderAddress, receiptCode, fiscalSign, nds10, fiscalDocumentNumber, requestNumber, dateTime, ndsNo, user_id) VALUES (' .
 		'?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, STR_TO_DATE(?, \'%Y-%m-%dT%H:%i:%s\'), ?, ?)');
@@ -95,7 +95,7 @@ function addItems($items, $receiptId)
 	
 	foreach($items as $i){
 		$stmt = $db->prepare(
-			'INSERT INTO rcp_item (sum, nds10, name, quantity, price, nds18, ndsNo, receipt_id)
+			'INSERT INTO '.DB_TABLE_PREFIX.'receipt_item (sum, nds10, name, quantity, price, nds18, ndsNo, receipt_id)
 			 VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
 		$exec_prms = createQueryParams($i
 			, array('sum', 'nds10', 'name', 'quantity', 'price', 'nds18', 'ndsNo')
@@ -113,7 +113,7 @@ function addItems($items, $receiptId)
 			$itemId = $db->lastInsertId();
 			foreach($i['modifiers'] as $m){
 				$stmt = $db->prepare(
-					'INSERT INTO rcp_modifier (discountName, discountSum, markupName, item_id)
+					'INSERT INTO '.DB_TABLE_PREFIX.'receipt_modifier (discountName, discountSum, markupName, item_id)
 					 VALUES (?, ?, ?, ?)');
 				$exec_prms = createQueryParams($m
 					, array('discountName', 'discountSum', 'markupName')

@@ -34,7 +34,7 @@
 			, r.receiptCode, r.fiscalSign, r.nds10
 			, r.fiscalDocumentNumber, r.requestNumber, r.ndsNo
 			, u.login
-		 FROM rcp_receipt r 
+		 FROM ".DB_TABLE_PREFIX."receipt r 
 		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id
 		 ORDER BY r.dateTime desc
 		 ");
