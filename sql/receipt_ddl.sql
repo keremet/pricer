@@ -51,3 +51,37 @@ CREATE TABLE `pr_receipt_modifier` (
   `discountSum` int(11) DEFAULT NULL,
   CONSTRAINT `pr_receipt_modifier_item_id` FOREIGN KEY (`item_id`) REFERENCES `pr_receipt_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+CREATE TABLE `pr_receipt_item_to_product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `product_id` int(11) NOT NULL,
+  `inn` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  UNIQUE KEY `name_inn` (`inn`,`name`) USING BTREE,
+  CONSTRAINT `pr_receipt_item_to_product__product_id` FOREIGN KEY (`product_id`) REFERENCES `pr_products` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+CREATE VIEW `pr_receipt_item_unknown`  AS  
+select distinct 
+	`i`.`name`,
+	`r`.`userInn` AS `inn`,
+	`r`.`dateTime`,
+	`r`.`retailPlaceAddress` AS `address` 
+from `pr_receipt_item` `i` 
+	join `pr_receipt` `r` on`i`.`receipt_id` = `r`.`id`
+	left join `pr_receipt_item_to_product` `p` on `r`.`userInn` = `p`.`inn` and `i`.`name` = `p`.`name`
+where `p`.`inn` IS NULL;
+
+
+CREATE VIEW `pr_receipt_purchases`  AS  
+select 
+	`a`.`sum`,
+	`b`.`dateTime`,
+	`b`.`user_id`,
+	`d`.`product_id`
+from `pr_receipt_item` `a` 
+	join `pr_receipt` `b` on `a`.`receipt_id` = `b`.`id`
+	join `pr_receipt_item_to_product` `d` on `b`.`userInn` = `d`.`inn` and `a`.`name` = `d`.`name`;
+
