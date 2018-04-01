@@ -13,7 +13,7 @@ function doKolvo($s){
 }
 
 $stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."products WHERE name = ? and id != ?");
-$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['id']));
+$stmt->execute(array($_REQUEST['product_name'], isset($_REQUEST['id'])?isset($_REQUEST['id']):null));
 if($stmt->fetch()){
 	echo json_encode(array('result' => 'Товар с таким названием уже есть', 'error' => '1'));
 	die();
