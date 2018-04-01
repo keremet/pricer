@@ -3,7 +3,7 @@ CREATE TABLE `pr_receipt` (
   `buyerAddress` text,
   `totalSum` int(11) DEFAULT NULL,
   `addressToCheckFiscalSign` text,
-  `fiscalDriveNumber` int(20),
+  `fiscalDriveNumber` varchar(100),
   `rawData` text,
   `kktRegId` text,
   `user` text,
