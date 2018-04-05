@@ -120,7 +120,7 @@ headerOut('Соответствие товара', array('prod'));
 <td valign="top">
 
 <?
-putTree('prod', '');
+putTree('prod', '../products/');
 ?>
 
 </td>
@@ -152,7 +152,7 @@ putTree('prod', '');
 	function tableRefresh() {
 		
 		jQuery.ajax({
-			url:     'translation_table.php', //Адрес подгружаемой страницы
+			url:     'known_products.php', //Адрес подгружаемой страницы
 			type:     "POST", //Тип запроса
 			dataType: "html", //Тип данных
 			data: {operation:'get'}, 
@@ -195,7 +195,7 @@ putTree('prod', '');
 		if(node === false) {
 			curNodeId = id;
 			jQuery.ajax({
-			url:     'translation_table.php', //Адрес подгружаемой страницы
+			url:     'known_products.php', //Адрес подгружаемой страницы
 			type:     "POST", //Тип запроса
 			dataType: "html", //Тип данных
 			data: {operation:'get_path', id: id}, 
@@ -237,7 +237,7 @@ putTree('prod', '');
 	function removeRule(id) {
 		
 		jQuery.ajax({
-			url:     'translation_table.php', //Адрес подгружаемой страницы
+			url:     'known_products.php', //Адрес подгружаемой страницы
 			type:     "POST", //Тип запроса
 			dataType: "html", //Тип данных
 			data: {operation:'item_remove', id: id}, 
@@ -256,7 +256,7 @@ putTree('prod', '');
 	function product_select(id) {
 		
 		jQuery.ajax({
-			url:     'translation_table.php', //Адрес подгружаемой страницы
+			url:     'known_products.php', //Адрес подгружаемой страницы
 			type:     "POST", //Тип запроса
 			dataType: "html", //Тип данных
 			data: {operation:'get', cl_id: id}, 

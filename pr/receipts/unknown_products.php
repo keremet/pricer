@@ -41,7 +41,7 @@
 <tr>
 <td valign="top">
 <?
-	putTree('prod', '');
+	putTree('prod', '../products/');
 ?>
 </td>
 <td valign="top">
@@ -113,7 +113,7 @@
 		name = data[ind].name;
 		inn = data[ind].inn;
 		jQuery.ajax({
-			url:     'translation_table.php', //Адрес подгружаемой страницы
+			url:     'known_products.php', //Адрес подгружаемой страницы
 			type:     "POST", //Тип запроса
 			dataType: "html", //Тип данных
 			data: {operation:'item_add', id: prodId, name: name, inn: inn}, 
