@@ -4,7 +4,7 @@
 
 Название проекта "Ценовичок" - в 6 местах в файле pr/template/header.php
 
-Модуль ввода чеков: sql/receipt_ddl.sql, receipts/*
+Модуль ввода чеков: sql/receipt_ddl.sql, pr/receipts/*
 
 
 Дополнительная установка на том же хостинге и той же базе:
@@ -12,3 +12,6 @@
 - Создать функцию getBasePrice с новым префиксом и новыми таблицами в ее теле
 - В pr/template/connect.php поменять константу DB_TABLE_PREFIX - префикс имен таблиц и функции
 
+Команды, которые могут пригодиться при тестировании:
+echo "drop database pricer; create database pricer;" | mysql -u root
+echo "insert into pr_users(name, login, password, text, photo, email) values ('test', 'test', '1', '', '', '');" | mysql -u root pricer
