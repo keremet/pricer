@@ -53,6 +53,17 @@ CREATE TABLE `pr_receipt_modifier` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+CREATE TABLE `pr_receipt_to_shop` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `shop_id` int(11) NOT NULL,
+  `inn` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci,
+  `address` varchar(100) COLLATE utf8_unicode_ci,
+  UNIQUE KEY `name_inn` (`inn`, `name`, `address`) USING BTREE,
+  CONSTRAINT `pr_receipt_to_shop__shop_id` FOREIGN KEY (`shop_id`) REFERENCES `pr_shops` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
 CREATE TABLE `pr_receipt_item_to_product` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `product_id` int(11) NOT NULL,
