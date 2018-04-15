@@ -44,7 +44,7 @@ if(isset($_POST['operation']))
 	}
 	else if($op == 'get_path') {
 		
-		if(isset($_POST['id'])) {
+		/*if(isset($_POST['id'])) {
 			$id = $_POST['id'];
 			$stmt = $db->prepare('select '.DB_TABLE_PREFIX.'get_product_path(?) AS `path`');
 			
@@ -63,7 +63,7 @@ if(isset($_POST['operation']))
 			else
 				print ERROR;
 		}
-		else
+		else */
 			print ERROR;
 		
 	}

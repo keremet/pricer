@@ -41,7 +41,7 @@ if(isset($_POST['operation']))
 	}
 	else if($op == 'get_path') {
 		
-		if(isset($_POST['id'])) {
+		/*if(isset($_POST['id'])) {
 			$id = $_POST['id'];
 			$stmt = $db->prepare('select '.DB_TABLE_PREFIX.'get_shop_path(?) AS `path`');
 			
@@ -60,7 +60,7 @@ if(isset($_POST['operation']))
 			else
 				print ERROR;
 		}
-		else
+		else */
 			print ERROR;
 		
 	}
@@ -87,7 +87,7 @@ if(isset($_POST['operation']))
 			$stmt = $db->prepare(
 				'INSERT INTO '.DB_TABLE_PREFIX.'receipt_to_shop (`shop_id`, `inn`, `name`, `address`)
 				 SELECT ?, userInn, user, retailPlaceAddress
-				 FROM pr_receipt
+				 FROM '.DB_TABLE_PREFIX.'receipt
 				 WHERE id = ?');
 			$exec_prms = array($id, $_POST['receiptId']);
 			
