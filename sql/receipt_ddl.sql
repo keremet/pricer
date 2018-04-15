@@ -96,3 +96,15 @@ from `pr_receipt_item` `a`
 	join `pr_receipt` `b` on `a`.`receipt_id` = `b`.`id`
 	join `pr_receipt_item_to_product` `d` on `b`.`userInn` = `d`.`inn` and `a`.`name` = `d`.`name`;
 
+
+CREATE VIEW `pr_fact`  AS
+SELECT id, product, shop, creator, date_buy, price, amount
+FROM pr_product_offers
+UNION ALL
+SELECT null, i2p.product_id, r2s.shop_id, r.user_id, r.dateTime, i.price/100, i.quantity
+FROM pr_receipt r
+  JOIN pr_receipt_to_shop r2s ON r2s.inn = r.userInn 
+	AND ((r2s.name = r.user) OR ( r2s.name is null AND r.user is null ))
+	AND ((r2s.address = r.retailPlaceAddress) OR ( r2s.address is null AND r.retailPlaceAddress is null ))
+  JOIN pr_receipt_item i ON i.receipt_id = r.id
+  JOIN pr_receipt_item_to_product i2p ON r.userInn = i2p.inn and i.name = i2p.name;

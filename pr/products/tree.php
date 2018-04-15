@@ -7,11 +7,11 @@
 				$r .= '<table border=1><tr><td>Цена<td>Магазин<td>Дата';
 				$stmt = $db->prepare(
 					"SELECT s.name, po1.date_buy, min(price) pr
-					FROM ".DB_TABLE_PREFIX."product_offers po1, ".DB_TABLE_PREFIX."shops s
+					FROM ".DB_TABLE_PREFIX."fact po1, ".DB_TABLE_PREFIX."shops s
 					WHERE po1.product = ?
 					  and (po1.shop, po1.date_buy) in (
 						SELECT shop, max(date_buy)
-						FROM ".DB_TABLE_PREFIX."product_offers
+						FROM ".DB_TABLE_PREFIX."fact
 						WHERE product = ?
 						GROUP BY shop
 					  )

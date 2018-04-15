@@ -10,10 +10,10 @@ into fBasePrice
 	from (
 	   select poLP.product, 
         min(poLP.price)/(case poLP.product when idProduct then 1 else ifnull(p.in_box, 1) end) ed_izm_price
-		from pr_product_offers poLP, pr_products p
+		from pr_fact poLP, pr_products p
 		where (poLP.product, poLP.shop, poLP.date_buy) in (
 			select poMD.product, poMD.shop, max(poMD.date_buy)
-			from pr_product_offers poMD
+			from pr_fact poMD
 			where poMD.product in (
 					select idProduct
 					union

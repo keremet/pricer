@@ -67,34 +67,34 @@ if($shops_){
 
 $query_array = array();
 $query = 
-"select ".DB_TABLE_PREFIX."product_offers.id
-  , ".DB_TABLE_PREFIX."product_offers.creator
-  , ".DB_TABLE_PREFIX."product_offers.date_buy
-  , ".DB_TABLE_PREFIX."product_offers.price
+"select f.id
+  , f.creator
+  , f.date_buy
+  , f.price
   , ".DB_TABLE_PREFIX."products.name as Товар
   , ".DB_TABLE_PREFIX."products.in_box
-  , ".DB_TABLE_PREFIX."product_offers.amount
+  , f.amount
   , ".DB_TABLE_PREFIX."ed_izm.name as ЕдИзм
   , ".DB_TABLE_PREFIX."shops.name as Магазин"
   .(($isUserAutorized)?", ".DB_TABLE_PREFIX."users.login":"").
- " from ".DB_TABLE_PREFIX."product_offers, ".DB_TABLE_PREFIX."shops".(($isUserAutorized)?", ".DB_TABLE_PREFIX."users":"").", ".DB_TABLE_PREFIX."products
+ " from ".DB_TABLE_PREFIX."fact f, ".DB_TABLE_PREFIX."shops".(($isUserAutorized)?", ".DB_TABLE_PREFIX."users":"").", ".DB_TABLE_PREFIX."products
  left join ".DB_TABLE_PREFIX."ed_izm on ".DB_TABLE_PREFIX."ed_izm.id = ".DB_TABLE_PREFIX."products.ed_izm_id
- where ".DB_TABLE_PREFIX."product_offers.product = ".DB_TABLE_PREFIX."products.id
-   and ".DB_TABLE_PREFIX."product_offers.shop = ".DB_TABLE_PREFIX."shops.id"
-   .(($isUserAutorized)?" and ".DB_TABLE_PREFIX."product_offers.creator = ".DB_TABLE_PREFIX."users.id":"");
+ where f.product = ".DB_TABLE_PREFIX."products.id
+   and f.shop = ".DB_TABLE_PREFIX."shops.id"
+   .(($isUserAutorized)?" and f.creator = ".DB_TABLE_PREFIX."users.id":"");
 
 if(is_array($_GET['filter']) && in_array('date', $_GET['filter'])){
 	if($_GET['date_from']){
 		$pieces = explode("/", $_GET['date_from']);
 		$date_from = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
-		$query .= " and ".DB_TABLE_PREFIX."product_offers.date_buy >= ?";
+		$query .= " and f.date_buy >= ?";
 		$query_array[] = $date_from;
 		//echo $date_from;
 	}
 	if($_GET['date_to']){
 		$pieces = explode("/", $_GET['date_to']);
 		$date_to = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
-		$query .= " and ".DB_TABLE_PREFIX."product_offers.date_buy <= ?";
+		$query .= " and f.date_buy <= ?";
 		$query_array[] = $date_to;
 		//echo $date_to;
 	}
@@ -102,17 +102,17 @@ if(is_array($_GET['filter']) && in_array('date', $_GET['filter'])){
 
 if(is_array($_GET['filter']) && in_array('price', $_GET['filter'])){
 	if($_GET['price_from']){
-		$query .= " and ".DB_TABLE_PREFIX."product_offers.price >= ?";
+		$query .= " and f.price >= ?";
 		$query_array[] = $_GET['price_from'];
 	}
 	if($_GET['price_to']){
-		$query .= " and ".DB_TABLE_PREFIX."product_offers.price <= ?";
+		$query .= " and f.price <= ?";
 		$query_array[] = $_GET['price_to'];
 	}
 }
 
 if(is_array($_GET['product'])){
-	$query .= " and ".DB_TABLE_PREFIX."product_offers.product IN (";
+	$query .= " and f.product IN (";
 	$i = 0;
 	foreach($_GET['product'] as $k => $v){
 		if($i != 0){
@@ -125,7 +125,7 @@ if(is_array($_GET['product'])){
 }
 
 if(is_array($_GET['shops'])){
-	$query .= " and ".DB_TABLE_PREFIX."product_offers.shop IN (";
+	$query .= " and f.shop IN (";
 	$i = 0;
 	foreach($_GET['shops'] as $k => $v){
 		if($i != 0){
@@ -138,7 +138,7 @@ if(is_array($_GET['shops'])){
 }
 
 if(is_array($_GET['users'])){
-	$query .= " and ".DB_TABLE_PREFIX."product_offers.creator IN (";
+	$query .= " and f.creator IN (";
 	$i = 0;
 	foreach($_GET['users'] as $k => $v){
 		if($i != 0){
@@ -262,7 +262,7 @@ if(is_array($_GET['users'])){
 				<td><?=$v['amount']?></td>
 				<td><?=$v['login']?></td>
 				<td style="text-align: center;">
-					<?if($v['creator'] == $_SESSION['user']['id']) {?>
+					<?if(($v['creator'] == $_SESSION['user']['id']) && ($v['id'])) {?>
 						<button onclick="delete_price(<?=$v['id']?>);">Удалить цену</button>
 					<? } ?>
 				</td>

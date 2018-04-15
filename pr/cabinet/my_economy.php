@@ -6,9 +6,9 @@ if($_SESSION['user']['id']==null)
 	die('Требуется авторизация');
 
 $stmt = $db->prepare(
-"SELECT po.date_buy, po.price, po.amount, ".DB_TABLE_PREFIX."products.name as Товар, ".DB_TABLE_PREFIX."shops.name as Магазин
+"SELECT po.date_buy, po.price, po.amount, ".DB_TABLE_PREFIX."products.name as product_name, ".DB_TABLE_PREFIX."shops.name as shop_name
   , ".DB_TABLE_PREFIX."getBasePrice(po.product, po.date_buy, ifnull(".DB_TABLE_PREFIX."products.in_box, 1)) price_b
-FROM ".DB_TABLE_PREFIX."product_offers po, ".DB_TABLE_PREFIX."shops, ".DB_TABLE_PREFIX."products
+FROM ".DB_TABLE_PREFIX."fact po, ".DB_TABLE_PREFIX."shops, ".DB_TABLE_PREFIX."products
 WHERE po.creator = ? and po.amount > 0
   and po.shop = ".DB_TABLE_PREFIX."shops.id
   and po.product = ".DB_TABLE_PREFIX."products.id
@@ -41,8 +41,8 @@ $stmt->execute(array($_SESSION['user']['id']));
 	?>
 		<tr>
 			<td><?=$v['date_buy']?></td>
-			<td><?=$v['Товар']?></td>
-			<td><?=$v['Магазин']?></td>
+			<td><?=$v['product_name']?></td>
+			<td><?=$v['shop_name']?></td>
 			<td><?=$v['price']?></td>
 			<td><?=$v['price_b']?></td>
 			<td>-</td>
