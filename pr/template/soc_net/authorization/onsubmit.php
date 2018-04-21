@@ -11,7 +11,7 @@ if(count($errors) > 0){
 	echo "<script>alert('Ошибка: ".$alert."');</script>";
 }else{
 	echo "<script>document.location.href='".
-		(($login == "keremet")?"../cabinet/profile.php":"../smart_form/").
+		(($login == "keremet")?"../cabinet/index.php":"../smart_form/").
 		"';</script>";
 	$_SESSION['user']['id'] = $user_id;
 	if($_REQUEST['remember'] == 'Y'){
