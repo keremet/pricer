@@ -166,10 +166,12 @@ if($shops_){
 		  , f.creator
 		  , f.date_buy
 		  , f.price
+		  , f.product as id_Товара
 		  , ".DB_TABLE_PREFIX."products.name as Товар
 		  , ".DB_TABLE_PREFIX."products.in_box
 		  , f.amount
 		  , ".DB_TABLE_PREFIX."ed_izm.name as ЕдИзм
+		  , f.shop as id_Магазина
 		  , ".DB_TABLE_PREFIX."shops.name as Магазин"
 		  .(($isUserAutorized)?", ".DB_TABLE_PREFIX."users.login":"").
 		 " from ".DB_TABLE_PREFIX."fact f, ".DB_TABLE_PREFIX."shops".(($isUserAutorized)?", ".DB_TABLE_PREFIX."users":"").", ".DB_TABLE_PREFIX."products
@@ -257,8 +259,8 @@ if($shops_){
 					echo ($v['in_box'])?(round($v['price'] / $v['in_box'], 2)):$v['price'];
 					echo ' руб / '.$v['ЕдИзм'];
 					}?></td>
-				<td><?=$v['Товар']?></td>
-				<td><?=$v['Магазин']?></td>
+				<td><a href="../products/?id=<?=$v['id_Товара']?>" target="_blank"><?=$v['Товар']?></a></td>
+				<td><a href="../shops/?id=<?=$v['id_Магазина']?>" target="_blank"><?=$v['Магазин']?></a></td>
 				<?if($isUserAutorized) {?>
 					<td><?=$v['amount']?></td>
 					<td><?=$v['login']?></td>
