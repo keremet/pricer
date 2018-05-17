@@ -29,10 +29,10 @@
 			$readonly = ($_SESSION['user']['id']==null);
 			if($is_file){
 				$stmt = $db->prepare(
-					"SELECT ".DB_TABLE_PREFIX."products.name, photo, ".DB_TABLE_PREFIX."ed_izm.name as ed_izm, ed_izm_id, in_box
-					FROM ".DB_TABLE_PREFIX."products
-					LEFT JOIN ".DB_TABLE_PREFIX."ed_izm on ".DB_TABLE_PREFIX."ed_izm.id = ".DB_TABLE_PREFIX."products.ed_izm_id
-					WHERE ".DB_TABLE_PREFIX."products.id = ?"
+					"SELECT p.name, photo, e.name as ed_izm, p.ed_izm_id, p.in_box, p.barcode
+					FROM ".DB_TABLE_PREFIX."products p
+					LEFT JOIN ".DB_TABLE_PREFIX."ed_izm e on e.id = p.ed_izm_id
+					WHERE p.id = ?"
 				);
 				$stmt->execute(array($id));
 				if(!($product = $stmt->fetch())){
@@ -91,7 +91,9 @@
 				$r .= '</select>';
 			}
 			$r .= '<br><br>Количество единиц измерения в товаре<br>
-			<input '.(($readonly)?'readonly':'').' type="text" name="in_box" value="'.$product['in_box'].'">';
+			<input '.(($readonly)?'readonly':'').' type="text" name="in_box" value="'.$product['in_box'].'">
+			<br><br>Штрихкод<br>
+			<input '.(($readonly)?'readonly':'').' type="text" name="barcode" value="'.$product['barcode'].'">';
 			if($is_file)
 				$r .= '<br><br><a target="_blank" href="../analytics/?product[]='.$id.'">Перейти к ценам</a>';
 			if(!$readonly){

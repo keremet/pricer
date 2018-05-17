@@ -4,7 +4,7 @@
 
 	$product_id = (int) $_REQUEST['id'];
 	$stmt = $db->prepare(
-		"SELECT p.name, p.photo, e.name as ed_izm, p.ed_izm_id, p.in_box
+		"SELECT p.name, p.photo, e.name as ed_izm, p.ed_izm_id, p.in_box, p.barcode
 		 FROM ".DB_TABLE_PREFIX."products p
 		 LEFT JOIN ".DB_TABLE_PREFIX."ed_izm e on e.id = p.ed_izm_id
 		 WHERE p.id = ?"
@@ -26,6 +26,7 @@
 	</div><br>
 	Единица измерения: <?=$product['ed_izm'] ?><br>
 	Количество единиц измерения в товаре: <?=$product['in_box'] ?><br>
+	Штрихкод: <?=$product['barcode'] ?><br>
 	<a target="_blank" href="../analytics/?product[]=<?=$product_id?>&send=Применить+фильтр">Перейти к ценам</a>
 <?
 	include('../template/footer.php');

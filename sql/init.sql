@@ -60,11 +60,13 @@ CREATE TABLE `pr_products` (
   `name` text COLLATE utf8_unicode_ci NOT NULL,
   `photo` text COLLATE utf8_unicode_ci,
   `text` text COLLATE utf8_unicode_ci,
+  `barcode` bigint(13),
   `ed_izm_id` int(11),
   `in_box` double,
   `main_clsf_id` int(11) NOT NULL,
   `creator` int(11) NOT NULL,
   `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY (`barcode`),
   CONSTRAINT `pr_products_ed_izm_id` FOREIGN KEY (`ed_izm_id`) REFERENCES `pr_ed_izm` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `pr_products_main_clsf_id` FOREIGN KEY (`main_clsf_id`) REFERENCES `pr_products_main_clsf` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `pr_products_creator` FOREIGN KEY (`creator`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE

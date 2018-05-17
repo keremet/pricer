@@ -6,21 +6,41 @@ if($_SESSION['user']['id']==null){
 	echo json_encode(array('result' => 'Требуется авторизация', 'error' => '1'));
 	die();
 }
+if(!isset($_REQUEST['ed_izm'])){
+	echo json_encode(array('result' => 'Не указана единица измерения', 'error' => '1'));
+	die();
+}
 function doKolvo($s){
 	if($s == '')
 		return null;
 	return str_replace(',', '.', $s);
 }
 
-$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."products WHERE name = ? and id != ?");
-$stmt->execute(array($_REQUEST['product_name'], isset($_REQUEST['id'])?isset($_REQUEST['id']):null));
+$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."products WHERE name = ?".isset($_REQUEST['id'])?" and (id != ?)":"");
+if(isset($_REQUEST['id']))
+	$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['id']));
+else
+	$stmt->execute(array($_REQUEST['product_name']));
 if($stmt->fetch()){
 	echo json_encode(array('result' => 'Товар с таким названием уже есть', 'error' => '1'));
 	die();
 }
+
+if($_REQUEST['barcode'] != ''){
+	$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."products WHERE barcode = ?".isset($_REQUEST['id'])?" and (id != ?)":"");
+	if(isset($_REQUEST['id']))
+		$stmt->execute(array($_REQUEST['barcode'], $_REQUEST['id']));
+	else
+		$stmt->execute(array($_REQUEST['barcode']));
+	if($stmt->fetch()){
+		echo json_encode(array('result' => 'Товар с таким штрихкодом уже есть', 'error' => '1'));
+		die();
+	}
+}
+
 if (isset($_REQUEST['id'])) {
-	$stmt = $db->prepare("UPDATE ".DB_TABLE_PREFIX."products SET name = ?, ed_izm_id = ?, in_box = ? WHERE id = ?");
-	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['id']))){
+	$stmt = $db->prepare("UPDATE ".DB_TABLE_PREFIX."products SET name = ?, ed_izm_id = ?, in_box = ?, barcode = ? WHERE id = ?");
+	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['barcode'], $_REQUEST['id']))){
 		echo json_encode(array('result' => 'Ошибка изменения товара.', 'error' => '1'));
 		//echo 'Ошибка изменения товара'; print_r($stmt->errorInfo());
 		exit();
@@ -91,8 +111,8 @@ if (isset($_REQUEST['id'])) {
 	echo json_encode($result);
 	exit();
 } else {
-	$stmt = $db->prepare("INSERT ".DB_TABLE_PREFIX."products(name, ed_izm_id, in_box, main_clsf_id, creator) values(?, ?, ?, ?, ?)");
-	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
+	$stmt = $db->prepare("INSERT ".DB_TABLE_PREFIX."products(name, ed_izm_id, in_box, barcode, main_clsf_id, creator) values(?, ?, ?, ?, ?, ?)");
+	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['barcode'], $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
 		echo json_encode(array('result' => 'Ошибка добавления товара.', 'error' => '1'));
 		//echo 'Ошибка добавления товара'; print_r($stmt->errorInfo());
 		exit();
