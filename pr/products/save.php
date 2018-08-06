@@ -10,10 +10,15 @@ if(!isset($_REQUEST['ed_izm'])){
 	echo json_encode(array('result' => 'Не указана единица измерения', 'error' => '1'));
 	die();
 }
+
 function doKolvo($s){
 	if($s == '')
 		return null;
 	return str_replace(',', '.', $s);
+}
+
+function strOrNull($s){
+	return ($s == '')?null:$s;
 }
 
 $stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."products WHERE name = ?".isset($_REQUEST['id'])?" and (id != ?)":"");
@@ -112,7 +117,7 @@ if (isset($_REQUEST['id'])) {
 	exit();
 } else {
 	$stmt = $db->prepare("INSERT ".DB_TABLE_PREFIX."products(name, ed_izm_id, in_box, barcode, main_clsf_id, creator) values(?, ?, ?, ?, ?, ?)");
-	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['barcode'], $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
+	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), strOrNull($_REQUEST['barcode']), $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
 		echo json_encode(array('result' => 'Ошибка добавления товара.', 'error' => '1'));
 		//echo 'Ошибка добавления товара'; print_r($stmt->errorInfo());
 		exit();
