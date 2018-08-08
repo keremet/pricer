@@ -53,8 +53,8 @@
 						  success: function(data) {
 							result = JSON.parse(data); 
 							if(result[\'photo\']){
-								$(\'#form_product\').find(\'img\').attr(\'src\', result[\'photo\']);
-								$(\'#form_product\').find(\'a\').attr(\'href\', result[\'photo\']);
+								$(\'#form_product\').find(\'img\').attr(\'src\', \'../uploaded/\'+result[\'photo\']);
+								$(\'#form_product\').find(\'a\').attr(\'href\', \'../uploaded/\'+result[\'photo\']);
 							}
 							if(result[\'error\'] == \'0\')
 								$(\'#message_product\').css(\'color\', \'green\').text(result[\'result\']);
@@ -65,9 +65,9 @@
 			  .'Название товара*<br>'
 			  .'<input '.(($readonly)?'readonly':'').' required type="text" name="product_name" value="'.htmlspecialchars ($product['name']).'"><br><br>';
 			if($product['photo']){
-				$ph = '/pricer/uploaded/'.$product['photo'];
+				$ph = '../uploaded/'.$product['photo'];
 			}else{
-				$ph = '/pricer/images/noph_prod.png';
+				$ph = '../images/noph_prod.png';
 			}
 
 			$r .= '<div style=" height: 140px; width: 140px; background-color: #EDEDED; border: 2px solid #AAAAAA; position: relative; display: inline-block;">'

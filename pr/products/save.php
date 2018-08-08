@@ -21,7 +21,7 @@ function strOrNull($s){
 	return ($s == '')?null:$s;
 }
 
-$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."products WHERE name = ?".isset($_REQUEST['id'])?" and (id != ?)":"");
+$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."products WHERE name = ?".(isset($_REQUEST['id'])?" and (id != ?)":""));
 if(isset($_REQUEST['id']))
 	$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['id']));
 else
@@ -32,7 +32,7 @@ if($stmt->fetch()){
 }
 
 if($_REQUEST['barcode'] != ''){
-	$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."products WHERE barcode = ?".isset($_REQUEST['id'])?" and (id != ?)":"");
+	$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."products WHERE barcode = ?".(isset($_REQUEST['id'])?" and (id != ?)":""));
 	if(isset($_REQUEST['id']))
 		$stmt->execute(array($_REQUEST['barcode'], $_REQUEST['id']));
 	else
@@ -45,7 +45,7 @@ if($_REQUEST['barcode'] != ''){
 
 if (isset($_REQUEST['id'])) {
 	$stmt = $db->prepare("UPDATE ".DB_TABLE_PREFIX."products SET name = ?, ed_izm_id = ?, in_box = ?, barcode = ? WHERE id = ?");
-	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), $_REQUEST['barcode'], $_REQUEST['id']))){
+	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), strOrNull($_REQUEST['barcode']), $_REQUEST['id']))){
 		echo json_encode(array('result' => 'Ошибка изменения товара.', 'error' => '1'));
 		//echo 'Ошибка изменения товара'; print_r($stmt->errorInfo());
 		exit();
@@ -65,8 +65,7 @@ if (isset($_REQUEST['id'])) {
 			echo json_encode(array('result' => 'Ошибка при загрузке изображения', 'error' => '1'));
 			die();
 		}
-		$photoFileName = '/pricer/uploaded/'.$_FILES['image']['name'];
-		$fullPath = $_SERVER['DOCUMENT_ROOT'].$photoFileName;
+		$fullPath = $_SERVER['DOCUMENT_ROOT'].'/pricer/uploaded/'.$_FILES['image']['name'];
 		if(file_exists($fullPath)){
 			function on_file_exist($path){
 				$result = array();
@@ -112,7 +111,7 @@ if (isset($_REQUEST['id'])) {
 	}
 	$result = array('result' => 'Товар успешно изменён', 'name' => $_REQUEST['product_name'], 'id' => $db->lastInsertId(), 'error' => '0');
 	if($_FILES['image']['name'])
-		$result['photo'] = '/pricer/uploaded/'.$photoFileName;
+		$result['photo'] = $photoFileName;
 	echo json_encode($result);
 	exit();
 } else {
