@@ -27,7 +27,7 @@
 		,'receiptCode', 'fiscalSign'
 		,'fiscalDocumentNumber', 'requestNumber'
 		,'buyerAddress', 'senderAddress','addressToCheckFiscalSign'
-		, 'nds18', 'nds10', 'ndsNo', 'login'
+		, 'nds18', 'nds10', 'ndsNo', 'login', 'raw'
 		));
 	$stmt = $db->prepare(
 		"SELECT r.id, DATE_FORMAT(r.dateTime, '%d-%m-%Y %H:%i:%s') dt
@@ -54,7 +54,8 @@
 			, $row['receiptCode'], $row['fiscalSign']
 			, $row['fiscalDocumentNumber'], $row['requestNumber']
 			, $row['buyerAddress'], $row['senderAddress'], $row['addressToCheckFiscalSign']
-			, $row['nds18'], $row['nds10'], $row['ndsNo'], $row['login']		
+			, $row['nds18'], $row['nds10'], $row['ndsNo'], $row['login']
+			, '<a href=receipt_raw.php?id='.$row['id'].'>raw</a>'
 			));
 	}
         

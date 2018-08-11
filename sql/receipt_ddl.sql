@@ -25,6 +25,7 @@ CREATE TABLE `pr_receipt` (
   `dateTime` DATETIME DEFAULT NULL,
   `ndsNo` int(11) DEFAULT NULL,
   `user_id`  int(11) NOT NULL,
+  `rawReceipt` text,
    CONSTRAINT `pr_receipt_uk` UNIQUE KEY (`dateTime`, `totalSum`, `fiscalDriveNumber`, `fiscalDocumentNumber`, `fiscalSign`),
    CONSTRAINT `pr_receipt_user_id` FOREIGN KEY (`user_id`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
