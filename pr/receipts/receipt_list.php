@@ -39,6 +39,8 @@
 			, r.receiptCode, r.fiscalSign, r.nds10
 			, r.fiscalDocumentNumber, r.requestNumber, r.ndsNo
 			, u.login
+			, if(rawReceipt is Null, '', '+') rawLoaded
+			, if(checked=0, '', '+') checked
 		 FROM ".DB_TABLE_PREFIX."receipt r 
 		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id
 		 ORDER BY r.dateTime desc
@@ -55,7 +57,7 @@
 			, $row['fiscalDocumentNumber'], $row['requestNumber']
 			, $row['buyerAddress'], $row['senderAddress'], $row['addressToCheckFiscalSign']
 			, $row['nds18'], $row['nds10'], $row['ndsNo'], $row['login']
-			, '<a href=receipt_check.php?id='.$row['id'].'>check</a> <br/> <a href=receipt_raw.php?id='.$row['id'].'>raw</a>'
+			, $row['checked'].'<a href=receipt_check.php?id='.$row['id'].'>check</a> <br/>'.$row['rawLoaded'].'<a href=receipt_raw.php?id='.$row['id'].'>raw</a>'
 			));
 	}
         

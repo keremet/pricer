@@ -13,19 +13,27 @@
 	include "../template/connect.php";
 	require_once('receipt_nalog.php');
 
-	$stmt = $db->prepare(
+	$stmtS = $db->prepare(
 		"SELECT fiscalDriveNumber, fiscalDocumentNumber, fiscalSign
 			, DATE_FORMAT(dateTime, '%Y-%m-%dT%H:%i:%s') dt
 			, totalSum
 		 FROM ".DB_TABLE_PREFIX."receipt
 		 WHERE id = ?
 		 ");
-	$stmt->execute(array($_GET['id']));
+	$stmtS->execute(array($_GET['id']));
 	
 	$rec = new ReceiptNalog();
-	if ($row = $stmt->fetch()) {
+	if ($row = $stmtS->fetch()) {
 		$data = $rec->check($row['fiscalDriveNumber'], $row['fiscalDocumentNumber'], $row['fiscalSign'], $row['dt'], $row['totalSum']);
 		echo "Результат проверки: '".$data."'";
+		if ($data == '') {
+			$stmtU = $db->prepare(
+				"UPDATE ".DB_TABLE_PREFIX."receipt
+				 SET checked = 1
+				 WHERE id = ?
+				 ");
+			$stmtU->execute(array($_GET['id']));
+		}
 	}
 	else echo "Чек не найден в БД Ценовичка";
 ?> 
