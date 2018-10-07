@@ -9,14 +9,30 @@
 </table>
 <br/>
 <?php
+function money_out($v) {
+	if($v == null)
+		return "";
+
+	$s = "";
+	$s = ($v % 10).$s;
+	$v = (int)($v/10);
+	$s = ".".($v % 10).$s;
+	$v = (int)($v/10);
+	do {
+		$s = ($v % 10).$s;
+		$v = (int)($v/10);
+	} while ($v > 0);
+	return "<p align=\"right\">".$s."</p>";
+}
+
 	include "../template/oft_table.php";
 	include "../template/connect.php";
 	
 	oftTable::init('Товары');
-	oftTable::header(array('name'
-			, 'price', 'quantity', 'sum', 'discountSum'
-			, 'discountName', 'markupName'
-			, 'nds10', 'nds18', 'ndsNo'
+	oftTable::header(array('Товар'
+			, 'Цена', 'Кол-во', 'Ст-ть', 'Сумма скидки'
+			, 'Название скидки', 'markupName'
+			, 'НДС 10%', 'НДС 18%', 'НДС'
 		));
 	$stmt = $db->prepare(
 		"SELECT i.sum, i.nds10, i.name, i.price, i.nds18, i.id, i.quantity, i.ndsNo
@@ -28,9 +44,9 @@
 	$stmt->execute(array($_GET['id']));
 	while ($row = $stmt->fetch()) {
 		oftTable::row(array($row['name']
-			, $row['price'], $row['quantity'], $row['sum'], $row['discountSum']
+			, money_out($row['price']), "<p align=\"right\">".$row['quantity']."</p>", money_out($row['sum']), money_out($row['discountSum'])
 			, $row['discountName'], $row['markupName']	
-			, $row['nds10'], $row['nds18'], $row['ndsNo']
+			, money_out($row['nds10']), money_out($row['nds18']), $row['ndsNo']
 			));
 	}
         
