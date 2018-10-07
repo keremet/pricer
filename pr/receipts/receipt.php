@@ -9,24 +9,9 @@
 </table>
 <br/>
 <?php
-function money_out($v) {
-	if($v == null)
-		return "";
-
-	$s = "";
-	$s = ($v % 10).$s;
-	$v = (int)($v/10);
-	$s = ".".($v % 10).$s;
-	$v = (int)($v/10);
-	do {
-		$s = ($v % 10).$s;
-		$v = (int)($v/10);
-	} while ($v > 0);
-	return "<p align=\"right\">".$s."</p>";
-}
-
 	include "../template/oft_table.php";
 	include "../template/connect.php";
+	include "money_out.php";
 	
 	oftTable::init('Товары');
 	oftTable::header(array('Товар'
@@ -46,7 +31,7 @@ function money_out($v) {
 		oftTable::row(array($row['name']
 			, money_out($row['price']), "<p align=\"right\">".$row['quantity']."</p>", money_out($row['sum']), money_out($row['discountSum'])
 			, $row['discountName'], $row['markupName']	
-			, money_out($row['nds10']), money_out($row['nds18']), $row['ndsNo']
+			, money_out($row['nds10']), money_out($row['nds18']), money_out($row['ndsNo'])
 			));
 	}
         

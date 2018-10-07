@@ -16,7 +16,8 @@
 <?php
 	include "../template/oft_table.php";
 	include "../template/connect.php";
-	
+	include "money_out.php";
+
 	oftTable::init('Чеки');
 	oftTable::header(array('Время'
 		,'totalSum','fiscalDriveNumber'
@@ -48,15 +49,15 @@
 	$stmt->execute();
 	while ($row = $stmt->fetch()) {
 		oftTable::row(array('<a href=receipt.php?id='.$row['id'].'>'.$row['dt'].'</a>'
-			, $row['totalSum'], $row['fiscalDriveNumber']
+			, money_out($row['totalSum']), $row['fiscalDriveNumber']
 			, $row['kktRegId'], $row['user'], $row['operationType']
-			, $row['shiftNumber'], $row['ecashTotalSum']
+			, $row['shiftNumber'], money_out($row['ecashTotalSum'])
 			, $row['retailPlaceAddress'], $row['userInn'], $row['taxationType']
 			, $row['cashTotalSum'], $row['operator']
 			, $row['receiptCode'], $row['fiscalSign']
 			, $row['fiscalDocumentNumber'], $row['requestNumber']
 			, $row['buyerAddress'], $row['senderAddress'], $row['addressToCheckFiscalSign']
-			, $row['nds18'], $row['nds10'], $row['ndsNo'], $row['login']
+			, money_out($row['nds18']), money_out($row['nds10']), money_out($row['ndsNo']), $row['login']
 			, $row['checked'].'<a href=receipt_check.php?id='.$row['id'].'>check</a> <br/>'.$row['rawLoaded'].'<a href=receipt_raw.php?id='.$row['id'].'>raw</a><br/><a href=receipt_parse.php?id='.$row['id'].'>parse</a>'
 			));
 	}
