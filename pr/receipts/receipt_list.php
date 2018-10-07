@@ -57,7 +57,7 @@
 			, $row['fiscalDocumentNumber'], $row['requestNumber']
 			, $row['buyerAddress'], $row['senderAddress'], $row['addressToCheckFiscalSign']
 			, $row['nds18'], $row['nds10'], $row['ndsNo'], $row['login']
-			, $row['checked'].'<a href=receipt_check.php?id='.$row['id'].'>check</a> <br/>'.$row['rawLoaded'].'<a href=receipt_raw.php?id='.$row['id'].'>raw</a>'
+			, $row['checked'].'<a href=receipt_check.php?id='.$row['id'].'>check</a> <br/>'.$row['rawLoaded'].'<a href=receipt_raw.php?id='.$row['id'].'>raw</a><br/><a href=receipt_parse.php?id='.$row['id'].'>parse</a>'
 			));
 	}
         
