@@ -28,7 +28,10 @@ foreach(explode(';', $entityBody) as $qrCode){
 		}
 		//print_r($p);
 
-		if($stmt->execute(array($p['t'], $p['s'], $p['fn'], $p['i'], $p['fp'], $login, $passwd))){
+		if((!array_key_exists('t', $p)) || (!array_key_exists('s', $p)) || (!array_key_exists('fn', $p))
+			|| (!array_key_exists('i', $p)) || (!array_key_exists('fp', $p))){
+			$res .= 'ERR формат QR-кода ';
+		}else if($stmt->execute(array($p['t'], $p['s'], $p['fn'], $p['i'], $p['fp'], $login, $passwd))){
 			$res .= 'OK ';
 			$rowCount += $stmt->rowCount();
 		}else{
