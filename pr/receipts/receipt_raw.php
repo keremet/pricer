@@ -9,7 +9,6 @@
 </table>
 <br/>
 <?php
-	include "../template/oft_table.php";
 	include "../template/connect.php";
 	require_once('receipt_nalog.php');
 
@@ -23,7 +22,6 @@
 		if ($row['rawReceipt'] == '') {
 			$rec = new ReceiptNalog();
 			$data = $rec->get($row['fiscalDriveNumber'], $row['fiscalDocumentNumber'], $row['fiscalSign']);
-			
 			$stmtU = $db->prepare(
 				"UPDATE ".DB_TABLE_PREFIX."receipt
 				 SET rawReceipt = ?
@@ -34,5 +32,3 @@
 		}else echo "Значение из БД Ценовичка: ".$row['rawReceipt'];
 	} else echo "Чек не найден в БД Ценовичка";
 ?> 
-</body>
-</html>

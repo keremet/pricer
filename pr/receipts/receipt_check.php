@@ -9,7 +9,6 @@
 </table>
 <br/>
 <?php
-	include "../template/oft_table.php";
 	include "../template/connect.php";
 	require_once('receipt_nalog.php');
 
@@ -37,5 +36,3 @@
 	}
 	else echo "Чек не найден в БД Ценовичка";
 ?> 
-</body>
-</html>

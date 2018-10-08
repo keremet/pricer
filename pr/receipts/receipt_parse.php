@@ -34,13 +34,7 @@ if($_SESSION['user']['id']==null)
 	$doc = json_decode($row['rawReceipt'], true);
 	
 	parseReceipt($doc, $_GET['id']);
-?> 
-</body>
-</html>
-
-
   
-<?   
 ///////////
 
 function parseReceipt($d, $id)
@@ -178,5 +172,3 @@ function logMessage($title, $msg)
     echo $data;
 }
 ?>
-</body>
-</html>
