@@ -17,6 +17,7 @@
 	include "../template/oft_table.php";
 	include "../template/connect.php";
 	include "money_out.php";
+	
 
 	oftTable::init('Чеки');
 	oftTable::header(array('Время'
@@ -43,10 +44,14 @@
 			, if(rawReceipt is Null, '', '+') rawLoaded
 			, if(checked=0, '', '+') checked
 		 FROM ".DB_TABLE_PREFIX."receipt r 
-		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id
-		 ORDER BY r.dateTime desc
+		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id ".
+		 ((isset($_GET['user_id']))?"WHERE r.user_id = ?":"").   
+		 " ORDER BY r.dateTime desc
 		 ");
-	$stmt->execute();
+	if(isset($_GET['user_id']))
+		$stmt->execute(array($_GET['user_id']));
+	else
+		$stmt->execute();
 	while ($row = $stmt->fetch()) {
 		oftTable::row(array('<a href=receipt.php?id='.$row['id'].'>'.$row['dt'].'</a>'
 			, money_out($row['totalSum']), $row['fiscalDriveNumber']
