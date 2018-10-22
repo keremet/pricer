@@ -11,6 +11,7 @@
 	<td align="left"><a href="known_products.php">Соответствие товара</a>
 	<td align="left"><a href="known_shops.php">Соответствие магазина</a>
 	<td align="left"><a href="stats.php">Статистика покупок товаров</a>
+	<td align="left"><a href="receipt_add.php">Добавить чек</a>
 </table>
 <br/>
 <?php
