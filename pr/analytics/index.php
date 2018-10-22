@@ -11,6 +11,11 @@ headerOut('Аналитика');
 			var numid = strid.substr(9);
 			$('#tr_prod_'+numid).removeClass('selected'); 
 			$('#tr_prod_'+numid+' input').removeAttr('checked');
+		}else if($(this).hasClass('equ_product')){
+			var strid = $(this).attr('id');
+			var numid = strid.substr(13);
+			$('#tr_equ_prod_'+numid).removeClass('selected'); 
+			$('#tr_equ_prod_'+numid+' input').removeAttr('checked');
 		}else if($(this).hasClass('shop')){
 			var strid = $(this).attr('id');
 			var numid = strid.substr(9);
@@ -57,6 +62,10 @@ $arProds = array();
 foreach($db->query("SELECT id, name FROM  ".DB_TABLE_PREFIX."products order by name") as $row)
 	$arProds[$row['id']] = $row['name'];
 
+$arEquProds = array();
+foreach($db->query("SELECT id, name FROM  ".DB_TABLE_PREFIX."products_equ_clsf WHERE id_hi is not null order by name") as $row)
+	$arEquProds[$row['id']] = $row['name'];
+
 $shops_ = $db->query("SELECT id, name, address, network_id, town_id FROM ".DB_TABLE_PREFIX."shops order by name")->fetchAll();
 $arShops = array();
 if($shops_){
@@ -87,6 +96,27 @@ if($shops_){
 		}?>
 		</table>
 	</div>
+	
+	<b><a id="select_equ_product_button" class="fancybox" href="#select_equ_product">Фильтровать по эквивалентным товарам</a></b><br>
+	<div class="selected_items" id="selected_equ_product">
+		<?if(is_array($_GET['equ_product'])){
+			foreach($_GET['equ_product'] as $k => $v){
+				echo '<span class="sel_item equ_product" id="sel_equ_prod_'.$v.'">'.$arEquProds[$v].'</span>';
+			}
+		}?>
+	</div>
+	<div id="select_equ_product" style="display: none;">
+		<table class="main select" id="equ_product_select_table"><tr><th></th><th>Название</th></tr>
+		<?foreach($arEquProds as $k => $v){
+			echo '<tr id="tr_equ_prod_'.$k.'"';
+			if(is_array($_GET['equ_product']) && in_array($k, $_GET['equ_product'])) echo ' class="selected"';
+			echo '><td><input type="checkbox"';
+			if(is_array($_GET['equ_product']) && in_array($k, $_GET['equ_product'])) echo ' checked="checked"';
+			echo ' name="equ_product[]" onchange="$(this).closest(\'tr\').toggleClass(\'selected\'); if($(this).closest(\'tr\').hasClass(\'selected\')){ $(\'div.selected_items#selected_equ_product\').append(\'<span class=&#34sel_item equ_prod&#34; id=&#34;sel_equ_prod_'.$k.'&#34;>'.htmlspecialchars($v, ENT_QUOTES).'</span>\');} else {$(\'#sel_equ_prod_'.$k.'\').remove();}" value="'.$k.'" ></td><td onclick="$(this).parent(\'tr\').find(\'input[type=checkbox]\').click();">'.$v.'<div class="select_box">'.$k.'</div></td></tr>';
+		}?>
+		</table>
+	</div>
+	
 	<b><a id="select_shop_button" class="fancybox" href="#select_shop">Фильтровать по магазину</a></b><br>
 	<div class="selected_items" id="selected_shop">
 		<?if(is_array($_GET['shops'])){
@@ -106,6 +136,7 @@ if($shops_){
 		}?>
 		</table>
 	</div>
+	
 	<?if($isUserAutorized) {?>
 		<b><a id="select_user_button" class="fancybox" href="#select_user">Фильтровать по автору</a></b><br>
 		<div class="selected_items" id="selected_user">
@@ -208,7 +239,30 @@ if($shops_){
 			}
 		}
 
-		if(is_array($_GET['product'])){
+		if(is_array($_GET['product']) && is_array($_GET['equ_product'])){
+			$query .= " and (f.product IN (";
+			$i = 0;
+			foreach($_GET['product'] as $k => $v){
+				if($i != 0){
+					$query .= ", ";
+				}else $i = 1;
+				$query .= "?";
+				$query_array[] = $v;
+			}
+			$query .= ") or f.product IN (
+						SELECT ep.product_id
+						FROM ".DB_TABLE_PREFIX."equ_products ep
+						WHERE ep.equ_clsf_id IN (";
+			$i = 0;
+			foreach($_GET['equ_product'] as $k => $v){
+				if($i != 0){
+					$query .= ", ";
+				}else $i = 1;
+				$query .= "?";
+				$query_array[] = $v;
+			}
+			$query .= ")))";	
+		} else if(is_array($_GET['product'])){
 			$query .= " and f.product IN (";
 			$i = 0;
 			foreach($_GET['product'] as $k => $v){
@@ -219,6 +273,20 @@ if($shops_){
 				$query_array[] = $v;
 			}
 			$query .= ")";
+		} else if(is_array($_GET['equ_product'])){
+			$query .= " and f.product IN (
+						SELECT ep.product_id
+						FROM ".DB_TABLE_PREFIX."equ_products ep
+						WHERE ep.equ_clsf_id IN (";
+			$i = 0;
+			foreach($_GET['equ_product'] as $k => $v){
+				if($i != 0){
+					$query .= ", ";
+				}else $i = 1;
+				$query .= "?";
+				$query_array[] = $v;
+			}
+			$query .= "))";
 		}
 
 		if(is_array($_GET['shops'])){
