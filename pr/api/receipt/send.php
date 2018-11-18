@@ -20,10 +20,13 @@ if ($stmt==FALSE)
 foreach(explode(';', $entityBody) as $qrCode){
 	if($qrCode){
 		$p = array();
+		$dbg_s = "";
 		foreach(explode('&', $qrCode) as $param){
 			list($key, $value) = explode('=', $param);
-			if($key == 's')
+			if($key == 's'){
+				$dbg_s = $value;
 				$value = str_replace('.', '', $value);
+			}
 			$p[$key] = $value;
 		}
 		//print_r($p);
@@ -35,8 +38,17 @@ foreach(explode(';', $entityBody) as $qrCode){
 			$res .= 'OK ';
 			$rowCount += $stmt->rowCount();
 		}else{
-			$res .= 'ERR ';
-			print_r($stmt->errorInfo());
+			$errInfo = $stmt->errorInfo();
+			if($errInfo[1] == 1062){
+				list($d, $t) = explode('T', $p['t']);
+				echo substr($d, 6, 2).".".substr($d, 4, 2).".".substr($d, 2, 2)." ".
+					 substr($t, 0, 2).":".substr($t, 2, 2).":".substr($t, 4, 2)." ".
+					 $dbg_s." уже добавлен\n";
+				$res .= 'WARN ';
+			}else{
+				$res .= 'ERR ';
+				print_r($errInfo);
+			}
 		}
 	}
 }
