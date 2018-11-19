@@ -2,23 +2,6 @@
 	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
 	<title>Список чеков</title>
 </head>
-<script type="text/javascript" src="../template/fancybox/lib/jquery-1.10.1.min.js"></script>
-<script>
-	function receipt_del(id){
-		if (!confirm('Удалить чек?'))
-			return;
-		jQuery.ajax({
-			url:     'receipt_del.php',
-			type:     "POST",
-			dataType: "html",
-			data: {id: id}, 
-			success: function(result) {
-				alert(result);
-				location.reload();
-			}
-		});
-	}
-</script>
 <table style="page-break-before: always;" width="600" border="0" cellpadding="1" cellspacing="1">
 <tr valign="TOP">
 	<td align="left"><a href="exit.php">Выход</a>
@@ -61,6 +44,7 @@
 			, u.login
 			, if(rawReceipt is Null, '', '+') rawLoaded
 			, if(checked=0, '', '+') checked
+			, r.user_id
 		 FROM ".DB_TABLE_PREFIX."receipt r 
 		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id ".
 		 ((isset($_GET['user_id']))?"WHERE r.user_id = ?":"").   
@@ -81,7 +65,7 @@
 			, $row['fiscalDocumentNumber'], $row['requestNumber']
 			, $row['buyerAddress'], $row['senderAddress'], $row['addressToCheckFiscalSign']
 			, money_out($row['nds18']), money_out($row['nds10']), money_out($row['ndsNo']), $row['login']
-			, $row['checked'].'check<br/>'.$row['rawLoaded'].'raw<br/><button onclick="receipt_del('.$row['id'].');">Удалить</button>'
+			, $row['checked'].'check<br/>'.$row['rawLoaded'].'raw'
 			));
 	}
         

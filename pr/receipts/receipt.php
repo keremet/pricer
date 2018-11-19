@@ -1,6 +1,24 @@
+<?session_start();?>
 <head>
 	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
 	<title>Чек</title>
+<script type="text/javascript" src="../template/fancybox/lib/jquery-1.10.1.min.js"></script>
+<script>
+	function receipt_del(id){
+		if (!confirm('Удалить чек?'))
+			return;
+		jQuery.ajax({
+			url:     'receipt_del.php',
+			type:     "POST",
+			dataType: "html",
+			data: {id: id}, 
+			success: function(result) {
+				alert(result);
+				location.reload();
+			}
+		});
+	}
+</script>
 </head>
 <table style="page-break-before: always;" width="600" border="0" cellpadding="1" cellspacing="1">
 <tr valign="TOP">
@@ -20,6 +38,7 @@
 			, r.retailPlaceAddress
 			, u.login
 			, r.rawReceipt
+			, r.user_id
 		 FROM ".DB_TABLE_PREFIX."receipt r 
 		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id 
 		 WHERE r.id = ?"
@@ -60,6 +79,9 @@
 	}
         
 	oftTable::end();
+	if($rowR['user_id']==$_SESSION['user']['id']){ ?> 
+		<p align="left"><button onclick="receipt_del('<?=$_GET['id']?>');">Удалить</button> <? 
+	}
 ?> 
 <br/>
 <p align="left">Чек в неразобранном формате:<br/>
