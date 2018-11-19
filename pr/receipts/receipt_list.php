@@ -81,7 +81,7 @@
 			, $row['fiscalDocumentNumber'], $row['requestNumber']
 			, $row['buyerAddress'], $row['senderAddress'], $row['addressToCheckFiscalSign']
 			, money_out($row['nds18']), money_out($row['nds10']), money_out($row['ndsNo']), $row['login']
-			, $row['checked'].'<a href=receipt_check.php?id='.$row['id'].'>check</a> <br/>'.$row['rawLoaded'].'<a href=receipt_raw.php?id='.$row['id'].'>raw</a><br/><a href=receipt_parse.php?id='.$row['id'].'>parse</a><button onclick="receipt_del('.$row['id'].');">Удалить</button>'
+			, $row['checked'].'check<br/>'.$row['rawLoaded'].'raw<br/><button onclick="receipt_del('.$row['id'].');">Удалить</button>'
 			));
 	}
         

@@ -19,21 +19,22 @@
 			, r.user
 			, r.retailPlaceAddress
 			, u.login
+			, r.rawReceipt
 		 FROM ".DB_TABLE_PREFIX."receipt r 
 		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id 
 		 WHERE r.id = ?"
 	 );
 	$stmt->execute(array($_GET['id']));
-	$row = $stmt->fetch();
-	if(!$row)
+	$rowR = $stmt->fetch();
+	if(!$rowR)
 		die("Чек не найден");
 ?> 
 	<table border="0" cellpadding="0" cellspacing="2">
-		<tr><td>Дата и время:<td><?=$row['dt']?>
-		<tr><td>Сумма:<td><?=money_to_str($row['totalSum'])?>
-		<tr><td>User:<td><?=$row['user']?>
-		<tr><td>retailPlaceAddress:<td><?=$row['retailPlaceAddress']?>
-		<tr><td>Ввел:<td><?=$row['login']?>
+		<tr><td>Дата и время:<td><?=$rowR['dt']?>
+		<tr><td>Сумма:<td><?=money_to_str($rowR['totalSum'])?>
+		<tr><td>User:<td><?=$rowR['user']?>
+		<tr><td>retailPlaceAddress:<td><?=$rowR['retailPlaceAddress']?>
+		<tr><td>Ввел:<td><?=$rowR['login']?>
 	</table>
 	<?
 	oftTable::init('Товары');
@@ -60,5 +61,8 @@
         
 	oftTable::end();
 ?> 
+<br/>
+<p align="left">Чек в неразобранном формате:<br/>
+<?=$rowR['rawReceipt']?>
 </body>
 </html>
