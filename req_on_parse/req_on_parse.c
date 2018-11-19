@@ -90,7 +90,7 @@ int main(void) {
 			if(!checked){
 				struct MemoryStruct check_out;
 				char url[100];
-				snprintf(url, sizeof(url), "http://orv.org.ru/pricer/receipts/receipt_check.php?id=%i", id);
+				snprintf(url, sizeof(url), "http://orv.org.ru/pricer/api/receipt/check.php?id=%i", id);
 				if( downloadToStruct(url, &check_out) != CURLE_OK)
 					continue;
 				printf("%s\n", check_out.memory);
@@ -106,7 +106,7 @@ int main(void) {
 			for(int i=0;(i<5) && !rawLoaded;i++){
 				struct MemoryStruct raw_out;
 				char url[100];
-				snprintf(url, sizeof(url), "http://orv.org.ru/pricer/receipts/receipt_raw.php?id=%i", id);
+				snprintf(url, sizeof(url), "http://orv.org.ru/pricer/api/receipt/raw.php?id=%i", id);
 				if( downloadToStruct(url, &raw_out) != CURLE_OK)
 					continue;
 				printf("%s\n", raw_out.memory);
@@ -122,7 +122,7 @@ int main(void) {
 			
 			struct MemoryStruct parse_out;
 			char url[100];
-			snprintf(url, sizeof(url), "http://orv.org.ru/pricer/receipts/receipt_parse.php?id=%i", id);
+			snprintf(url, sizeof(url), "http://orv.org.ru/pricer/api/receipt/parse.php?id=%i", id);
 			if( downloadToStruct(url, &parse_out) != CURLE_OK)
 				continue;
 			puts(parse_out.memory);
