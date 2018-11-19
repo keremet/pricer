@@ -1,5 +1,5 @@
 <?
-function money_out($v) {
+function money_to_str($v) {
 	if($v == null)
 		return "";
 
@@ -12,6 +12,13 @@ function money_out($v) {
 		$s = ($v % 10).$s;
 		$v = (int)($v/10);
 	} while ($v > 0);
-	return "<p align=\"right\">".$s."</p>";
+	return $s;
+}
+
+function money_out($v) {
+	if($v == null)
+		return "";
+
+	return "<p align=\"right\">".money_to_str($v)."</p>";
 }
 ?>
