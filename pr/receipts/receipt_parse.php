@@ -1,10 +1,3 @@
-<?session_start();
-header( "Content-Type: text/html; charset=utf-8" );
-
-if($_SESSION['user']['id']==null)
-	die("Требуется авторизация");
-?>
-
 <head>
 	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
 	<title>Разбор чека</title>
@@ -30,7 +23,16 @@ if($_SESSION['user']['id']==null)
 
 	if ($row['rawReceipt'] == '')
 		die("JSON не извлечен из БД ФНС");
-		
+	
+	$stmtS = $db->prepare(
+		"SELECT 1
+		 FROM ".DB_TABLE_PREFIX."receipt_item
+		 WHERE receipt_id = ?
+		 ");
+	$stmtS->execute(array($_GET['id']));
+	if($stmtS->fetch())
+		die("Чек уже разобран");	
+	
 	$doc = json_decode($row['rawReceipt'], true);
 	
 	parseReceipt($doc, $_GET['id']);

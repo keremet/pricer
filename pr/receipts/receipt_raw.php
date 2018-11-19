@@ -28,7 +28,7 @@
 				 WHERE id = ?
 				 ");
 			$stmtU->execute(array($data, $_GET['id']));
-			echo "Данные из налоговой: ".$data;
+			echo "Данные из налоговой: '".$data."'";
 		}else echo "Значение из БД Ценовичка: ".$row['rawReceipt'];
 	} else echo "Чек не найден в БД Ценовичка";
 ?> 
