@@ -78,9 +78,15 @@ int parseLine(char** pos2line, int *id, int *checked, int *rawLoaded){
 int main(void) {
 	curl_global_init(CURL_GLOBAL_ALL);
 
-	struct MemoryStruct not_parsed;
+	struct MemoryStruct not_parsed = {0};
 
 	if( downloadToStruct("http://orv.org.ru/pricer/api/receipt/get_not_parsed.php", &not_parsed) == CURLE_OK ){
+		if( not_parsed.size == 0 )
+		{
+			puts("Нет чеков для обработки");
+			curl_global_cleanup();
+			return 0;
+		}
 		printf( "%s\n"
 				"sleep 5 sec\n", not_parsed.memory);
 		sleep(5);
