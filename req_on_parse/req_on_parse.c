@@ -116,7 +116,14 @@ int main(void) {
 				if( downloadToStruct(url, &raw_out) != CURLE_OK)
 					continue;
 				printf("%s\n", raw_out.memory);
-				if(!strstr(raw_out.memory, "Данные из налоговой: ''"))
+				if(strstr(raw_out.memory, "Данные из налоговой: 'daily limit reached for the specified user'") != NULL){
+					puts("Превышен лимит извлечения данных на сегодня");
+					free(raw_out.memory);
+					free(not_parsed.memory);
+					curl_global_cleanup();
+					return 1;
+				}
+				if(strstr(raw_out.memory, "Данные из налоговой: ''") == NULL)
 					rawLoaded = 1;
 				printf((rawLoaded)?
 					"Попытка %i. Извлечение данных удачно. sleep 5 sec\n":
