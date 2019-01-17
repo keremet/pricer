@@ -12,7 +12,7 @@
 		if ($row['rawReceipt'] == '') {
 			$rec = new ReceiptNalog();
 			$data = $rec->get($row['fiscalDriveNumber'], $row['fiscalDocumentNumber'], $row['fiscalSign']);
-			if ($data != 'daily limit reached for the specified user' ) {
+			if (($data != "daily limit reached for the specified user") && ($data != "No available logins")) {
 				$stmtU = $db->prepare(
 					"UPDATE ".DB_TABLE_PREFIX."receipt
 					 SET rawReceipt = ?

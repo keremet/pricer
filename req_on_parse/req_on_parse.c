@@ -100,7 +100,14 @@ int main(void) {
 				if( downloadToStruct(url, &check_out) != CURLE_OK)
 					continue;
 				printf("%s\n", check_out.memory);
-				if(!strstr(check_out.memory, "Результат проверки: ''")){
+                if(strstr(check_out.memory, "Результат проверки: 'No available logins'") != NULL){
+                    puts("Превышен лимит извлечения данных на сегодня");
+					free(check_out.memory);
+                    free(not_parsed.memory);
+					curl_global_cleanup();
+					return 1;
+                }
+				if(strstr(check_out.memory, "Результат проверки: ''") == NULL){
 					puts("Проверка завершилась неудачно. Пропускаем этот чек");
 					free(check_out.memory);
 					continue;
@@ -116,14 +123,16 @@ int main(void) {
 				if( downloadToStruct(url, &raw_out) != CURLE_OK)
 					continue;
 				printf("%s\n", raw_out.memory);
-				if(strstr(raw_out.memory, "Данные из налоговой: 'daily limit reached for the specified user'") != NULL){
+				if(strstr(raw_out.memory, "Данные из налоговой: 'No available logins'") != NULL){
 					puts("Превышен лимит извлечения данных на сегодня");
 					free(raw_out.memory);
 					free(not_parsed.memory);
 					curl_global_cleanup();
 					return 1;
 				}
-				if(strstr(raw_out.memory, "Данные из налоговой: ''") == NULL)
+				if(strstr(raw_out.memory, "Данные из налоговой: 'daily limit reached for the specified user'") != NULL){
+					puts("Превышен лимит пользователя на извлечение данных на сегодня");
+				}else if(strstr(raw_out.memory, "Данные из налоговой: ''") == NULL)
 					rawLoaded = 1;
 				printf((rawLoaded)?
 					"Попытка %i. Извлечение данных удачно. sleep 5 sec\n":

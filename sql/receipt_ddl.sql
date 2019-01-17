@@ -75,6 +75,13 @@ CREATE TABLE `pr_receipt_item_to_product` (
   CONSTRAINT `pr_receipt_item_to_product__product_id` FOREIGN KEY (`product_id`) REFERENCES `pr_products` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `pr_receipt_user` (
+  `fns_userpwd` varchar(30) NOT NULL PRIMARY KEY,
+  `user_id` int(11) NOT NULL,
+  `dtLastLimit` DATETIME NOT NULL default '2001-01-01',
+  CONSTRAINT `pr_receipt_user__user_id` FOREIGN KEY (`user_id`) REFERENCES `pr_users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 CREATE VIEW `pr_receipt_item_unknown`  AS  
 select distinct 
