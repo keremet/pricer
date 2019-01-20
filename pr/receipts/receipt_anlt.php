@@ -10,13 +10,15 @@
 function print_prices($stmtProd, $stmtPrices, $product_id){
     $stmtProd->execute(array($product_id));
     if($prod = $stmtProd->fetch()){
-        echo "Название в БД: ".$prod['name']." (".$product_id.")<br/>";
+        oftTable::init($prod['name']." (".$product_id.")");
     }
     
     $stmtPrices->execute(array($product_id, $product_id));
+    oftTable::header(array("Цена ед. изм.", "Цена", "Магазин", "Дата"));
     while($price = $stmtPrices->fetch()){
-        echo "- Цена ".round($price['pr']/$prod['in_box'], 2)." (".$price['pr'].") магазин ".$price['name']." дата ".$price['date_buy']."<br/>";
+        oftTable::row(array(money_out(round($price['pr']/$prod['in_box'], 2)*100), money_out($price['pr']*100), $price['name'], $price['date_buy']));
     }
+    oftTable::end();
 }
 	$stmt = $db->prepare(
         "SELECT i.name, round(i.price/100, 2) price, round(i.price/100/ifnull(p.in_box, 1), 2) price_ei, i2p.product_id
@@ -57,7 +59,7 @@ function print_prices($stmtProd, $stmtPrices, $product_id){
     );
     
 	while ($row = $stmt->fetch()) {
-        echo "<b>Название в чеке: ".$row['name']."</b><br/>";
+        echo "<center><b>Название в чеке: ".$row['name']."</b><br/>";
         echo "Цена в чеке: <b>".$row['price_ei']." (".$row['price'].")</b><br/>";
         print_prices($stmtProd, $stmtPrices, $row['product_id']);
         
@@ -67,7 +69,7 @@ function print_prices($stmtProd, $stmtPrices, $product_id){
         while ($rowEquProd = $stmtEquProd->fetch()) {
             print_prices($stmtProd, $stmtPrices, $rowEquProd['product_id']);
         }
-        echo "<br/><br/>";
+        echo "<br/><hr><br/>";
 	}
 
 	oftTable::init("Неизвестные товары");
