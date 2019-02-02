@@ -206,6 +206,7 @@ headerOut('Личный кабинет');
 				<button id="edit_text_button" onclick="textareaEdit_value('text'); return false;">Добавить</button>
 			<?}?>
 		</div><br>
+		<a href="rep_actual.php">Отчет по актуальности цен</a><br>
 		<a href=my_economy.php>Отчет по экономии</a><br>
 		<a href=profile.php>Профилирование</a><br>
 		<a href=my_consumption.php>Мои расходы (профилирование)</a><br>
