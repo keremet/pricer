@@ -24,6 +24,7 @@
 <tr valign="TOP">
 	<td align="left"><a href="exit.php">Выход</a>
 	<td align="left"><a href="receipt_list.php">Список чеков</a>
+	<td align="left"><a href="receipt_anlt.php?id=<?=$_GET['id']?>">Отчет по оптимальности покупки</a>
 </table>
 <br/>
 <?php
