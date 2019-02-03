@@ -5,16 +5,25 @@ $entityBody = file_get_contents('php://input');
 
 //file_put_contents('test.txt', $entityBody);
 
-$login = $_GET['login'];
-$passwd = $_GET['passwd'];
+$stmt = $db->prepare(
+	"SELECT id
+	 FROM ".DB_TABLE_PREFIX."users
+	 WHERE login = ? and password = ?
+	");
+
+$stmt->execute(array($_GET['login'], $_GET['passwd']));
+$row = $stmt->fetch();
+if(!$row)
+	die("Неверный логин или пароль");
+
+$user_id = $row['id'];
 
 $res = '';
 $rowCount = 0;
 $stmt = $db->prepare(
 "INSERT INTO ".DB_TABLE_PREFIX."receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id) 
- SELECT STR_TO_DATE(?, '%Y%m%dT%H%i%s'), ?, ?, ?, ?, id 
- FROM ".DB_TABLE_PREFIX."users
- WHERE login = ? and password = ?");
+ VALUES (STR_TO_DATE(?, '%Y%m%dT%H%i%s'), ?, ?, ?, ?, ?)
+");
 if ($stmt==FALSE)
 	die('prepare failed');
 foreach(explode(';', $entityBody) as $qrCode){
@@ -34,7 +43,7 @@ foreach(explode(';', $entityBody) as $qrCode){
 		if((!array_key_exists('t', $p)) || (!array_key_exists('s', $p)) || (!array_key_exists('fn', $p))
 			|| (!array_key_exists('i', $p)) || (!array_key_exists('fp', $p))){
 			$res .= 'ERR формат QR-кода ';
-		}else if($stmt->execute(array($p['t'], $p['s'], $p['fn'], $p['i'], $p['fp'], $login, $passwd))){
+		}else if($stmt->execute(array($p['t'], $p['s'], $p['fn'], $p['i'], $p['fp'], $user_id))){
 			$res .= 'OK ';
 			$rowCount += $stmt->rowCount();
 		}else{
