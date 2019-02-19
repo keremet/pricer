@@ -41,23 +41,23 @@ function saveReceipt(){
 <form id="main_form" action="receipt_save.php" method="post">
 <table border="0" cellpadding="0" cellspacing="2">
             
-<tr><td>Дата<td><input id="date"  name="date" size="8" type="text" 
+<tr><td>Дата (DDMMYY)<td><input id="date"  name="date" size="8" type="text" 
 value="<?=(($id!=null)?$ent['date']:'')?>" maxlength="8" 
-onkeyup="return proverka_dat(this);" onchange="return proverka_dat(this);">
+onkeyup="return proverka_dat(this);" onchange="return proverka_dat(this);"> недописанная часть даты подставится из текущей
         
-<tr><td>Время(HHMMSS)<td><input id="time"  name="time" size="30" type="text" 
+<tr><td>Время (HHMMSS)<td><input id="time"  name="time" size="30" type="text" 
 value="<?=(($id!=null)?$ent['time']:'')?>">
       
 <tr><td>Сумма в копейках<td><input id="summa"  name="summa" size="30" type="text" 
 value="<?=(($id!=null)?$ent['summa']:'')?>">
 
-<tr><td>ФН(fiscalDriveNumber)<td><input id="fdn"  name="fdn" size="30" type="text" 
+<tr><td>ФН (fiscalDriveNumber)<td><input id="fdn"  name="fdn" size="30" type="text" 
 value="<?=(($id!=null)?$ent['fdn']:'')?>">
 
-<tr><td>ФП(fiscalSign)<td><input id="fs"  name="fs" size="30" type="text" 
+<tr><td>ФП (fiscalSign)<td><input id="fs"  name="fs" size="30" type="text" 
 value="<?=(($id!=null)?$ent['fs']:'')?>">
 
-<tr><td>ФД(fiscalDocumentNumber)<td><input id="fdoc"  name="fdoc" size="30" type="text" 
+<tr><td>ФД (fiscalDocumentNumber)<td><input id="fdoc"  name="fdoc" size="30" type="text" 
 value="<?=(($id!=null)?$ent['fdoc']:'')?>">
       
       	           
