@@ -7,8 +7,9 @@
 
 	if($_POST['operation'] === 'get') {
 		
-		$stmt = $db->query('SELECT user, userInn, retailPlaceAddress, dateTime, id
+		$stmt = $db->query('SELECT r.user, r.userInn, r.retailPlaceAddress, r.dateTime, r.id, u.login
 					FROM '.DB_TABLE_PREFIX.'receipt r
+                      JOIN '.DB_TABLE_PREFIX.'users u on r.user_id = u.id
 					WHERE not exists(
 					 SELECT 1
 					 FROM '.DB_TABLE_PREFIX.'receipt_to_shop s
@@ -25,6 +26,7 @@
 							   'inn' => $row['userInn'],
 							   'address' => $row['retailPlaceAddress'],
 							   'id' => $row['id'],
+							   'login' => $row['login'],
 							   'dateTime' => $row['dateTime']);
 			}
 			
@@ -103,7 +105,7 @@
 						cell.innerHTML = d.address;
 						
 						cell = row.insertCell();
-						cell.innerHTML = d.dateTime;
+						cell.innerHTML = "<a href=receipt.php?id=" + d.id + ">" + d.dateTime + "</a> " + d.login;
 						
 						cell = row.insertCell();
 						cell.innerHTML = "<input type='submit' value='Добавить' onclick='beginAddRule(" + d.id + ")'>";
