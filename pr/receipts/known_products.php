@@ -82,25 +82,6 @@ if(isset($_POST['operation']))
 		else
 			print ERROR;
 	}
-	else if($op == 'item_add') {
-		
-		if(isset($_POST['id']) && isset($_POST['name']) && isset($_POST['inn'])) {
-			$id = (int)$_POST['id'];
-			$name = $_POST['name'];
-			$inn = $_POST['inn'];
-			
-			$stmt = $db->prepare('INSERT INTO '.DB_TABLE_PREFIX.'receipt_item_to_product (`product_id`, `name`, `inn`) VALUES (?, ?, ?)');
-			$exec_prms = array($_POST['id'], $_POST['name'], $_POST['inn']);
-			
-			if($stmt->execute($exec_prms))
-				print OK;
-			else
-				print ERROR;
-		}
-		else
-			print ERROR;
-		
-	}
 	else
 		print ERROR;
 	

@@ -61,8 +61,10 @@ CREATE TABLE `pr_receipt_to_shop` (
   `inn` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(100) COLLATE utf8_unicode_ci,
   `address` varchar(100) COLLATE utf8_unicode_ci,
+  `user_id`  int(11) NOT NULL,
   UNIQUE KEY `name_inn` (`inn`, `name`, `address`) USING BTREE,
-  CONSTRAINT `pr_receipt_to_shop__shop_id` FOREIGN KEY (`shop_id`) REFERENCES `pr_shops` (`id`)
+  CONSTRAINT `pr_receipt_to_shop__shop_id` FOREIGN KEY (`shop_id`) REFERENCES `pr_shops` (`id`),
+  CONSTRAINT `pr_receipt_to_shop__user_id` FOREIGN KEY (`user_id`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
@@ -71,8 +73,10 @@ CREATE TABLE `pr_receipt_item_to_product` (
   `product_id` int(11) NOT NULL,
   `inn` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id`  int(11) NOT NULL,
   UNIQUE KEY `name_inn` (`inn`,`name`) USING BTREE,
-  CONSTRAINT `pr_receipt_item_to_product__product_id` FOREIGN KEY (`product_id`) REFERENCES `pr_products` (`id`)
+  CONSTRAINT `pr_receipt_item_to_product__product_id` FOREIGN KEY (`product_id`) REFERENCES `pr_products` (`id`),
+  CONSTRAINT `pr_receipt_item_to_product__user_id` FOREIGN KEY (`user_id`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `pr_receipt_user` (

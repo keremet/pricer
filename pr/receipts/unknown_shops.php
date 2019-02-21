@@ -125,10 +125,10 @@
 		}
 		
 		jQuery.ajax({
-			url:     'known_shops.php', //Адрес подгружаемой страницы
+			url:     'known_shops_item_add.php', //Адрес подгружаемой страницы
 			type:     "POST", //Тип запроса
 			dataType: "html", //Тип данных
-			data: {operation:'item_add', id: shopId, receiptId: receiptId}, 
+			data: {id: shopId, receiptId: receiptId}, 
 			success: function(result) {
 				if(result && JSON.parse(result).status == "OK")
 					tableRefresh();

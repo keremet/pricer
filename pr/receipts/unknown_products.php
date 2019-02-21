@@ -126,10 +126,10 @@
 		name = data[ind].name;
 		inn = data[ind].inn;
 		jQuery.ajax({
-			url:     'known_products.php', //Адрес подгружаемой страницы
+			url:     'known_products_item_add.php', //Адрес подгружаемой страницы
 			type:     "POST", //Тип запроса
 			dataType: "html", //Тип данных
-			data: {operation:'item_add', id: prodId, name: name, inn: inn}, 
+			data: {id: prodId, name: name, inn: inn}, 
 			success: function(result) {
 				if(result && JSON.parse(result).status == "OK")
 					tableRefresh();

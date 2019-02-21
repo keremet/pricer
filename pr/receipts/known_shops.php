@@ -79,27 +79,6 @@ if(isset($_POST['operation']))
 		else
 			print ERROR;
 	}
-	else if($op == 'item_add') {
-		
-		if(isset($_POST['id']) && isset($_POST['receiptId'])) {
-			$id = (int)$_POST['id'];
-			
-			$stmt = $db->prepare(
-				'INSERT INTO '.DB_TABLE_PREFIX.'receipt_to_shop (`shop_id`, `inn`, `name`, `address`)
-				 SELECT ?, userInn, user, retailPlaceAddress
-				 FROM '.DB_TABLE_PREFIX.'receipt
-				 WHERE id = ?');
-			$exec_prms = array($id, $_POST['receiptId']);
-			
-			if($stmt->execute($exec_prms))
-				print OK;
-			else
-				print ERROR;
-		}
-		else
-			print ERROR;
-		
-	}
 	else
 		print ERROR;
 	
