@@ -83,18 +83,6 @@ CREATE TABLE `pr_receipt_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
-CREATE VIEW `pr_receipt_item_unknown`  AS  
-select distinct 
-	`i`.`name`,
-	`r`.`userInn` AS `inn`,
-	`r`.`dateTime`,
-	`r`.`retailPlaceAddress` AS `address` 
-from `pr_receipt_item` `i` 
-	join `pr_receipt` `r` on`i`.`receipt_id` = `r`.`id`
-	left join `pr_receipt_item_to_product` `p` on `r`.`userInn` = `p`.`inn` and `i`.`name` = `p`.`name`
-where `p`.`inn` IS NULL;
-
-
 CREATE VIEW `pr_receipt_purchases`  AS  
 select 
 	`a`.`sum`,

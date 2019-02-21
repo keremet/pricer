@@ -7,14 +7,27 @@
 
 	if($_POST['operation'] === 'get') {
 		
-		$stmt = $db->query('SELECT `name`, `inn`, `address`, `dateTime` FROM '.DB_TABLE_PREFIX.'receipt_item_unknown');
+		$stmt = $db->query('SELECT distinct 
+                                i.name,
+                                r.userInn,
+                                r.dateTime,
+                                r.retailPlaceAddress,
+                                r.id,
+                                u.login
+                            FROM '.DB_TABLE_PREFIX.'receipt_item i 
+                                JOIN '.DB_TABLE_PREFIX.'receipt r ON i.receipt_id = r.id
+                                JOIN '.DB_TABLE_PREFIX.'users u ON r.user_id = u.id
+                                LEFT JOIN '.DB_TABLE_PREFIX.'receipt_item_to_product p ON r.userInn = p.inn AND i.name = p.name
+                            WHERE p.inn IS NULL');
 		if($stmt) {
 			$n = $stmt->rowCount();
 			$arr = array();
 			foreach($stmt as $row) {
 				$arr[] = array('name' => $row['name'],
-							   'inn' => $row['inn'],
-							   'address' => $row['address'],
+							   'inn' => $row['userInn'],
+							   'address' => $row['retailPlaceAddress'],
+                               'id' => $row['id'],
+							   'login' => $row['login'],
 							   'dateTime' => $row['dateTime']);
 			}
 			
@@ -93,7 +106,7 @@
 						cell.innerHTML = d.address;
 						
 						cell = row.insertCell();
-						cell.innerHTML = d.dateTime;
+						cell.innerHTML = "<a href=receipt.php?id=" + d.id + ">" + d.dateTime + "</a> " + d.login;
 						
 						cell = row.insertCell();
 						cell.innerHTML = "<input type='submit' value='Добавить' onclick='beginAddRule(document.getElementById(\"itemsTable\").rows[" + (i + 1) + "], " + i + ")'>";
