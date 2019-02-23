@@ -3,7 +3,7 @@
 	include('../template/connect.php');
 	
 	function checkRights(){
-		if($_SESSION['user']['id']==null)
+		if($_SESSION['user_id']==null)
 			throw new Exception('Требуется авторизация');
 	}
 
@@ -15,7 +15,7 @@
 			case "get_node":
 				if($_GET['id']=="#"){
 			//		$res[] = array('text' => 'Мои товары', 'children' => true,  'id' => '2', 'icon' => 'folder');
-					foreach($db->query("select id, name from $tbl_dir where id_hi is null".(($tbl_term == null)?" and creator=".$_SESSION['user']['id']:"")) as $v){
+					foreach($db->query("select id, name from $tbl_dir where id_hi is null".(($tbl_term == null)?" and creator=".$_SESSION['user_id']:"")) as $v){
 						$res[] = array('text' => $v['name'], 'children' => true,  'id' => $v['id'], 'icon' => 'folder', 'state' => array('opened' => 'true'));
 					}
 				}else{
@@ -69,7 +69,7 @@
 								select name, ed_izm_id, in_box, ?, ? from ".DB_TABLE_PREFIX."products where id=?"
 							:"insert into $tbl_dir(name, id_hi) select name, ? from ".DB_TABLE_PREFIX."products_main_clsf where id=?");
 						$stmt->execute($is_file?
-							array($_GET['parent'], $_SESSION['user']['id'], $id)
+							array($_GET['parent'], $_SESSION['user_id'], $id)
 							:array($_GET['parent'], $id));
 						break;
 					case "move_node":

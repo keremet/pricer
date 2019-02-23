@@ -46,7 +46,7 @@ headerOut('Аналитика');
 	}
 </script>
 <?
-$isUserAutorized = ($_SESSION['user']['id'] != null);
+$isUserAutorized = ($_SESSION['user_id'] != null);
 
 if($isUserAutorized){
 	$users_ = $db->query("SELECT id, login, name FROM ".DB_TABLE_PREFIX."users order by login")->fetchAll();
@@ -333,7 +333,7 @@ if($shops_){
 					<td><?=$v['amount']?></td>
 					<td><?=$v['login']?></td>
 					<td style="text-align: center;">
-						<?if(($v['creator'] == $_SESSION['user']['id']) && ($v['id'])) {?>
+						<?if(($v['creator'] == $_SESSION['user_id']) && ($v['id'])) {?>
 							<button onclick="delete_price(<?=$v['id']?>);">Удалить цену</button>
 						<? } ?>
 					</td>

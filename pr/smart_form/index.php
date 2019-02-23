@@ -108,7 +108,7 @@ include '../template/jstree/jstree.php';
 	}
 </script>
 <link rel="stylesheet" href="../template/input_calendar/tcal.css"/>
-<?if($_SESSION['user']['id']){?>	
+<?if($_SESSION['user_id']){?>	
 	<div style="padding: 10px;">
 		<span>
 			<h2 style="display: inline;">Дата покупки: </h2>

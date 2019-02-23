@@ -3,12 +3,12 @@ session_start();
 header( 'Content-Type: text/html; charset=utf-8' );
 include('../template/connect.php');
 
-if($_SESSION['user']['id']==null)
+if($_SESSION['user_id']==null)
 	die('Требуется авторизация');
 
 if (isset($_REQUEST['id'])) {
 	$stmt = $db->prepare("DELETE FROM ".DB_TABLE_PREFIX."receipt WHERE id = ? and user_id = ?");
-	if(!$stmt->execute(array($_REQUEST['id'], $_SESSION['user']['id']))){
+	if(!$stmt->execute(array($_REQUEST['id'], $_SESSION['user_id']))){
 		echo 'Ошибка удаления чека'; print_r($stmt->errorInfo());
 		exit();
 	}

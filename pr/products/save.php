@@ -2,7 +2,7 @@
 header( 'Content-Type: text/html; charset=utf-8' );
 include('../template/connect.php');
 
-if($_SESSION['user']['id']==null){
+if($_SESSION['user_id']==null){
 	echo json_encode(array('result' => 'Требуется авторизация', 'error' => '1'));
 	die();
 }
@@ -116,7 +116,7 @@ if (isset($_REQUEST['id'])) {
 	exit();
 } else {
 	$stmt = $db->prepare("INSERT ".DB_TABLE_PREFIX."products(name, ed_izm_id, in_box, barcode, main_clsf_id, creator) values(?, ?, ?, ?, ?, ?)");
-	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), strOrNull($_REQUEST['barcode']), $_REQUEST['main_clsf_id'], $_SESSION['user']['id']))){
+	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), strOrNull($_REQUEST['barcode']), $_REQUEST['main_clsf_id'], $_SESSION['user_id']))){
 		echo json_encode(array('result' => 'Ошибка добавления товара.', 'error' => '1'));
 		//echo 'Ошибка добавления товара'; print_r($stmt->errorInfo());
 		exit();

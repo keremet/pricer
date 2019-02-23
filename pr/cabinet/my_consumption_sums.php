@@ -2,7 +2,7 @@
 header( 'Content-Type: text/html; charset=utf-8' );
 include('../template/connect.php');
 
-//~ if($_SESSION['user']['id']==null)
+//~ if($_SESSION['user_id']==null)
 	//~ die('Требуется авторизация');
 
 

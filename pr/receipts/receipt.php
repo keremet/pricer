@@ -80,7 +80,7 @@
 	}
         
 	oftTable::end();
-	if(($_SESSION['user_del_anothers_receipts'] == '1') || ($rowR['user_id'] == $_SESSION['user']['id'])){ ?> 
+	if(($_SESSION['user_del_anothers_receipts'] == '1') || ($rowR['user_id'] == $_SESSION['user_id'])){ ?> 
 		<p align="left"><button onclick="receipt_del('<?=$_GET['id']?>');">Удалить</button> <? 
 	}
 ?> 

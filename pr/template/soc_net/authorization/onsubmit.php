@@ -12,7 +12,7 @@ if(!$rowU)
 echo "<script>document.location.href='".
     (($login == "keremet")?"../cabinet/index.php":"../smart_form/").
     "';</script>";
-$_SESSION['user']['id'] = $rowU['id'];
+$_SESSION['user_id'] = $rowU['id'];
 $_SESSION['user_del_anothers_receipts'] = $rowU['del_anothers_receipts'];
 if($_REQUEST['remember'] == 'Y'){
     setcookie('user_login', trim(htmlspecialchars($_REQUEST['login'])), time() + 3600 * 24 * 30, '/');

@@ -199,7 +199,7 @@ function countNodeSums(&$node) {
 
 	headerOut('Статистика покупок товаров', array('prod'));
 	
-	if($_SESSION['user']['id']) {
+	if($_SESSION['user_id']) {
 
 ?>
 

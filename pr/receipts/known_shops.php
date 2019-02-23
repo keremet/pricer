@@ -104,7 +104,7 @@ putTree('shop', '../shops/');
 </td>
 <td valign="top">
 <?
-	if($_SESSION['user']['id']) {
+	if($_SESSION['user_id']) {
 		
 		oftTable::init('Выбранный магазин:', 'selectedItemTable');
 

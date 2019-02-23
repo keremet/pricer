@@ -4,7 +4,7 @@ include('../template/connect.php');
 
 if($_REQUEST['name'] == 'text'){
 	$stmt = $db->prepare("UPDATE ".DB_TABLE_PREFIX."users SET text = ? WHERE id = ?");
-	if(!$stmt->execute(array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user']['id'])))
+	if(!$stmt->execute(array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user_id'])))
 		die('Ошибка обновления информации о себе');
 }else{
 	if(strlen($_REQUEST['value']) == 0)
@@ -12,12 +12,12 @@ if($_REQUEST['name'] == 'text'){
 
 	if($_REQUEST['name'] == 'login'){
 		$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."users WHERE id != ? and login = ?");
-		$stmt->execute(array($_SESSION['user']['id'], trim(htmlspecialchars($_REQUEST['value']))));
+		$stmt->execute(array($_SESSION['user_id'], trim(htmlspecialchars($_REQUEST['value']))));
 		if($stmt->fetch())
 			die('логин занят');
 
 		$stmt = $db->prepare("UPDATE ".DB_TABLE_PREFIX."users SET login = ? WHERE id = ?");
-		if(!$stmt->execute(array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user']['id'])))
+		if(!$stmt->execute(array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user_id'])))
 			die('Ошибка обновления логина');
 	}elseif($_REQUEST['name'] == 'email'){
 /*		if (!preg_match("/^[\w]{1}[\w-\.]*@[\w-]+\.[a-z]{2,4}$/i",$_REQUEST['value']))
@@ -25,16 +25,16 @@ if($_REQUEST['name'] == 'text'){
 		Проверка не корректная!!
 		*/
 		$stmt = $db->prepare("SELECT 1 FROM ".DB_TABLE_PREFIX."users WHERE id != ? and email = ?");
-		$stmt->execute(array($_SESSION['user']['id'], htmlspecialchars($_REQUEST['value'])));
+		$stmt->execute(array($_SESSION['user_id'], htmlspecialchars($_REQUEST['value'])));
 		if($stmt->fetch())
 			die('email занят');
 		
 		$stmt = $db->prepare("UPDATE ".DB_TABLE_PREFIX."users SET email = ? WHERE id = ?");
-		if(!$stmt->execute(array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user']['id'])))
+		if(!$stmt->execute(array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user_id'])))
 			die('Ошибка обновления email');
 	}elseif($_REQUEST['name'] == 'name'){
 		$stmt = $db->prepare("UPDATE ".DB_TABLE_PREFIX."users SET name = ? WHERE id = ?");
-		if(!$stmt->execute(array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user']['id'])))
+		if(!$stmt->execute(array(trim(htmlspecialchars($_REQUEST['value'])), $_SESSION['user_id'])))
 			die('Ошибка обновления Ф.И.О.');
 	}
 }

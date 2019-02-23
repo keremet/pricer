@@ -2,7 +2,7 @@
 header( 'Content-Type: text/html; charset=utf-8' );
 include('../template/connect.php');
 
-if($_SESSION['user']['id']==null)
+if($_SESSION['user_id']==null)
 	die('Требуется авторизация');
 
 $stmt = $db->prepare(
@@ -14,7 +14,7 @@ WHERE po.creator = ? and po.amount > 0
   and po.product = ".DB_TABLE_PREFIX."products.id
 ORDER BY po.date_buy desc"
 );
-$stmt->execute(array($_SESSION['user']['id']));
+$stmt->execute(array($_SESSION['user_id']));
 ?>
 <html>
 <body>

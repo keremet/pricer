@@ -7,17 +7,17 @@ headerOut('Личный кабинет');
 	$white_list = array('png', 'bmp', 'gif', 'jpg', 'jpeg');
 	if(!is_array(LoadFile('user_img', $white_list, 1048576, $_SERVER['DOCUMENT_ROOT'].'/'.$GLOBALS['site_settings']['site_folder'].$GLOBALS['site_settings']['img_path']))){
 		$query = "INSERT INTO ".DB_TABLE_PREFIX."images (path,alt,title,creator) VALUES ({?},{?},{?},{?})";
-		$image_id = $db->query($query, array($GLOBALS['site_settings']['site_folder'].$GLOBALS['site_settings']['img_path'].$_FILES['user_img']['name'],'','',$_SESSION['user']['id']));
+		$image_id = $db->query($query, array($GLOBALS['site_settings']['site_folder'].$GLOBALS['site_settings']['img_path'].$_FILES['user_img']['name'],'','',$_SESSION['user_id']));
 		if($image_id){
 			$query = "SELECT id FROM ".DB_TABLE_PREFIX."user_images WHERE user = {?} AND main = {?}";
-			$old_image = $db->selectRow($query, array($_SESSION['user']['id'], 1));
+			$old_image = $db->selectRow($query, array($_SESSION['user_id'], 1));
 			if($old_image['id']){
 				$query = "DELETE FROM ".DB_TABLE_PREFIX."user_images WHERE id = {?}";
 				$delete_old = $db->query($query, array($old_image['id']));
 			}
 			$query = "INSERT INTO ".DB_TABLE_PREFIX."user_images (user,image,alt,title,main,creator) VALUES ({?},{?},{?},{?},{?},{?})";
-			$image_rel_id = $db->query($query, array($_SESSION['user']['id'],$image_id,'','',1,$_SESSION['user']['id']));
-			//rp(array($query, array($user_id,$image_id,'','',1,$_SESSION['user']['id'])));
+			$image_rel_id = $db->query($query, array($_SESSION['user_id'],$image_id,'','',1,$_SESSION['user_id']));
+			//rp(array($query, array($user_id,$image_id,'','',1,$_SESSION['user_id'])));
 		}
 	}
 }?-->
@@ -140,10 +140,10 @@ headerOut('Личный кабинет');
 	}
 </script>
 	<?
-	if($_SESSION['user']['id']){
-//		$my_img = Img_Select(array('user' => $_SESSION['user']['id'], 'main' => 1, array('path')));
+	if($_SESSION['user_id']){
+//		$my_img = Img_Select(array('user' => $_SESSION['user_id'], 'main' => 1, array('path')));
 		$stmt = $db->prepare("SELECT name, login, text, email FROM ".DB_TABLE_PREFIX."users where id = ?");
-		$stmt->execute(array($_SESSION['user']['id']));		
+		$stmt->execute(array($_SESSION['user_id']));		
 		$user_props = $stmt->fetch();?>
 		<div style=" height: 140px; width: 140px; background-color: #EDEDED; border: 2px solid #AAAAAA; position: relative; display: inline-block; margin: 20px">
 			<!--?if($my_img){?>
@@ -207,12 +207,12 @@ headerOut('Личный кабинет');
 			<?}?>
 		</div><br>
 		<a href="rep_actual.php">Отчет по актуальности цен</a><br>
-		<a href="my_tip.php?user_id=<?=$_SESSION['user']['id']?>">Подсказки для меня</a><br>
+		<a href="my_tip.php?user_id=<?=$_SESSION['user_id']?>">Подсказки для меня</a><br>
 		<a href=my_economy.php>Отчет по экономии</a><br>
 		<a href=profile.php>Профилирование</a><br>
 		<a href=my_consumption.php>Мои расходы (профилирование)</a><br>
 		<a href="../receipts/receipt_list.php">Все чеки</a><br>
-		<a href="../receipts/receipt_list.php?user_id=<?=$_SESSION['user']['id']?>">Мои чеки</a>
+		<a href="../receipts/receipt_list.php?user_id=<?=$_SESSION['user_id']?>">Мои чеки</a>
 		<form action="<?=$GLOBALS['site_settings']['current_address']?>" method="get">
 			<input type="hidden" name="user" value="exit">
 			<button type="submit">Выйти из аккаунта</button>

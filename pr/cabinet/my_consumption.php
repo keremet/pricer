@@ -2,7 +2,7 @@
 header( 'Content-Type: text/html; charset=utf-8' );
 include('../template/connect.php');
 
-//~ if($_SESSION['user']['id']==null)
+//~ if($_SESSION['user_id']==null)
 	//~ die('Требуется авторизация');
 
 $stmt = $db->prepare(
@@ -15,7 +15,7 @@ WHERE ".DB_TABLE_PREFIX."consumption.clsf_id = ".DB_TABLE_PREFIX."consumption_cl
 ORDER BY date_buy DESC
 LIMIT 300"
 );
-$stmt->execute(/*array($_SESSION['user']['id'])*/);
+$stmt->execute(/*array($_SESSION['user_id'])*/);
 ?>
 <html>
 <body>

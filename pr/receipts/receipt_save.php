@@ -1,7 +1,7 @@
 <?session_start();
 header( "Content-Type: text/html; charset=utf-8" );
 
-if($_SESSION['user']['id']==null)
+if($_SESSION['user_id']==null)
 	die("Требуется авторизация");
 
 
@@ -37,7 +37,7 @@ if($_SESSION['user']['id']==null)
                              ,$_POST['fdoc']
                              ,$_POST['fs']
                              ,$_POST['id']
-                             ,$_SESSION['user']['id'])); 
+                             ,$_SESSION['user_id'])); 
 		}
 	} else {
 		execStmt("INSERT INTO ".DB_TABLE_PREFIX."receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id)
@@ -47,6 +47,6 @@ if($_SESSION['user']['id']==null)
                              ,$_POST['fdn']
                              ,$_POST['fdoc']
                              ,$_POST['fs']
-                             ,$_SESSION['user']['id']));                       
+                             ,$_SESSION['user_id']));                       
 	}
 ?>

@@ -26,7 +26,7 @@
 				$r .= '</table>';
 			}
 		}else{
-			$readonly = ($_SESSION['user']['id']==null);
+			$readonly = ($_SESSION['user_id']==null);
 			if($is_file){
 				$stmt = $db->prepare(
 					"SELECT p.name, photo, e.name as ed_izm, p.ed_izm_id, p.in_box, p.barcode

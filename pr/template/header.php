@@ -93,7 +93,7 @@ $tabTitle = 'Ценовичок - '.$curmenu;
 							<a href="..'.$v.'">'.$k.'</a>
 						</li>';
 					}
-					if ($_SESSION['user']['id']){
+					if ($_SESSION['user_id']){
 						echo '<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home'
 						.(($curmenu == "Личный кабинет")?' current-menu-item':'')
 						.'">

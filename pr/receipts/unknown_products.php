@@ -43,7 +43,7 @@
 	
 	headerOut('Неизвестные товары', array('prod'));
 	
-	if($_SESSION['user']['id']) {
+	if($_SESSION['user_id']) {
 	
 	include '../template/oft_table.php';
 	include '../template/jstree/jstree.php';

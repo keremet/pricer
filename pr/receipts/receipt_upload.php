@@ -1,7 +1,7 @@
 <?session_start();
 header( 'Content-Type: text/html; charset=utf-8' );
 
-if($_SESSION['user']['id']==null)
+if($_SESSION['user_id']==null)
 	die('Требуется авторизация');
 ?>
 
@@ -67,7 +67,7 @@ function addReceipts($docs)
 				 'senderAddress', 'receiptCode', 'fiscalSign', 'nds10',
 				 'fiscalDocumentNumber', 'requestNumber', 'dateTime', 'ndsNo')
 			, 'receipt');
-		$exec_prms[] = $_SESSION['user']['id'];
+		$exec_prms[] = $_SESSION['user_id'];
 		if(!$stmt->execute($exec_prms)
 		) {
 			$err_arr = $stmt->errorInfo();

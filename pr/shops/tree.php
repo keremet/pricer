@@ -3,7 +3,7 @@
 
 	function showProduct($is_file, $id){
 		global $db;
-		$readonly = ($_SESSION['user']['id']==null);
+		$readonly = ($_SESSION['user_id']==null);
 		if($is_file){
 			$stmt = $db->prepare(
 				"SELECT name, address

@@ -13,7 +13,7 @@ if(isset($_POST['id']) && isset($_POST['receiptId'])) {
          FROM '.DB_TABLE_PREFIX.'receipt
          WHERE id = ?');
 
-    if($stmt->execute(array($id, $_SESSION['user']['id'], $_POST['receiptId'])))
+    if($stmt->execute(array($id, $_SESSION['user_id'], $_POST['receiptId'])))
         print OK;
     else {
         $errInfo = $stmt->errorInfo();
