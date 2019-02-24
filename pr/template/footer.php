@@ -23,10 +23,6 @@ if($_REQUEST['author'] == 'Авторизоваться'){
             setcookie('user_password', '', time() - 1, '/');
         }
     }
-} else if($_REQUEST['user'] == 'exit'){
-    unset($_SESSION['user_id']);
-    unset($_SESSION['user_del_anothers_receipts']);
-    echo "<script>document.location.href = '../';</script>";
 }
 ?>
 <div id="auth_form" style="width:400px;display: none;">

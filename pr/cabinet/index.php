@@ -213,8 +213,8 @@ headerOut('Личный кабинет');
 		<a href=my_consumption.php>Мои расходы (профилирование)</a><br>
 		<a href="../receipts/receipt_list.php">Все чеки</a><br>
 		<a href="../receipts/receipt_list.php?user_id=<?=$_SESSION['user_id']?>">Мои чеки</a>
-		<form action="<?=$GLOBALS['site_settings']['current_address']?>" method="get">
-			<input type="hidden" name="user" value="exit">
+		<form action="../analytics/index.php" method="get">
+			<input type="hidden" name="exit" value="1">
 			<button type="submit">Выйти из аккаунта</button>
 		</form>
 	<?	

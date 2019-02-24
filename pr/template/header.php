@@ -1,5 +1,9 @@
 <? 
 session_start();
+if($_REQUEST['exit'] == '1'){
+    unset($_SESSION['user_id']);
+    unset($_SESSION['user_del_anothers_receipts']);
+}
 header('Content-Type: text/html; charset=utf-8');
 include 'connect.php';
 function headerOut($curmenu, $treesuf = null){
