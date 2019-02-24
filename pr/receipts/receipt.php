@@ -22,7 +22,7 @@
 </head>
 <table style="page-break-before: always;" width="600" border="0" cellpadding="1" cellspacing="1">
 <tr valign="TOP">
-	<td align="left"><a href="exit.php">Выход</a>
+	<td align="left"><a href="../analytics/index.php?exit=1">Выход</a>
 	<td align="left"><a href="receipt_list.php">Список чеков</a>
 	<td align="left"><a href="receipt_anlt.php?id=<?=$_GET['id']?>">Отчет по оптимальности покупки</a>
 </table>
