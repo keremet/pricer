@@ -14,7 +14,7 @@
 			data: {id: id}, 
 			success: function(result) {
 				alert(result);
-				location.reload();
+				document.location.href = 'receipt_list.php';
 			}
 		});
 	}
