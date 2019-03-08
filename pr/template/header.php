@@ -3,6 +3,14 @@ session_start();
 if($_REQUEST['exit'] == '1'){
     unset($_SESSION['user_id']);
     unset($_SESSION['user_del_anothers_receipts']);
+    unset($_SESSION['user_del_anothers_consumptions']);
+    unset($_SESSION['user_del_anothers_shop_links']);
+    unset($_SESSION['user_del_anothers_product_links']);
+    unset($_SESSION['user_del_anothers_shops']);
+    unset($_SESSION['user_del_anothers_products']);
+    unset($_SESSION['user_edt_anothers_shops']);
+    unset($_SESSION['user_edt_anothers_products']);
+    unset($_SESSION['user_upload_receipts_from_file']);
 }
 header('Content-Type: text/html; charset=utf-8');
 include 'connect.php';

@@ -25,7 +25,15 @@ CREATE TABLE `pr_town` (
 CREATE TABLE `pr_user_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` text COLLATE utf8_unicode_ci,
-  `del_anothers_receipts` integer default 0
+  `del_anothers_receipts` integer DEFAULT 0 NOT NULL,
+  `del_anothers_consumptions` integer DEFAULT 0 NOT NULL,
+  `del_anothers_shop_links` integer DEFAULT 0 NOT NULL,
+  `del_anothers_product_links` integer DEFAULT 0 NOT NULL,
+  `del_anothers_shops` integer DEFAULT 0 NOT NULL,
+  `del_anothers_products` integer DEFAULT 0 NOT NULL,
+  `edt_anothers_shops` integer DEFAULT 0 NOT NULL,
+  `edt_anothers_products` integer DEFAULT 0 NOT NULL,
+  `upload_receipts_from_file` integer DEFAULT 0 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `pr_users` (
