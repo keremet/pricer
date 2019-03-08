@@ -1,5 +1,5 @@
 <?
-
+session_start();
 define('OK', "{\"status\":\"OK\"}");
 define('ERROR', "{\"error\":\"ERROR\"}");
 
@@ -12,7 +12,7 @@ if(isset($_POST['operation']))
 	if($op == 'get') {
 		
 		$id = isset($_POST['cl_id']) ? $_POST['cl_id'] : false;
-		$stmt = $db->prepare('SELECT r2s.id, r2s.inn, r2s.name name_in_rcp, r2s.address, r2s.shop_id, s.name
+		$stmt = $db->prepare('SELECT r2s.id, r2s.inn, r2s.name name_in_rcp, r2s.address, r2s.shop_id, s.name, r2s.user_id
 							  FROM '.DB_TABLE_PREFIX.'receipt_to_shop r2s
                               JOIN '.DB_TABLE_PREFIX.'shops s ON s.id = r2s.shop_id
 					          WHERE ' . ($id ? "`r2s`.`shop_id` = ?" : '1'));
@@ -30,6 +30,7 @@ if(isset($_POST['operation']))
 							   'name_in_rcp' => $row['name_in_rcp'],
 							   'address' => $row['address'],
 							   'shop_id' => $row['shop_id'],
+                               'del' => (($_SESSION['user_del_anothers_shop_links'] =='1') || ($row['user_id'] == $_SESSION['user_id'])) ? "1" : "0",
 							   'name' => $row['name']);
 			}
 			
@@ -69,15 +70,23 @@ if(isset($_POST['operation']))
 		if(isset($_POST['id'])) {
 			
 			$id = $_POST['id'];
-			$stmt = $db->prepare('DELETE FROM '.DB_TABLE_PREFIX.'receipt_to_shop WHERE id=?');
+			$stmt = $db->prepare("DELETE FROM ".DB_TABLE_PREFIX."receipt_to_shop WHERE id = ?  and ('".$_SESSION['user_del_anothers_shop_links']."' = '1' or user_id = ?)");
 			
-			if($stmt->execute(array($id)))
-				print OK;
-			else
-				print ERROR;
+			if(!$stmt->execute(array($id, $_SESSION['user_id']))) {
+				die("Ошибка при удалении: ".print_r($stmt->errorInfo()));
+            }
+
+            $count = $stmt->rowCount();
+            if($count == 1){
+                die("OK");
+            }elseif($count < 1){
+                die("Привязка магазина не найдена или нет прав на удаление");
+            }else{
+                die("Дублирование индекса. Удалено больше 1 строки");
+            }
 		}
 		else
-			print ERROR;
+			die("error");
 	}
 	else
 		print ERROR;
@@ -160,7 +169,8 @@ putTree('shop', '../shops/');
 						cell.innerHTML = "<a href=\"#\" onclick=\"showTreeItem('" + d.cl_id + "')\">" + d.name + "</a>";
 						
 						cell = row.insertCell();
-						cell.innerHTML = "<input type='submit' value='Удалить' onclick='removeRule(" + d.id + ", " + d.shop_id + ")'>";
+                        if (d.del == '1')
+                            cell.innerHTML = "<input type='submit' value='Удалить' onclick='removeRule(" + d.id + ", " + d.shop_id + ")'>";
 					}
 				}
 				else
@@ -223,12 +233,12 @@ putTree('shop', '../shops/');
 			dataType: "html", //Тип данных
 			data: {operation:'item_remove', id: id}, 
 			success: function(result) {
-				if(result && JSON.parse(result).status == "OK") {
+				if(result == "OK") {
 					tableRefresh();
 					shop_select(shop_id);
 				}
 				else
-					alert("Ошибка удаления элемента");
+					alert("Ошибка удаления элемента: " + result);
 			}
 		});
 		
@@ -264,7 +274,8 @@ putTree('shop', '../shops/');
 						cell.innerHTML = d.address;
 						
 						cell = row.insertCell();
-						cell.innerHTML = "<input type='submit' value='Удалить' onclick='removeRule(" + d.id + ", " + d.shop_id + ")'>";
+                        if (d.del == '1')
+                           cell.innerHTML = "<input type='submit' value='Удалить' onclick='removeRule(" + d.id + ", " + d.shop_id + ")'>";
 					}
 				}
 				else
