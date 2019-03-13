@@ -14,4 +14,4 @@
 
 Команды, которые могут пригодиться при тестировании:
 echo "drop database pricer; create database pricer;" | mysql -u root
-echo "insert into pr_users(name, login, password, text, photo, email) values ('test', 'test', '1', '', '', '');" | mysql -u root pricer
+echo "insert into pr_users(name, login, password, text, photo, email, group_id) values ('test', 'test', '1', '', '', '', 1);" | mysql -u root pricer
