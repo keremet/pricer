@@ -1,11 +1,11 @@
 <?php
 include('../template/connect.php');
-$stmt = $db->prepare("SELECT id FROM pr_users where login = ? and password = ?");
+$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."users where login = ? and password = ?");
 $stmt->execute(array($_POST['login'], $_POST['password']));	
 if($token = $stmt->fetchColumn()){
-	echo json_encode(array('token' => $token));
+	echo "1";
 }else{
-	echo json_encode(array('error' => 'User not found'));
+	echo "0";
 }
 /*
  * sha256, токен 20 символов(буквы, цифры разного регистра)
