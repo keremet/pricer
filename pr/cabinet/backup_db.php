@@ -49,6 +49,11 @@
             {
                 if($iCol++ > 0)
                     echo ", ";
+                if(($name == DB_TABLE_PREFIX."users") && ($iCol == 4)) //Не выгружать пароли пользователей
+                {
+                    echo "''";
+                    continue;
+                }
                 echo is_null($val) ? "null" : "'" . $val . "'";
             }
             echo ")";
