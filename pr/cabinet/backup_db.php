@@ -30,50 +30,29 @@
         
         $stmt = $db->prepare("DESCRIBE $name");
         $stmt->execute();
-        $index_add_col = 0;
-        $count_row = $stmt->rowCount();
         echo "INSERT INTO `$name` (";
-        while($result = $stmt->fetchColumn())
+        for($i = 0; $result = $stmt->fetchColumn(); $i++)
         {
-            if($index_add_col != $count_row - 1)
-            {
-                echo $result . ", ";
-            }
-            else
-            {
-                echo $result . ") VALUES " . PHP_EOL;
-            }
-            $index_add_col++;
+            if($i > 0)
+                echo ", ";
+            echo $result;
         }
-
-        $all_col_count = $stmtS->columnCount();
-        $result = $stmtS->fetchAll();
-        foreach($result as $key =>  $value)
+        echo ") VALUES " . PHP_EOL;
+        
+        for($i=0; $value = $stmtS->fetch(); $i++)
         {
+            if($i > 0)
+                echo "," . PHP_EOL;
             echo "(";
+            $iCol = 0;
             foreach($value as $k => $val)
             {
-                $data_row = is_null($val) == true ? "null" : "'" . $val . "'";
-                if($count_col == $all_col_count - 1)
-                {
-                    echo $data_row;
-                    $count_col = 0;
-                }
-                else
-                {
-                    echo $data_row . ", " ;
-                    $count_col++;
-                }
-
+                if($iCol++ > 0)
+                    echo ", ";
+                echo is_null($val) ? "null" : "'" . $val . "'";
             }
-            if($key == count($result) - 1)
-            {
-                echo ");" . PHP_EOL;
-            }
-            else
-            {
-                echo ")," . PHP_EOL;
-            }
+            echo ")";
         }
+        echo ";" . PHP_EOL;
     }
 ?>
