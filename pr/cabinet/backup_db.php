@@ -1,7 +1,10 @@
 <?php
     // database dump PHP © $continue$ - 2019 year
-    header( 'Content-Type: text/html; charset=utf-8' );
-
+    $now = new DateTime();
+    $filename = "backup_pricer_" . $now->format('Y_m_d_H_i_s') . ".sql";
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename=' . $filename);
+    
     include('../template/connect.php');
     
     $table_name = array();
@@ -84,8 +87,4 @@
     {
         echo $val;
     }
-    $now = new DateTime();
-    $filename = "backup_pricer_" . $now->format('Y_m_d_H_i_s') . ".sql";
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename=' . $filename);
 ?>
