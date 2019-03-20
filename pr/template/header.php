@@ -11,6 +11,7 @@ if($_REQUEST['exit'] == '1'){
     unset($_SESSION['user_edt_anothers_shops']);
     unset($_SESSION['user_edt_anothers_products']);
     unset($_SESSION['user_upload_receipts_from_file']);
+    unset($_SESSION['user_download_backup']);
 }
 header('Content-Type: text/html; charset=utf-8');
 include 'connect.php';

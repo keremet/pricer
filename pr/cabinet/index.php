@@ -213,8 +213,9 @@ headerOut('Личный кабинет');
 		<a href=my_consumption.php>Мои расходы (профилирование)</a><br>
 		<a href="../receipts/receipt_list.php">Все чеки</a><br>
 		<a href="../receipts/receipt_list.php?user_id=<?=$_SESSION['user_id']?>">Мои чеки</a><br>
-		<!-- TODO: add check on admin group -->
+		<? if($_SESSION['user_download_backup'] == "1"){ ?>
 		<a href=backup_db.php>Бэкап БД</a><br>
+		<? } ?>
 		<form action="../analytics/index.php" method="get">
 			<input type="hidden" name="exit" value="1">
 			<button type="submit">Выйти из аккаунта</button>

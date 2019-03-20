@@ -33,7 +33,8 @@ CREATE TABLE `pr_user_group` (
   `del_anothers_products` integer DEFAULT 0 NOT NULL,
   `edt_anothers_shops` integer DEFAULT 0 NOT NULL,
   `edt_anothers_products` integer DEFAULT 0 NOT NULL,
-  `upload_receipts_from_file` integer DEFAULT 0 NOT NULL
+  `upload_receipts_from_file` integer DEFAULT 0 NOT NULL,
+  `download_backup` integer DEFAULT 0 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `pr_users` (

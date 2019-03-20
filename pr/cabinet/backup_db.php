@@ -1,4 +1,11 @@
 <?php
+    session_start();
+
+    if($_SESSION['user_download_backup'] != "1"){
+        header( 'Content-Type: text/html; charset=utf-8' );
+        die('Требуется авторизация или нет прав');
+    }
+    
     // database dump PHP © $continue$ - 2019 year
     $now = new DateTime();
     $filename = "backup_pricer_" . $now->format('Y_m_d_H_i_s') . ".sql";
