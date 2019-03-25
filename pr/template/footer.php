@@ -12,9 +12,7 @@ if($_REQUEST['author'] == 'Авторизоваться'){
     if(!$rowU)
         echo "<script>alert('Ошибка: Неверный логин или пароль');</script>";
     else{
-        echo "<script>document.location.href='".
-            (($login == "keremet")?"../cabinet/index.php":"../smart_form/").
-            "';</script>";
+        echo "<script>document.location.href='../cabinet/index.php';</script>";
         $_SESSION['user_id'] = $rowU['id'];
         $_SESSION['user_del_anothers_receipts'] = $rowU['del_anothers_receipts'];
         $_SESSION['user_del_anothers_consumptions'] = $rowU['del_anothers_consumptions'];
