@@ -214,7 +214,8 @@ headerOut('Личный кабинет');
 		<a href="../receipts/receipt_list.php">Все чеки</a><br>
 		<a href="../receipts/receipt_list.php?user_id=<?=$_SESSION['user_id']?>">Мои чеки</a><br>
 		<? if($_SESSION['user_download_backup'] == "1"){ ?>
-		<a href=backup_db.php>Бэкап БД</a><br>
+		<a href="backup_db.php?type=settings">Бэкап настроек</a><br>
+		<a href="backup_db.php?type=all">Бэкап данных</a><br>
 		<? } ?>
 		<form action="../analytics/index.php" method="get">
 			<input type="hidden" name="exit" value="1">
