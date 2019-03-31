@@ -30,16 +30,15 @@
         DB_TABLE_PREFIX.'shops',
 
         DB_TABLE_PREFIX.'receipt_item_to_product',
-        DB_TABLE_PREFIX.'receipt_to_shop',
-
-        DB_TABLE_PREFIX.'user_group'
+        DB_TABLE_PREFIX.'receipt_to_shop'
     );
     switch($backup_type)
     {
     case 'settings':
         break;
     case 'all':
-        $table_name[] = DB_TABLE_PREFIX.'users';
+        array_unshift($table_name , DB_TABLE_PREFIX.'users');
+        array_unshift($table_name , DB_TABLE_PREFIX.'user_group');
 
         $table_name[] = DB_TABLE_PREFIX.'consumption_clsf';
         $table_name[] = DB_TABLE_PREFIX.'consumption';
@@ -96,7 +95,7 @@
                     echo "1";
                     continue;
                 }
-                echo is_null($val) ? "null" : "'" . $val . "'";
+                echo is_null($val) ? "null" : $db->quote($val);
             }
             echo ")";
         }
