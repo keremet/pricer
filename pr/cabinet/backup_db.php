@@ -54,6 +54,31 @@
         die('Unknown backup type');
     };
 
+    function child_out($id_hi, $name) {
+        global $db;
+        
+        $stmtSC = $db->prepare("SELECT * FROM $name WHERE id_hi = ?");
+        $stmtSC->execute(array($id_hi));
+        while($value = $stmtSC->fetch())
+        {
+            echo "," . PHP_EOL . "(";
+            $iCol = 0;
+            foreach($value as $k => $val)
+            {
+                if($iCol++ > 0)
+                    echo ", ";
+                if($iCol == $user_col)
+                {
+                    echo "1";
+                    continue;
+                }
+                echo is_null($val) ? "null" : $db->quote($val);
+            }
+            echo ")";
+            child_out($value['id'], $name);
+        }               
+    }
+
     foreach($table_name as $name)
     {
         $stmtS = $db->prepare("SELECT * FROM $name");
@@ -62,20 +87,48 @@
             continue;
 
         $user_col = -1;
+        $is_tree = false;
         $stmt = $db->prepare("DESCRIBE $name");
         $stmt->execute();
         echo "INSERT INTO `$name` (";
-        for($i = 0; $result = $stmt->fetchColumn();)
+        for($i = 0; $col_name = $stmt->fetchColumn();)
         {
             if($i++ > 0)
                 echo ", ";
-            if(($backup_type == 'settings') && (($result == 'creator') || ($result == 'user_id')))
+            if(($backup_type == 'settings') && (($col_name == 'creator') || ($col_name == 'user_id')))
                 $user_col = $i;
-            echo $result;
+            if($col_name == 'id_hi')
+                $is_tree = true;
+            echo $col_name;
         }
         echo ") VALUES " . PHP_EOL;
-        
-        for($i=0; $value = $stmtS->fetch(); $i++)
+
+        if($is_tree)
+        {           
+            $stmtS = $db->prepare("SELECT * FROM $name WHERE id_hi is null");
+            $stmtS->execute();
+            for($i=0; $value = $stmtS->fetch(); $i++)
+            {
+                if($i > 0)
+                    echo "," . PHP_EOL;
+                echo "(";
+                $iCol = 0;
+                foreach($value as $k => $val)
+                {
+                    if($iCol++ > 0)
+                        echo ", ";
+                    if($iCol == $user_col)
+                    {
+                        echo "1";
+                        continue;
+                    }
+                    echo is_null($val) ? "null" : $db->quote($val);
+                }
+                echo ")";
+                child_out($value['id'], $name);
+            }
+        }
+        else for($i=0; $value = $stmtS->fetch(); $i++)
         {
             if($i > 0)
                 echo "," . PHP_EOL;
