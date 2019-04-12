@@ -54,28 +54,51 @@
         die('Unknown backup type');
     };
 
-    function child_out($id_hi, $name) {
+    function row_out($name, $user_col, $row, $insert_hdr, &$i) {
         global $db;
         
+        if(0 == $i)
+            echo $insert_hdr;
+        else if($i >= 50)
+        {
+            echo ";" . PHP_EOL . $insert_hdr;
+            $i = 0;
+        }
+        else
+            echo "," . PHP_EOL;
+        $i++;
+        echo  "(";
+
+        $iCol = 0;
+        foreach($row as $k => $val)
+        {
+            if($iCol++ > 0)
+                echo ", ";
+            if(($name == DB_TABLE_PREFIX.'users') && ($iCol == 4)) //Не выгружать пароли пользователей
+            {
+                echo "''";
+                continue;
+            }
+            if($iCol == $user_col)
+            {
+                echo "1";
+                continue;
+            }
+            echo is_null($val) ? "null" : $db->quote($val);
+        }
+        echo ")";
+
+    }
+
+    function child_out($id_hi, $name, $user_col, $insert_hdr, &$i) {
+        global $db;
+
         $stmtSC = $db->prepare("SELECT * FROM $name WHERE id_hi = ?");
         $stmtSC->execute(array($id_hi));
-        while($value = $stmtSC->fetch())
+        while($row = $stmtSC->fetch())
         {
-            echo "," . PHP_EOL . "(";
-            $iCol = 0;
-            foreach($value as $k => $val)
-            {
-                if($iCol++ > 0)
-                    echo ", ";
-                if($iCol == $user_col)
-                {
-                    echo "1";
-                    continue;
-                }
-                echo is_null($val) ? "null" : $db->quote($val);
-            }
-            echo ")";
-            child_out($value['id'], $name);
+            row_out($name, $user_col, $row, $insert_hdr, $i);
+            child_out($row['id'], $name, $user_col, $insert_hdr, $i);
         }               
     }
 
@@ -90,68 +113,32 @@
         $is_tree = false;
         $stmt = $db->prepare("DESCRIBE $name");
         $stmt->execute();
-        echo "INSERT INTO `$name` (";
+        $insert_hdr = "INSERT INTO `$name` (";
         for($i = 0; $col_name = $stmt->fetchColumn();)
         {
             if($i++ > 0)
-                echo ", ";
+                $insert_hdr .= ", ";
             if(($backup_type == 'settings') && (($col_name == 'creator') || ($col_name == 'user_id')))
                 $user_col = $i;
             if($col_name == 'id_hi')
                 $is_tree = true;
-            echo $col_name;
+            $insert_hdr .= $col_name;
         }
-        echo ") VALUES " . PHP_EOL;
+        $insert_hdr .= ") VALUES " . PHP_EOL;
 
         if($is_tree)
         {           
             $stmtS = $db->prepare("SELECT * FROM $name WHERE id_hi is null");
             $stmtS->execute();
-            for($i=0; $value = $stmtS->fetch(); $i++)
+            for($i=0; $row = $stmtS->fetch(); )
             {
-                if($i > 0)
-                    echo "," . PHP_EOL;
-                echo "(";
-                $iCol = 0;
-                foreach($value as $k => $val)
-                {
-                    if($iCol++ > 0)
-                        echo ", ";
-                    if($iCol == $user_col)
-                    {
-                        echo "1";
-                        continue;
-                    }
-                    echo is_null($val) ? "null" : $db->quote($val);
-                }
-                echo ")";
-                child_out($value['id'], $name);
+                row_out($name, $user_col, $row, $insert_hdr, $i);
+                child_out($row['id'], $name, $user_col, $insert_hdr, $i);
             }
         }
-        else for($i=0; $value = $stmtS->fetch(); $i++)
-        {
-            if($i > 0)
-                echo "," . PHP_EOL;
-            echo "(";
-            $iCol = 0;
-            foreach($value as $k => $val)
-            {
-                if($iCol++ > 0)
-                    echo ", ";
-                if(($name == DB_TABLE_PREFIX.'users') && ($iCol == 4)) //Не выгружать пароли пользователей
-                {
-                    echo "''";
-                    continue;
-                }
-                if($iCol == $user_col)
-                {
-                    echo "1";
-                    continue;
-                }
-                echo is_null($val) ? "null" : $db->quote($val);
-            }
-            echo ")";
-        }
-        echo ";" . PHP_EOL;
+        else for($i=0; $row = $stmtS->fetch(); )
+            row_out($name, $user_col, $row, $insert_hdr, $i);
+
+        echo ";" . PHP_EOL . PHP_EOL;
     }
 ?>
