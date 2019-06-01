@@ -1,5 +1,23 @@
 <?php
 include('../../template/connect.php');
+
+/**
+* Склонение числительных
+* @param int $numberof — склоняемое число
+* @param string $value — первая часть слова (можно назвать корнем)
+* @param array $suffix — массив возможных окончаний слов
+* @return string
+*
+*/
+function numberof($numberof, $value, $suffix)
+{
+	$keys = array(2, 0, 1, 1, 1, 2);
+	$mod = $numberof % 100;
+	$suffix_key = $mod > 4 && $mod < 20 ? 2 : $keys[min($mod%10, 5)];
+
+	return $value . $suffix[$suffix_key];
+}
+
 $entityBody = file_get_contents('php://input');
 //$entityBody = file_get_contents('post.txt');
 
@@ -62,5 +80,7 @@ foreach(explode(';', $entityBody) as $qrCode){
 	}
 }
 
-echo ($res)?$res." добавлено $rowCount чеков":'Данные не обработаны';
+echo ($res)
+	?$res." ".numberof($rowCount, 'добавлен', array('', 'о', 'о'))." $rowCount ".numberof($rowCount, 'чек', array('', 'а', 'ов'))
+	:'Данные не обработаны';
 ?>
