@@ -207,6 +207,7 @@ headerOut('Личный кабинет');
 			<?}?>
 		</div><br>
 		<a href="rep_actual.php">Отчет по актуальности цен</a><br>
+		<a href="my_purchases.php">Покупки по данным из чеков</a><br>
 		<a href="my_tip.php?user_id=<?=$_SESSION['user_id']?>">Подсказки для меня</a><br>
 		<a href=my_economy.php>Отчет по экономии</a><br>
 		<a href=profile.php>Профилирование</a><br>
