@@ -36,7 +36,6 @@ if(!$row)
 
 $user_id = $row['id'];
 
-$res = '';
 $rowCount = 0;
 $stmt = $db->prepare(
 "INSERT INTO ".DB_TABLE_PREFIX."receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id) 
@@ -56,13 +55,11 @@ foreach(explode(';', $entityBody) as $qrCode){
 			}
 			$p[$key] = $value;
 		}
-		//print_r($p);
 
 		if((!array_key_exists('t', $p)) || (!array_key_exists('s', $p)) || (!array_key_exists('fn', $p))
 			|| (!array_key_exists('i', $p)) || (!array_key_exists('fp', $p))){
-			$res .= 'ERR формат QR-кода ';
+			echo "Ошибочный QR-код $qrCode\n";
 		}else if($stmt->execute(array($p['t'], $p['s'], $p['fn'], $p['i'], $p['fp'], $user_id))){
-			$res .= 'OK ';
 			$rowCount += $stmt->rowCount();
 		}else{
 			$errInfo = $stmt->errorInfo();
@@ -70,17 +67,14 @@ foreach(explode(';', $entityBody) as $qrCode){
 				list($d, $t) = explode('T', $p['t']);
 				echo substr($d, 6, 2).".".substr($d, 4, 2).".".substr($d, 2, 2)." ".
 					 substr($t, 0, 2).":".substr($t, 2, 2).":".substr($t, 4, 2)." ".
-					 $dbg_s." уже добавлен\n";
-				$res .= 'WARN ';
+					 $dbg_s." уже загружен\n";
 			}else{
-				$res .= 'ERR ';
+				echo "Ошибка при загрузке $qrCode: ";
 				print_r($errInfo);
 			}
 		}
 	}
 }
 
-echo ($res)
-	?$res." ".numberof($rowCount, 'добавлен', array('', 'о', 'о'))." $rowCount ".numberof($rowCount, 'чек', array('', 'а', 'ов'))
-	:'Данные не обработаны';
+echo numberof($rowCount, 'Загружен', array('', 'о', 'о'))." $rowCount ".numberof($rowCount, 'чек', array('', 'а', 'ов'));
 ?>
