@@ -36,6 +36,22 @@ if(!$row)
 
 $user_id = $row['id'];
 
+if (isset($_GET['buyer_login']) && ($_GET['buyer_login']!='')) {
+	$stmt = $db->prepare(
+	"SELECT id
+	 FROM ".DB_TABLE_PREFIX."users
+	 WHERE login = ?
+	");
+	
+	$stmt->execute(array($_GET['buyer_login']));
+	$row = $stmt->fetch();
+	if(!$row)
+		die("Неверный логин покупателя");
+		
+	$user_id = $row['id'];
+}
+
+
 $rowCount = 0;
 $stmt = $db->prepare(
 "INSERT INTO ".DB_TABLE_PREFIX."receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id) 
