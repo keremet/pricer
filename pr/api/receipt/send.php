@@ -35,6 +35,7 @@ if(!$row)
 	die("Неверный логин или пароль");
 
 $user_id = $row['id'];
+$ins_user_id = $user_id;
 
 if (isset($_GET['buyer_login']) && ($_GET['buyer_login']!='')) {
 	$stmt = $db->prepare(
@@ -54,8 +55,8 @@ if (isset($_GET['buyer_login']) && ($_GET['buyer_login']!='')) {
 
 $rowCount = 0;
 $stmt = $db->prepare(
-"INSERT INTO ".DB_TABLE_PREFIX."receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id) 
- VALUES (STR_TO_DATE(?, '%Y%m%dT%H%i%s'), ?, ?, ?, ?, ?)
+"INSERT INTO ".DB_TABLE_PREFIX."receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id, ins_user_id) 
+ VALUES (STR_TO_DATE(?, '%Y%m%dT%H%i%s'), ?, ?, ?, ?, ?, ?)
 ");
 if ($stmt==FALSE)
 	die('prepare failed');
@@ -75,7 +76,7 @@ foreach(explode(';', $entityBody) as $qrCode){
 		if((!array_key_exists('t', $p)) || (!array_key_exists('s', $p)) || (!array_key_exists('fn', $p))
 			|| (!array_key_exists('i', $p)) || (!array_key_exists('fp', $p))){
 			echo "Ошибочный QR-код $qrCode\n";
-		}else if($stmt->execute(array($p['t'], $p['s'], $p['fn'], $p['i'], $p['fp'], $user_id))){
+		}else if($stmt->execute(array($p['t'], $p['s'], $p['fn'], $p['i'], $p['fp'], $user_id, $ins_user_id))){
 			$rowCount += $stmt->rowCount();
 		}else{
 			$errInfo = $stmt->errorInfo();

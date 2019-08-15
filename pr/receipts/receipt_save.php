@@ -40,13 +40,14 @@ if($_SESSION['user_id']==null)
                              ,$_SESSION['user_id'])); 
 		}
 	} else {
-		execStmt("INSERT INTO ".DB_TABLE_PREFIX."receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id)
+		execStmt("INSERT INTO ".DB_TABLE_PREFIX."receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id, ins_user_id)
                           VALUES (STR_TO_DATE(?, '%d%m%Y%H%i%s'), ?, ?, ?, ?, ?)",
 			array($_POST['date_cor'].$_POST['time']
                              ,$_POST['summa']
                              ,$_POST['fdn']
                              ,$_POST['fdoc']
                              ,$_POST['fs']
+                             ,$_SESSION['user_id']
                              ,$_SESSION['user_id']));                       
 	}
 ?>

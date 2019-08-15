@@ -40,8 +40,11 @@
 			, u.login
 			, r.rawReceipt
 			, r.user_id
+			, u_ins.login ins_login
+			, DATE_FORMAT(r.dtInsert, '%d-%m-%Y %H:%i:%s') dtInsert
 		 FROM ".DB_TABLE_PREFIX."receipt r 
 		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id 
+		    JOIN ".DB_TABLE_PREFIX."users u_ins on r.ins_user_id = u_ins.id 
 		 WHERE r.id = ?"
 	 );
 	$stmt->execute(array($_GET['id']));
@@ -50,11 +53,13 @@
 		die("Чек не найден");
 ?> 
 	<table border="0" cellpadding="0" cellspacing="2">
-		<tr><td>Дата и время:<td><?=$rowR['dt']?>
+		<tr><td>Дата и время чека:<td><?=$rowR['dt']?>
 		<tr><td>Сумма:<td><?=money_to_str($rowR['totalSum'])?>
 		<tr><td>User:<td><?=$rowR['user']?>
 		<tr><td>retailPlaceAddress:<td><?=$rowR['retailPlaceAddress']?>
-		<tr><td>Ввел:<td><?=$rowR['login']?>
+		<tr><td>Покупатель:<td><?=$rowR['login']?>
+		<tr><td>Ввел:<td><?=$rowR['ins_login']?>
+		<tr><td>Дата и время ввода:<td><?=$rowR['dtInsert']?>
 	</table>
 	<?
 	oftTable::init('Товары');

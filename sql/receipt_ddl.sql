@@ -25,6 +25,8 @@ CREATE TABLE `pr_receipt` (
   `dateTime` DATETIME NOT NULL,
   `ndsNo` int(11) DEFAULT NULL,
   `user_id`  int(11) NOT NULL,
+  `ins_user_id`  int(11) NOT NULL,
+  `dtInsert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `rawReceipt` text,
   `checked` BOOLEAN NOT NULL DEFAULT FALSE,
    CONSTRAINT `pr_receipt_uk` UNIQUE KEY (`dateTime`, `totalSum`, `fiscalDriveNumber`, `fiscalDocumentNumber`, `fiscalSign`),
