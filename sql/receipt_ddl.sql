@@ -3,7 +3,7 @@ CREATE TABLE `pr_receipt` (
   `buyerAddress` text,
   `totalSum` int(11) NOT NULL,
   `addressToCheckFiscalSign` text,
-  `fiscalDriveNumber` varchar(100) NOT NULL,
+  `fiscalDriveNumber` bigint NOT NULL,
   `rawData` text,
   `kktRegId` text,
   `user` text,
@@ -30,7 +30,8 @@ CREATE TABLE `pr_receipt` (
   `rawReceipt` text,
   `checked` BOOLEAN NOT NULL DEFAULT FALSE,
    CONSTRAINT `pr_receipt_uk` UNIQUE KEY (`dateTime`, `totalSum`, `fiscalDriveNumber`, `fiscalDocumentNumber`, `fiscalSign`),
-   CONSTRAINT `pr_receipt_user_id` FOREIGN KEY (`user_id`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+   CONSTRAINT `pr_receipt_user_id` FOREIGN KEY (`user_id`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+   CONSTRAINT `pr_receipt_ins_user_id` FOREIGN KEY (`ins_user_id`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
@@ -69,6 +70,11 @@ CREATE TABLE `pr_receipt_to_shop` (
   CONSTRAINT `pr_receipt_to_shop__user_id` FOREIGN KEY (`user_id`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `pr_fdn_to_shop` (
+  `fiscalDriveNumber` bigint PRIMARY KEY,
+  `shop_id` int(11) NOT NULL,
+  CONSTRAINT `pr_fdn_to_shop__shop_id` FOREIGN KEY (`shop_id`) REFERENCES `pr_shops` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `pr_receipt_item_to_product` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -79,6 +85,14 @@ CREATE TABLE `pr_receipt_item_to_product` (
   UNIQUE KEY `name_inn` (`inn`,`name`) USING BTREE,
   CONSTRAINT `pr_receipt_item_to_product__product_id` FOREIGN KEY (`product_id`) REFERENCES `pr_products` (`id`),
   CONSTRAINT `pr_receipt_item_to_product__user_id` FOREIGN KEY (`user_id`) REFERENCES `pr_users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `pr_receipt_item_name_to_product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `product_id` int(11) NOT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  UNIQUE KEY `pr_receipt_item_name_to_product__name` (`name`) USING BTREE,
+  CONSTRAINT `pr_receipt_item_name_to_product__product_id` FOREIGN KEY (`product_id`) REFERENCES `pr_products` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `pr_receipt_user` (
