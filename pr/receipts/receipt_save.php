@@ -41,7 +41,7 @@ if($_SESSION['user_id']==null)
 		}
 	} else {
 		execStmt("INSERT INTO ".DB_TABLE_PREFIX."receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id, ins_user_id)
-                          VALUES (STR_TO_DATE(?, '%d%m%Y%H%i%s'), ?, ?, ?, ?, ?)",
+                          VALUES (STR_TO_DATE(?, '%d%m%Y%H%i%s'), ?, ?, ?, ?, ?, ?)",
 			array($_POST['date_cor'].$_POST['time']
                              ,$_POST['summa']
                              ,$_POST['fdn']
