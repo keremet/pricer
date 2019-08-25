@@ -106,6 +106,25 @@ include '../template/jstree/jstree.php';
 			}
 		});
 	}
+	function addFdn() {
+		$('.result').html('');
+		_shop_id = $('#selected_shop_id').attr('value');
+		jQuery.ajax({
+			url:     '../shops/save_fdn.php', //Адрес подгружаемой страницы
+			type:     "POST", //Тип запроса
+			dataType: "html", //Тип данных
+			data: {
+				shop_id: _shop_id,
+				fdn: document.getElementById('shop_fdn').value
+			},
+			success: function(response) { //Если все нормально
+				$('.result').html(response);
+			},
+			error: function(response) { //Если ошибка
+				$('.result').html('Ошибка');
+			}
+		});	
+	}
 </script>
 <link rel="stylesheet" href="../template/input_calendar/tcal.css"/>
 <?if($_SESSION['user_id']){?>	
