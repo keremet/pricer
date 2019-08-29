@@ -215,6 +215,7 @@ headerOut('Личный кабинет');
 		<a href=my_consumption.php>Мои расходы (профилирование)</a><br>
 		<a href="../receipts/receipt_list.php">Все чеки</a><br>
 		<a href="../receipts/receipt_list.php?user_id=<?=$_SESSION['user_id']?>">Мои чеки</a><br>
+		<a href="../receipts/receipt_list_wo_fdn_link.php?user_id=<?=$_SESSION['user_id']?>">Мои чеки без привязки кассы</a><br>
 		<? if($_SESSION['user_download_backup'] == "1"){ ?>
 		<a href="backup_db.php?type=settings">Бэкап настроек</a><br>
 		<a href="backup_db.php?type=all">Полный бэкап</a><br>
