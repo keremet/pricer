@@ -43,18 +43,21 @@
 			else
 				$r .= '<input type="hidden" name="main_clsf_id" value="'.$id.'">';
 		}
-		$r .= '</form><hr>';
-		
-		$stmtFdn = $db->prepare(
-			"SELECT fiscalDriveNumber
-			FROM ".DB_TABLE_PREFIX."fdn_to_shop
-			WHERE shop_id = ?"
-		);
-		$stmtFdn->execute(array($id));
-		while ($fdn = $stmtFdn->fetch()) {
-			$r .= $fdn['fiscalDriveNumber'].'<br>';
+		$r .= '</form>';
+
+		if((!$readonly) && $is_file){
+			$r .= '<hr>';
+			$stmtFdn = $db->prepare(
+				"SELECT fiscalDriveNumber
+				FROM ".DB_TABLE_PREFIX."fdn_to_shop
+				WHERE shop_id = ?"
+			);
+			$stmtFdn->execute(array($id));
+			while ($fdn = $stmtFdn->fetch()) {
+				$r .= $fdn['fiscalDriveNumber'].'<br>';
+			}
+			$r .= '<input type="text" name="shop_fdn" id="shop_fdn"><br><input type="submit" value="Добавить ID кассы" onclick="addFdn(); return false;">';
 		}
-		$r .= '<input type="text" name="shop_fdn" id="shop_fdn"><br><input type="submit" value="Добавить ID кассы" onclick="addFdn(); return false;">';
 
 		return ($is_file)?
 			array('content' => $r, 'shop_id' => $id)
