@@ -93,5 +93,15 @@ foreach(explode(';', $entityBody) as $qrCode){
 	}
 }
 
-echo numberof($rowCount, 'Загружен', array('', 'о', 'о'))." $rowCount ".numberof($rowCount, 'чек', array('', 'а', 'ов'));
+echo numberof($rowCount, 'Загружен', array('', 'о', 'о'))." $rowCount ".numberof($rowCount, 'чек', array('', 'а', 'ов'))."\n";
+
+$stmt = $db->prepare(
+"SELECT count(1)
+ FROM ".DB_TABLE_PREFIX."receipt
+ WHERE ins_user_id = ?
+");
+
+$stmt->execute(array($ins_user_id));
+$all_user_receipts = $stmt->fetchColumn();
+echo 'Всего Вами ' . numberof($all_user_receipts, 'загружен', array('', 'о', 'о'))." $all_user_receipts ".numberof($all_user_receipts, 'чек', array('', 'а', 'ов'));
 ?>
