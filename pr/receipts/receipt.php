@@ -42,6 +42,7 @@
 			, r.user_id
 			, u_ins.login ins_login
 			, DATE_FORMAT(r.dtInsert, '%d-%m-%Y %H:%i:%s') dtInsert
+			, r.fiscalDriveNumber
 		 FROM ".DB_TABLE_PREFIX."receipt r 
 		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id 
 		    JOIN ".DB_TABLE_PREFIX."users u_ins on r.ins_user_id = u_ins.id 
@@ -60,6 +61,7 @@
 		<tr><td>Покупатель:<td><?=$rowR['login']?>
 		<tr><td>Ввел:<td><?=$rowR['ins_login']?>
 		<tr><td>Дата и время ввода:<td><?=$rowR['dtInsert']?>
+		<tr><td>Касса:<td><?=$rowR['fiscalDriveNumber']?>
 	</table>
 	<?
 	oftTable::init('Товары');
