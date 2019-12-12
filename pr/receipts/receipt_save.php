@@ -24,14 +24,17 @@ if($_SESSION['user_id']==null)
 			header('Location: receipt_list.php');
 		}
 	}
-	
+	$cor_time = $_POST['time'];
+	if (strlen($cor_time) == 4)
+		$cor_time .= '00';
+
 	if ($_POST['id']!=null) {
 		if ($_POST['oper_type'] == 'delete') {
 			execStmt("DELETE FROM ".DB_TABLE_PREFIX."receipt WHERE id = ?", array($_POST['id']));
 		} else {
             execStmt("UPDATE ".DB_TABLE_PREFIX."receipt SET ....
 					  WHERE id = ? and user_id = ?",
-                            array($_POST['date_cor'].$_POST['time']
+                            array($_POST['date_cor'].$cor_time
                              ,$_POST['summa']
                              ,$_POST['fdn']
                              ,$_POST['fdoc']
@@ -42,7 +45,7 @@ if($_SESSION['user_id']==null)
 	} else {
 		execStmt("INSERT INTO ".DB_TABLE_PREFIX."receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id, ins_user_id)
                           VALUES (STR_TO_DATE(?, '%d%m%Y%H%i%s'), ?, ?, ?, ?, ?, ?)",
-			array($_POST['date_cor'].$_POST['time']
+			array($_POST['date_cor'].$cor_time
                              ,$_POST['summa']
                              ,$_POST['fdn']
                              ,$_POST['fdoc']

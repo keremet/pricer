@@ -45,7 +45,7 @@ function saveReceipt(){
 value="<?=(($id!=null)?$ent['date']:'')?>" maxlength="8" 
 onkeyup="return proverka_dat(this);" onchange="return proverka_dat(this);"> недописанная часть даты подставится из текущей
         
-<tr><td>Время (HHMMSS)<td><input id="time"  name="time" size="30" type="text" 
+<tr><td>Время (HHMMSS, HHMM)<td><input id="time"  name="time" size="30" type="text" 
 value="<?=(($id!=null)?$ent['time']:'')?>">
       
 <tr><td>Сумма в копейках<td><input id="summa"  name="summa" size="30" type="text" 
