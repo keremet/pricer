@@ -1,4 +1,7 @@
-<?session_start();?>
+<?
+	session_start();
+	$show_login = ($_SESSION['user_show_login'] == "1");
+?>
 <head>
 	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
 	<title>Чек</title>
@@ -58,9 +61,11 @@
 		<tr><td>Сумма:<td><?=money_to_str($rowR['totalSum'])?>
 		<tr><td>User:<td><?=$rowR['user']?>
 		<tr><td>retailPlaceAddress:<td><?=$rowR['retailPlaceAddress']?>
+<? if($show_login) {?>
 		<tr><td>Покупатель:<td><?=$rowR['login']?>
 		<tr><td>Ввел:<td><?=$rowR['ins_login']?>
 		<tr><td>Дата и время ввода:<td><?=$rowR['dtInsert']?>
+<? } ?>
 		<tr><td>Касса:<td><?=$rowR['fiscalDriveNumber']?>
 	</table>
 	<?
