@@ -217,6 +217,7 @@ headerOut('Личный кабинет');
 		<a href="../receipts/receipt_list.php?user_id=<?=$_SESSION['user_id']?>">Мои чеки</a><br>
 		<a href="../receipts/receipt_list_wo_fdn_link.php?user_id=<?=$_SESSION['user_id']?>">Мои чеки без привязки кассы</a><br>
 		<a href="../receipts/receipt_list_with_fdn_link.php?user_id=<?=$_SESSION['user_id']?>">Мои чеки с привязкой кассы</a><br>
+		<a href="../receipts/receipt_add.php">Добавить чек вручную</a><br>
 		<? if($_SESSION['user_download_backup'] == "1"){ ?>
 		<a href="backup_db.php?type=settings">Бэкап настроек</a><br>
 		<a href="backup_db.php?type=all">Полный бэкап</a><br>
