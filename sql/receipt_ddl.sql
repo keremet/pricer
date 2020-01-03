@@ -120,8 +120,6 @@ FROM pr_product_offers
 UNION ALL
 SELECT null, i2p.product_id, r2s.shop_id, r.user_id, r.dateTime, i.price/100, i.quantity
 FROM pr_receipt r
-  JOIN pr_receipt_to_shop r2s ON r2s.inn = r.userInn 
-	AND ((r2s.name = r.user) OR ( r2s.name is null AND r.user is null ))
-	AND ((r2s.address = r.retailPlaceAddress) OR ( r2s.address is null AND r.retailPlaceAddress is null ))
+  JOIN pricer_fdn_to_shop r2s on r.fiscalDriveNumber = r2s.fiscalDriveNumber
   JOIN pr_receipt_item i ON i.receipt_id = r.id
-  JOIN pr_receipt_item_to_product i2p ON r.userInn = i2p.inn and i.name = i2p.name;
+  JOIN pr_receipt_item_name_to_product i2p ON i.name = i2p.name;
