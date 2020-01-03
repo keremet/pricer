@@ -93,7 +93,7 @@ int main(void) {
 		int id, checked, rawLoaded;
 		for( char* pos2line=not_parsed.memory; parseLine(&pos2line, &id, &checked, &rawLoaded); ){
 			printf("Process %i - %i - %i\n", id, checked, rawLoaded);
-			if(!checked){
+			if(!checked && !rawLoaded){
 				struct MemoryStruct check_out;
 				char url[100];
 				snprintf(url, sizeof(url), "http://orv.org.ru/pricer/api/receipt/check.php?id=%i", id);

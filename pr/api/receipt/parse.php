@@ -32,8 +32,18 @@
 function parseReceipt($d, $id)
 {
 	global $db;
-	
-	$receipt = $d['document']['receipt'];
+
+	if (!isset($d['document']))
+		die("Нет массива document");
+
+	$receipt = null;
+	if (isset($d['document']['receipt']))
+		$receipt = $d['document']['receipt'];
+	elseif (isset($d['document']['bso']))
+		$receipt = $d['document']['bso'];
+
+	if(!$receipt)
+		die("Нет массива receipt и bso");
 
 	$db->beginTransaction();
 	$stmt = $db->prepare(
