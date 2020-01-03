@@ -27,10 +27,7 @@
         DB_TABLE_PREFIX.'town',
         DB_TABLE_PREFIX.'network',
         DB_TABLE_PREFIX.'shops_main_clsf',
-        DB_TABLE_PREFIX.'shops',
-
-        DB_TABLE_PREFIX.'receipt_item_to_product',
-        DB_TABLE_PREFIX.'receipt_to_shop'
+        DB_TABLE_PREFIX.'shops'
     );
     switch($backup_type)
     {

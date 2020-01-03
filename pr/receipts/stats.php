@@ -28,31 +28,31 @@ if(isset($_POST['operation']))
 		if($itemId) {
 			
 			$req = "SELECT
-				`b`.`user_id` AS `buyer_id`,
+				`b`.`creator` AS `buyer_id`,
 				`c`.`login` AS `buyer`,
-				`b`.`dateTime` AS `date`,
+				`b`.`date_buy` AS `date`,
 				`a`.`name` AS `name`,
 				`a`.`id` AS `pr_id`,
 				null AS `group_id`,
-				if(`b`.`sum` IS NULL, 0, `b`.`sum`) AS `sum`
+				if(b.price*b.amount IS NULL, 0, round(b.price*b.amount, 2)) AS `sum`
 				FROM ".DB_TABLE_PREFIX."products `a` 
-				LEFT JOIN ".DB_TABLE_PREFIX."receipt_purchases `b` ON `a`.`id` = `b`.`product_id`
-				LEFT JOIN ".DB_TABLE_PREFIX."users `c` ON `b`.`user_id` = `c`.`id`"
-				.($filter ? 'WHERE `b`.`dateTime` BETWEEN DATE(?) AND DATE(?) ' : '');
+				LEFT JOIN ".DB_TABLE_PREFIX."fact `b` ON `a`.`id` = `b`.`product`
+				LEFT JOIN ".DB_TABLE_PREFIX."users `c` ON `b`.`creator` = `c`.`id` "
+				.($filter ? 'WHERE `b`.`date_buy` BETWEEN DATE(?) AND DATE(?) ' : '');
 			
 		}
 		else {
 			
 			$req = "SELECT
-				`b`.`user_id` AS `buyer_id`,
+				`b`.`creator` AS `buyer_id`,
 				`a`.`name` AS `name`,
 				`a`.`id` AS `pr_id`,
 				null AS `group_id`,
-				if(`b`.`sum` IS NULL, 0, `b`.`sum`) AS `sum`
+				if(b.price*b.amount IS NULL, 0, round(b.price*b.amount, 2)) AS `sum`
 				FROM ".DB_TABLE_PREFIX."products `a` 
-				LEFT JOIN ".DB_TABLE_PREFIX."receipt_purchases `b` ON `a`.`id` = `b`.`product_id`
-				LEFT JOIN ".DB_TABLE_PREFIX."users `c` ON `b`.`user_id` = `c`.`id` "
-				.($filter ? 'WHERE `b`.`dateTime` BETWEEN DATE(?) AND DATE(?) ' : '');
+				LEFT JOIN ".DB_TABLE_PREFIX."fact `b` ON `a`.`id` = `b`.`product`
+				LEFT JOIN ".DB_TABLE_PREFIX."users `c` ON `b`.`creator` = `c`.`id` "
+				.($filter ? 'WHERE `b`.`date_buy` BETWEEN DATE(?) AND DATE(?) ' : '');
 			
 		}
 		
@@ -83,8 +83,8 @@ if(isset($_POST['operation']))
 				$res[] = array(
 						   'name' => $row['name'],
 						   'pr_id' => $row['pr_id'],
-						   'buyer' => $row['buyer'],
-						   'date' => $row['date'],
+						   'buyer' => isset($row['buyer'])?$row['buyer']:null,
+						   'date' => isset($row['date'])?$row['date']:null,
 						   'group_id' => $row['group_id'],
 						   'buy_num' => $empty ? 0 : 1,
 						   'buyers_num' => 0,
