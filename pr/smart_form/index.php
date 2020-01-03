@@ -125,6 +125,25 @@ include '../template/jstree/jstree.php';
 			}
 		});	
 	}
+	function addItemName() {
+		$('.result').html('');
+		_product_id = $('#selected_product_id').attr('value');
+		jQuery.ajax({
+			url:     '../products/save_item_name.php', //Адрес подгружаемой страницы
+			type:     "POST", //Тип запроса
+			dataType: "html", //Тип данных
+			data: {
+				product_id: _product_id,
+				item_name: document.getElementById('product_item_name').value
+			},
+			success: function(response) { //Если все нормально
+				$('.result').html(response);
+			},
+			error: function(response) { //Если ошибка
+				$('.result').html('Ошибка');
+			}
+		});	
+	}
 </script>
 <link rel="stylesheet" href="../template/input_calendar/tcal.css"/>
 <?if($_SESSION['user_id']){?>	

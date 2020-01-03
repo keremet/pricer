@@ -104,6 +104,21 @@
 					$r .= '<input type="hidden" name="main_clsf_id" value="'.$id.'">';
 			}
 			$r .= '</form>';
+
+			if((!$readonly) && $is_file){
+				$r .= '<hr>';
+
+				$stmtItemNames = $db->prepare(
+					"SELECT name
+					FROM ".DB_TABLE_PREFIX."receipt_item_name_to_product
+					WHERE product_id = ?"
+				);
+				$stmtItemNames->execute(array($id));
+				while ($itemName = $stmtItemNames->fetch()) {
+					$r .= $itemName['name'].'<br>';
+				}
+				$r .= '<input type="text" name="product_item_name" id="product_item_name"><br><input type="submit" value="Добавить название в чеке" onclick="addItemName(); return false;">';
+			}
 		}
 		return ($is_file)?
 			array('content' => $r, 'product_id' => $id)
