@@ -59,8 +59,8 @@
 	<table border="0" cellpadding="0" cellspacing="2">
 		<tr><td>Дата и время чека:<td><?=$rowR['dt']?>
 		<tr><td>Сумма:<td><?=money_to_str($rowR['totalSum'])?>
-		<tr><td>User:<td><?=$rowR['user']?>
-		<tr><td>retailPlaceAddress:<td><?=$rowR['retailPlaceAddress']?>
+		<tr><td>Продавец:<td><?=$rowR['user']?>
+		<tr><td>Место покупки:<td><?=$rowR['retailPlaceAddress']?>
 <? if($show_login) {?>
 		<tr><td>Покупатель:<td><?=$rowR['login']?>
 		<tr><td>Ввел:<td><?=$rowR['ins_login']?>
