@@ -20,28 +20,18 @@
 
 	oftTable::init('Чеки');
 	$header_arr = array('Время'
-		,'totalSum','fiscalDriveNumber'
-		,'kktRegId','user','operationType'
-		,'shiftNumber', 'ecashTotalSum'
-		,'retailPlaceAddress', 'userInn', 'taxationType'
-		,'cashTotalSum', 'operator'
-		,'receiptCode', 'fiscalSign'
-		,'fiscalDocumentNumber', 'requestNumber'
-		,'buyerAddress', 'senderAddress','addressToCheckFiscalSign'
-		, 'nds18', 'nds10', 'ndsNo'
+		,'Сумма'
+		,'Продавец'
+		,'Место покупки'
 		);
 	if($show_login)
-		$header_arr[] = 'login';
+		$header_arr[] = 'Пользователь';
 	oftTable::header($header_arr);
 	$stmt = $db->prepare(
 		"SELECT r.id, DATE_FORMAT(r.dateTime, '%d-%m-%Y %H:%i:%s') dt
-			, r.buyerAddress, r.totalSum, r.addressToCheckFiscalSign, r.fiscalDriveNumber
-			, r.kktRegId, r.user, r.operationType
-			, r.shiftNumber, r.ecashTotalSum, r.nds18
-			, r.retailPlaceAddress, r.userInn, r.taxationType
-			, r.cashTotalSum, r.operator, r.senderAddress
-			, r.receiptCode, r.fiscalSign, r.nds10
-			, r.fiscalDocumentNumber, r.requestNumber, r.ndsNo".
+			, r.totalSum
+			, r.user
+			, r.retailPlaceAddress".
 			(($show_login)?", u.login":"").
 		" FROM ".DB_TABLE_PREFIX."receipt r".
 		    (($show_login)?" JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id":"").
@@ -54,15 +44,9 @@
 		$stmt->execute();
 	while ($row = $stmt->fetch()) {
 		$row_arr = array('<a href=receipt.php?id='.$row['id'].'>'.$row['dt'].'</a>'
-			, money_out($row['totalSum']), $row['fiscalDriveNumber']
-			, $row['kktRegId'], $row['user'], $row['operationType']
-			, $row['shiftNumber'], money_out($row['ecashTotalSum'])
-			, $row['retailPlaceAddress'], $row['userInn'], $row['taxationType']
-			, $row['cashTotalSum'], $row['operator']
-			, $row['receiptCode'], $row['fiscalSign']
-			, $row['fiscalDocumentNumber'], $row['requestNumber']
-			, $row['buyerAddress'], $row['senderAddress'], $row['addressToCheckFiscalSign']
-			, money_out($row['nds18']), money_out($row['nds10']), money_out($row['ndsNo'])
+			, money_out($row['totalSum'])
+			, $row['user']
+			, $row['retailPlaceAddress']
 			);
 		if($show_login)
 			$row_arr[] = $row['login'];
