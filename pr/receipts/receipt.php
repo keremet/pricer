@@ -46,6 +46,13 @@
 			, u_ins.login ins_login
 			, DATE_FORMAT(r.dtInsert, '%d-%m-%Y %H:%i:%s') dtInsert
 			, r.fiscalDriveNumber
+			, r.buyerAddress, r.addressToCheckFiscalSign
+			, r.kktRegId, r.operationType
+			, r.shiftNumber, r.ecashTotalSum, r.nds18
+			, r.userInn, r.taxationType
+			, r.cashTotalSum, r.operator, r.senderAddress
+			, r.receiptCode, r.fiscalSign, r.nds10
+			, r.fiscalDocumentNumber, r.requestNumber, r.ndsNo
 		 FROM ".DB_TABLE_PREFIX."receipt r 
 		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id 
 		    JOIN ".DB_TABLE_PREFIX."users u_ins on r.ins_user_id = u_ins.id 
@@ -97,7 +104,34 @@
 	}
 ?> 
 <br/>
-<p align="left">Чек в неразобранном формате:<br/>
+<p align="left"><table border="0" cellpadding="0" cellspacing="2">
+<?
+	function tr_out($label, $v) {
+		if( !is_null($v) && $v !=='' )
+			echo '<tr><td>'.$label.':<td>'.$v;
+	}
+	tr_out('buyerAddress', $rowR['buyerAddress']);
+	tr_out('addressToCheckFiscalSign', $rowR['addressToCheckFiscalSign']);
+	tr_out('kktRegId', $rowR['kktRegId']);
+	tr_out('operationType', $rowR['operationType']);
+	tr_out('shiftNumber', $rowR['shiftNumber']);
+	tr_out('По карте', money_to_str($rowR['ecashTotalSum']));
+	tr_out('Наличными', money_to_str($rowR['cashTotalSum']));
+	tr_out('Кассир', $rowR['operator']);
+	tr_out('taxationType', $rowR['taxationType']);
+	tr_out('НДС 18%', money_to_str($rowR['nds18']));
+	tr_out('НДС 10%', money_to_str($rowR['nds10']));
+	tr_out('НДС', money_to_str($rowR['ndsNo']));
+	tr_out('ИНН продавца', $rowR['UserInn']);
+	tr_out('senderAddress', $rowR['senderAddress']);
+	tr_out('receiptCode', $rowR['receiptCode']);
+	tr_out('fiscalSign', $rowR['fiscalSign']);
+	tr_out('fiscalDocumentNumber', $rowR['fiscalDocumentNumber']);
+	tr_out('requestNumber', $rowR['requestNumber']);
+?>
+	</table>
+<br/>
+Чек в неразобранном формате:<br/>
 <?=$rowR['rawReceipt']?>
 </body>
 </html>
