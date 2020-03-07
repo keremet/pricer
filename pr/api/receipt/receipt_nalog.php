@@ -20,7 +20,7 @@ class ReceiptNalog {
         
         $stmtS = $db->prepare(
             "SELECT fns_userpwd
-             FROM ".DB_TABLE_PREFIX."receipt_user 
+             FROM receipt_user 
              WHERE dtLastLimit < NOW() - INTERVAL 1 DAY");
         $stmtS->execute();
         $row = $stmtS->fetch();
@@ -35,7 +35,7 @@ class ReceiptNalog {
         $data = curl_exec($curl);
         if($data == "daily limit reached for the specified user"){
             $stmtU = $db->prepare(
-                "UPDATE ".DB_TABLE_PREFIX."receipt_user
+                "UPDATE receipt_user
                  SET dtLastLimit = NOW()
                  WHERE fns_userpwd = ?");
             $stmtU->execute(array($row['fns_userpwd']));

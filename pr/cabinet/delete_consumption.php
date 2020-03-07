@@ -10,8 +10,8 @@ if (isset($_REQUEST['id'])) {
     if ($_SESSION['user_del_anothers_consumptions'] != '1') {
         $stmtS = $db->prepare(
             "SELECT cc.creator, cc.id_hi
-            FROM ".DB_TABLE_PREFIX."consumption c
-              JOIN ".DB_TABLE_PREFIX."consumption_clsf cc ON cc.id = c.clsf_id
+            FROM consumption c
+              JOIN consumption_clsf cc ON cc.id = c.clsf_id
             WHERE c.id = ?"
             );
         if (!$stmtS->execute(array($_REQUEST['id']))) {
@@ -22,7 +22,7 @@ if (isset($_REQUEST['id'])) {
             while (is_null($row['creator'])) {
                 $stmtS2 = $db->prepare(
                     "SELECT cc.creator, cc.id_hi
-                    FROM ".DB_TABLE_PREFIX."consumption_clsf cc
+                    FROM consumption_clsf cc
                     WHERE cc.id = ?"
                     );
                 if (!$stmtS2->execute(array($row['id_hi']))) {
@@ -43,7 +43,7 @@ if (isset($_REQUEST['id'])) {
         }
     }
 
-	$stmt = $db->prepare("DELETE FROM ".DB_TABLE_PREFIX."consumption WHERE id = ?");
+	$stmt = $db->prepare("DELETE FROM consumption WHERE id = ?");
 	if(!$stmt->execute(array($_REQUEST['id']))){
 		echo 'Ошибка удаления расхода'; print_r($stmt->errorInfo());
 		exit();

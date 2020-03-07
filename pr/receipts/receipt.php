@@ -53,9 +53,9 @@
 			, r.cashTotalSum, r.operator, r.senderAddress
 			, r.receiptCode, r.fiscalSign, r.nds10
 			, r.fiscalDocumentNumber, r.requestNumber, r.ndsNo
-		 FROM ".DB_TABLE_PREFIX."receipt r 
-		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id 
-		    JOIN ".DB_TABLE_PREFIX."users u_ins on r.ins_user_id = u_ins.id 
+		 FROM receipt r 
+		    JOIN users u on r.user_id = u.id 
+		    JOIN users u_ins on r.ins_user_id = u_ins.id 
 		 WHERE r.id = ?"
 	 );
 	$stmt->execute(array($_GET['id']));
@@ -85,8 +85,8 @@
 	$stmt = $db->prepare(
 		"SELECT i.sum, i.nds10, i.name, i.price, i.nds18, i.id, i.quantity, i.ndsNo
 			, m.discountName, m.markupName, m.discountSum
-		 FROM ".DB_TABLE_PREFIX."receipt_item i
-		 LEFT JOIN ".DB_TABLE_PREFIX."receipt_modifier m on m.item_id = i.id
+		 FROM receipt_item i
+		 LEFT JOIN receipt_modifier m on m.item_id = i.id
 		 WHERE i.receipt_id = ?
 		 ");
 	$stmt->execute(array($_GET['id']));

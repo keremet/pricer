@@ -5,7 +5,7 @@
 	$shop_id = (int) $_REQUEST['id'];
 	$stmt = $db->prepare(
 		"SELECT name, address
-		 FROM ".DB_TABLE_PREFIX."shops
+		 FROM shops
 		 WHERE id = ?"
 	);
 	$stmt->execute(array($shop_id));

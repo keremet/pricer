@@ -27,7 +27,7 @@ else {
 $pieces = explode("/", $_REQUEST['date_buy']);
 $date_buy = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
 
-$stmt = $db->prepare("INSERT INTO ".DB_TABLE_PREFIX."product_offers (product,shop,price,creator,date_buy,amount) VALUES (?,?,?,?,?,?)"); 
+$stmt = $db->prepare("INSERT INTO product_offers (product,shop,price,creator,date_buy,amount) VALUES (?,?,?,?,?,?)"); 
 if(!$stmt->execute(array($_REQUEST['product_id'], $_REQUEST['shop_id'], $price, $_SESSION['user_id'], $date_buy, $amount))){
 	print_r($stmt->errorInfo()); echo '<br>';
 	die('Ошибка при добавлении цены');

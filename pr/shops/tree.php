@@ -7,7 +7,7 @@
 		if($is_file){
 			$stmt = $db->prepare(
 				"SELECT name, address
-				FROM ".DB_TABLE_PREFIX."shops
+				FROM shops
 				WHERE id = ?"
 			);
 			$stmt->execute(array($id));
@@ -49,7 +49,7 @@
 			$r .= '<hr>';
 			$stmtFdn = $db->prepare(
 				"SELECT fiscalDriveNumber
-				FROM ".DB_TABLE_PREFIX."fdn_to_shop
+				FROM fdn_to_shop
 				WHERE shop_id = ?"
 			);
 			$stmtFdn->execute(array($id));
@@ -64,5 +64,5 @@
 			:array('content' => $r, 'shop_id' => '');
 	}
 
-	doTreeOperation(DB_TABLE_PREFIX.'shops_main_clsf', DB_TABLE_PREFIX.'shops', 'showProduct');
+	doTreeOperation('shops_main_clsf', 'shops', 'showProduct');
 ?>

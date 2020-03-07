@@ -17,35 +17,35 @@
     include('../template/connect.php');
 
     $table_name = array(
-        DB_TABLE_PREFIX.'ed_izm',
-        DB_TABLE_PREFIX.'products_main_clsf',
-        DB_TABLE_PREFIX.'products',
+        'ed_izm',
+        'products_main_clsf',
+        'products',
 
-        DB_TABLE_PREFIX.'products_equ_clsf',
-        DB_TABLE_PREFIX.'equ_products',
+        'products_equ_clsf',
+        'equ_products',
 
-        DB_TABLE_PREFIX.'town',
-        DB_TABLE_PREFIX.'network',
-        DB_TABLE_PREFIX.'shops_main_clsf',
-        DB_TABLE_PREFIX.'shops'
+        'town',
+        'network',
+        'shops_main_clsf',
+        'shops'
     );
     switch($backup_type)
     {
     case 'settings':
         break;
     case 'all':
-        array_unshift($table_name , DB_TABLE_PREFIX.'users');
-        array_unshift($table_name , DB_TABLE_PREFIX.'user_group');
+        array_unshift($table_name , 'users');
+        array_unshift($table_name , 'user_group');
 
-        $table_name[] = DB_TABLE_PREFIX.'consumption_clsf';
-        $table_name[] = DB_TABLE_PREFIX.'consumption';
+        $table_name[] = 'consumption_clsf';
+        $table_name[] = 'consumption';
 
-        $table_name[] = DB_TABLE_PREFIX.'product_offers';
+        $table_name[] = 'product_offers';
 
-        $table_name[] = DB_TABLE_PREFIX.'receipt';
-        $table_name[] = DB_TABLE_PREFIX.'receipt_item';
-        $table_name[] = DB_TABLE_PREFIX.'receipt_modifier';
-        $table_name[] = DB_TABLE_PREFIX.'receipt_user';
+        $table_name[] = 'receipt';
+        $table_name[] = 'receipt_item';
+        $table_name[] = 'receipt_modifier';
+        $table_name[] = 'receipt_user';
         break;
     default:
         die('Unknown backup type');
@@ -71,7 +71,7 @@
         {
             if($iCol++ > 0)
                 echo ", ";
-            if(($name == DB_TABLE_PREFIX.'users') && ($iCol == 4)) //Не выгружать пароли пользователей
+            if(($name == 'users') && ($iCol == 4)) //Не выгружать пароли пользователей
             {
                 echo "''";
                 continue;

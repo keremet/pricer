@@ -7,7 +7,7 @@ if($_SESSION['user_id']==null)
 	die('Требуется авторизация');
 
 if (isset($_REQUEST['id'])) {
-	$stmt = $db->prepare("DELETE FROM ".DB_TABLE_PREFIX."product_offers WHERE id = ? and creator=?");
+	$stmt = $db->prepare("DELETE FROM product_offers WHERE id = ? and creator=?");
 	if(!$stmt->execute(array($_REQUEST['id'], $_SESSION['user_id']))){
 		echo 'Ошибка удаления цены'; print_r($stmt->errorInfo());
 		exit();

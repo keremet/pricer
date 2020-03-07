@@ -12,11 +12,11 @@
         "SELECT p.name product_name, s.name shop_name, max_date_buy
          FROM (
            SELECT DISTINCT product, shop, max(date_buy) max_date_buy
-           FROM ".DB_TABLE_PREFIX."fact 
+           FROM fact 
            GROUP BY product, shop
          ) A 
-          JOIN ".DB_TABLE_PREFIX."products p ON p.id = A.product 
-          JOIN ".DB_TABLE_PREFIX."shops s ON s.id = A.shop 
+          JOIN products p ON p.id = A.product 
+          JOIN shops s ON s.id = A.shop 
          ORDER BY max_date_buy DESC
         ");
 	$stmt->execute();

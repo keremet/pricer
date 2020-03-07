@@ -7,7 +7,7 @@
  <?php
 	include('../template/connect.php');
 
-	foreach($db->query("SELECT id, concat_ws(' - ', name, address) as shop FROM ".DB_TABLE_PREFIX."shops order by name") as $row){
+	foreach($db->query("SELECT id, concat_ws(' - ', name, address) as shop FROM shops order by name") as $row){
 		echo '<p><a href="prices.php?shopid='.$row['id'].'">'.$row['shop'].'</a></p>';
 	}
  ?>

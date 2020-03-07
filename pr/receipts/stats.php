@@ -35,9 +35,9 @@ if(isset($_POST['operation']))
 				`a`.`id` AS `pr_id`,
 				null AS `group_id`,
 				if(b.price*b.amount IS NULL, 0, round(b.price*b.amount, 2)) AS `sum`
-				FROM ".DB_TABLE_PREFIX."products `a` 
-				LEFT JOIN ".DB_TABLE_PREFIX."fact `b` ON `a`.`id` = `b`.`product`
-				LEFT JOIN ".DB_TABLE_PREFIX."users `c` ON `b`.`creator` = `c`.`id` "
+				FROM products `a` 
+				LEFT JOIN fact `b` ON `a`.`id` = `b`.`product`
+				LEFT JOIN users `c` ON `b`.`creator` = `c`.`id` "
 				.($filter ? 'WHERE `b`.`date_buy` BETWEEN DATE(?) AND DATE(?) ' : '');
 			
 		}
@@ -49,9 +49,9 @@ if(isset($_POST['operation']))
 				`a`.`id` AS `pr_id`,
 				null AS `group_id`,
 				if(b.price*b.amount IS NULL, 0, round(b.price*b.amount, 2)) AS `sum`
-				FROM ".DB_TABLE_PREFIX."products `a` 
-				LEFT JOIN ".DB_TABLE_PREFIX."fact `b` ON `a`.`id` = `b`.`product`
-				LEFT JOIN ".DB_TABLE_PREFIX."users `c` ON `b`.`creator` = `c`.`id` "
+				FROM products `a` 
+				LEFT JOIN fact `b` ON `a`.`id` = `b`.`product`
+				LEFT JOIN users `c` ON `b`.`creator` = `c`.`id` "
 				.($filter ? 'WHERE `b`.`date_buy` BETWEEN DATE(?) AND DATE(?) ' : '');
 			
 		}

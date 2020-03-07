@@ -25,7 +25,7 @@ $entityBody = file_get_contents('php://input');
 
 $stmt = $db->prepare(
 	"SELECT id
-	 FROM ".DB_TABLE_PREFIX."users
+	 FROM users
 	 WHERE login = ? and password = ?
 	");
 
@@ -40,7 +40,7 @@ $ins_user_id = $user_id;
 if (isset($_GET['buyer_login']) && ($_GET['buyer_login']!='')) {
 	$stmt = $db->prepare(
 	"SELECT id
-	 FROM ".DB_TABLE_PREFIX."users
+	 FROM users
 	 WHERE login = ?
 	");
 	
@@ -55,7 +55,7 @@ if (isset($_GET['buyer_login']) && ($_GET['buyer_login']!='')) {
 
 $rowCount = 0;
 $stmt = $db->prepare(
-"INSERT INTO ".DB_TABLE_PREFIX."receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id, ins_user_id) 
+"INSERT INTO receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id, ins_user_id) 
  VALUES (STR_TO_DATE(?, '%Y%m%dT%H%i%s'), ?, ?, ?, ?, ?, ?)
 ");
 if ($stmt==FALSE)
@@ -97,7 +97,7 @@ echo numberof($rowCount, 'Загружен', array('', 'о', 'о'))." $rowCount 
 
 $stmt = $db->prepare(
 "SELECT count(1)
- FROM ".DB_TABLE_PREFIX."receipt
+ FROM receipt
  WHERE ins_user_id = ?
 ");
 

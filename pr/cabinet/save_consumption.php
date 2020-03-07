@@ -16,7 +16,7 @@ if(!is_numeric($price))
 $pieces = explode("/", $_REQUEST['date_buy']);
 $date_buy = $pieces[2].'-'.$pieces[1].'-'.$pieces[0];
 
-$stmt = $db->prepare("INSERT INTO ".DB_TABLE_PREFIX."consumption (clsf_id,price,date_buy) VALUES (?,?,?)"); 
+$stmt = $db->prepare("INSERT INTO consumption (clsf_id,price,date_buy) VALUES (?,?,?)"); 
 if(!$stmt->execute(array($_REQUEST['product_id'], $price, $date_buy))){
 	print_r($stmt->errorInfo()); echo '<br>';
 	die('Ошибка при добавлении цены');

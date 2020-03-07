@@ -4,7 +4,7 @@
 
 	$stmtS = $db->prepare(
 		"SELECT rawReceipt, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign
-		 FROM ".DB_TABLE_PREFIX."receipt
+		 FROM receipt
 		 WHERE id = ?
 		 ");
 	$stmtS->execute(array($_GET['id']));
@@ -14,7 +14,7 @@
 			$data = $rec->get($row['fiscalDriveNumber'], $row['fiscalDocumentNumber'], $row['fiscalSign']);
 			if (($data != "daily limit reached for the specified user") && ($data != "No available logins")) {
 				$stmtU = $db->prepare(
-					"UPDATE ".DB_TABLE_PREFIX."receipt
+					"UPDATE receipt
 					 SET rawReceipt = ?
 					 WHERE id = ?
 					 ");

@@ -3,7 +3,7 @@
 
 	$stmtS = $db->prepare(
 		"SELECT rawReceipt
-		 FROM ".DB_TABLE_PREFIX."receipt
+		 FROM receipt
 		 WHERE id = ?
 		 ");
 	$stmtS->execute(array($_GET['id']));
@@ -16,7 +16,7 @@
 	
 	$stmtS = $db->prepare(
 		"SELECT 1
-		 FROM ".DB_TABLE_PREFIX."receipt_item
+		 FROM receipt_item
 		 WHERE receipt_id = ?
 		 ");
 	$stmtS->execute(array($_GET['id']));
@@ -47,7 +47,7 @@ function parseReceipt($d, $id)
 
 	$db->beginTransaction();
 	$stmt = $db->prepare(
-		'UPDATE '.DB_TABLE_PREFIX.'receipt 
+		'UPDATE receipt 
 		 SET buyerAddress = ?, addressToCheckFiscalSign = ?, rawData = ?, 
 			kktRegId = ?, user = ?, operationType = ?, 
 			shiftNumber = ?, ecashTotalSum = ?, nds18 = ?, retailPlaceAddress = ?, 
@@ -89,7 +89,7 @@ function addItems($items, $receiptId)
 	
 	foreach($items as $i){
 		$stmt = $db->prepare(
-			'INSERT INTO '.DB_TABLE_PREFIX.'receipt_item (sum, nds10, name, quantity, price, nds18, ndsNo, receipt_id)
+			'INSERT INTO receipt_item (sum, nds10, name, quantity, price, nds18, ndsNo, receipt_id)
 			 VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
 		$exec_prms = createQueryParams($i
 			, array('sum', 'nds10', 'name', 'quantity', 'price', 'nds18', 'ndsNo')
@@ -107,7 +107,7 @@ function addItems($items, $receiptId)
 			$itemId = $db->lastInsertId();
 			foreach($i['modifiers'] as $m){
 				$stmt = $db->prepare(
-					'INSERT INTO '.DB_TABLE_PREFIX.'receipt_modifier (discountName, discountSum, markupName, item_id)
+					'INSERT INTO receipt_modifier (discountName, discountSum, markupName, item_id)
 					 VALUES (?, ?, ?, ?)');
 				$exec_prms = createQueryParams($m
 					, array('discountName', 'discountSum', 'markupName')
