@@ -22,10 +22,10 @@
 		"SELECT r.id, DATE_FORMAT(r.dateTime, '%d-%m-%Y %H:%i:%s') dt
 			, r.totalSum, r.fiscalDriveNumber
 			, r.user, r.retailPlaceAddress, u.login
-		 FROM ".DB_TABLE_PREFIX."receipt r 
-		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id 
+		 FROM receipt r 
+		    JOIN users u on r.user_id = u.id 
 		 WHERE NOT EXISTS(
-			SELECT 1 FROM ".DB_TABLE_PREFIX."fdn_to_shop l
+			SELECT 1 FROM fdn_to_shop l
 			WHERE l.fiscalDriveNumber = r.fiscalDriveNumber
 		 )".
 		 ((isset($_GET['user_id']))?"AND r.user_id = ?":"").   

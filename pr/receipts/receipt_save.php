@@ -30,9 +30,9 @@ if($_SESSION['user_id']==null)
 
 	if ($_POST['id']!=null) {
 		if ($_POST['oper_type'] == 'delete') {
-			execStmt("DELETE FROM ".DB_TABLE_PREFIX."receipt WHERE id = ?", array($_POST['id']));
+			execStmt("DELETE FROM receipt WHERE id = ?", array($_POST['id']));
 		} else {
-            execStmt("UPDATE ".DB_TABLE_PREFIX."receipt SET ....
+            execStmt("UPDATE receipt SET ....
 					  WHERE id = ? and user_id = ?",
                             array($_POST['date_cor'].$cor_time
                              ,$_POST['summa']
@@ -43,7 +43,7 @@ if($_SESSION['user_id']==null)
                              ,$_SESSION['user_id'])); 
 		}
 	} else {
-		execStmt("INSERT INTO ".DB_TABLE_PREFIX."receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id, ins_user_id)
+		execStmt("INSERT INTO receipt (dateTime, totalSum, fiscalDriveNumber, fiscalDocumentNumber, fiscalSign, user_id, ins_user_id)
                           VALUES (STR_TO_DATE(?, '%d%m%Y%H%i%s'), ?, ?, ?, ?, ?, ?)",
 			array($_POST['date_cor'].$cor_time
                              ,$_POST['summa']

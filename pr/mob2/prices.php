@@ -8,14 +8,14 @@
   <?php
 	include('../template/connect.php');
 	
-	$stmt = $db->prepare("SELECT concat_ws(' - ', name, address) FROM ".DB_TABLE_PREFIX."shops where id = ?");
+	$stmt = $db->prepare("SELECT concat_ws(' - ', name, address) FROM shops where id = ?");
 	$stmt->execute(array($_GET['shopid']));
 	echo '<h1>'.$stmt->fetchColumn().'</h1>';	
 	echo '<input type="hidden" name="shopid" value="'.$_GET['shopid'].'">';
 	
 	foreach($db->query(
 			"SELECT id, name
-			 FROM ".DB_TABLE_PREFIX."products
+			 FROM products
 			 where id in (10, 278, 221, 12, 293, 9, 269, 155, 24, 7, 124, 91, 4, 38, 60, 3, 253, 288, 212, 44)
 			 order by name"
 		) as $row){

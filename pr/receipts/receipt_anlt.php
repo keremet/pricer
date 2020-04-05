@@ -22,34 +22,34 @@ function print_prices($stmtProd, $stmtPrices, $product_id){
 }
 	$stmt = $db->prepare(
         "SELECT i.name, round(i.price/100, 2) price, round(i.price/100/ifnull(p.in_box, 1), 2) price_ei, i2p.product_id
-         FROM ".DB_TABLE_PREFIX."receipt r
-           JOIN ".DB_TABLE_PREFIX."receipt_item i ON i.receipt_id = r.id
-           JOIN ".DB_TABLE_PREFIX."receipt_item_to_product i2p ON r.userInn = i2p.inn and i.name = i2p.name
-           JOIN ".DB_TABLE_PREFIX."products p ON p.id = i2p.product_id
+         FROM receipt r
+           JOIN receipt_item i ON i.receipt_id = r.id
+           JOIN receipt_item_to_product i2p ON r.userInn = i2p.inn and i.name = i2p.name
+           JOIN products p ON p.id = i2p.product_id
          WHERE r.id = ?
 		 ");
 	$stmt->execute(array($_GET['id']));
     
     $stmtEquProd = $db->prepare(
         "SELECT pp.product_id
-         FROM ".DB_TABLE_PREFIX."equ_products pc
-            JOIN ".DB_TABLE_PREFIX."equ_products pp ON pp.equ_clsf_id = pc.equ_clsf_id AND pp.product_id != pc.product_id
+         FROM equ_products pc
+            JOIN equ_products pp ON pp.equ_clsf_id = pc.equ_clsf_id AND pp.product_id != pc.product_id
          WHERE pc.product_id = ?
         ");
     
     $stmtProd = $db->prepare(
         "SELECT name, ifnull(in_box, 1) in_box
-         FROM ".DB_TABLE_PREFIX."products
+         FROM products
          WHERE id = ?
         ");
     
     $stmtPrices = $db->prepare(
         "SELECT s.name, po1.date_buy, min(price) pr
-        FROM ".DB_TABLE_PREFIX."fact po1, ".DB_TABLE_PREFIX."shops s
+        FROM fact po1, shops s
         WHERE po1.product = ?
           and (po1.shop, po1.date_buy) in (
             SELECT shop, max(date_buy)
-            FROM ".DB_TABLE_PREFIX."fact
+            FROM fact
             WHERE product = ?
             GROUP BY shop
           )
@@ -76,12 +76,12 @@ function print_prices($stmtProd, $stmtPrices, $product_id){
 	oftTable::header(array("Товар"));
 	$stmt = $db->prepare(
         "SELECT i.name
-         FROM ".DB_TABLE_PREFIX."receipt r
-           JOIN ".DB_TABLE_PREFIX."receipt_item i ON i.receipt_id = r.id
+         FROM receipt r
+           JOIN receipt_item i ON i.receipt_id = r.id
          WHERE r.id = ?
          AND NOT EXISTS(
              SELECT 1
-             FROM ".DB_TABLE_PREFIX."receipt_item_to_product i2p
+             FROM receipt_item_to_product i2p
              WHERE r.userInn = i2p.inn and i.name = i2p.name
          )
 		 ");

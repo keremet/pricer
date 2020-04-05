@@ -9,7 +9,7 @@
 
 	foreach($db->query(
 			"SELECT id, concat_ws(' - ', name, address) as shop 
-			 FROM ".DB_TABLE_PREFIX."shops
+			 FROM shops
 			 where id in (2, 1, 20, 30, 31,  5, 32, 4)
 			 order by name"
 		) as $row){

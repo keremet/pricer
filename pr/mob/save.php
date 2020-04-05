@@ -6,7 +6,7 @@
 <?php
 	include('../template/connect.php');
 
-	$stmt = $db->prepare("INSERT INTO ".DB_TABLE_PREFIX."product_offers (product,shop,price,creator,date_buy) VALUES (?, ?, ?, 1, CURDATE())");
+	$stmt = $db->prepare("INSERT INTO product_offers (product,shop,price,creator,date_buy) VALUES (?, ?, ?, 1, CURDATE())");
 	foreach($_POST as $k => $v){
 		if((substr($k, 0, 4)=='prod') && $v != ''){
 			if(!is_numeric($v)){

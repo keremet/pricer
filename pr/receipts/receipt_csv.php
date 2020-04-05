@@ -20,9 +20,9 @@
 	$stmt = $db->prepare(
 		"SELECT DATE_FORMAT(r.dateTime, '%d-%m-%Y') dt,
 			r.user, u.login, i.name, i.quantity, i.price
-		 FROM ".DB_TABLE_PREFIX."receipt r 
-		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id 
-		    JOIN ".DB_TABLE_PREFIX."receipt_item i on i.receipt_id = r.id ".
+		 FROM receipt r 
+		    JOIN users u on r.user_id = u.id 
+		    JOIN receipt_item i on i.receipt_id = r.id ".
 		 ((isset($_GET['user_id']))?"WHERE r.user_id = ?":"").   
 		 " ORDER BY r.dateTime desc
 		 ");

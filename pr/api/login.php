@@ -1,6 +1,6 @@
 <?php
 include('../template/connect.php');
-$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."users where login = ? and password = ?");
+$stmt = $db->prepare("SELECT id FROM users where login = ? and password = ?");
 $stmt->execute(array($_POST['login'], $_POST['password']));	
 if($token = $stmt->fetchColumn()){
 	echo "1";

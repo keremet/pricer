@@ -3,8 +3,8 @@ if($_REQUEST['author'] == 'Авторизоваться'){
     $stmt = $db->prepare("SELECT u.id, g.del_anothers_receipts, g.del_anothers_consumptions, g.del_anothers_shop_links
                         , g.del_anothers_product_links, g.del_anothers_shops, g.del_anothers_products
                         , g.edt_anothers_shops, g.edt_anothers_products, g.upload_receipts_from_file, g.download_backup, g.show_login
-                      FROM ".DB_TABLE_PREFIX."users u
-                        JOIN ".DB_TABLE_PREFIX."user_group g ON g.id = u.group_id
+                      FROM users u
+                        JOIN user_group g ON g.id = u.group_id
                       WHERE u.login = ? AND u.password = ?");
     $login = trim(htmlspecialchars($_REQUEST['login']));
     $stmt->execute(array($login, trim($_REQUEST['password'])));

@@ -5,8 +5,8 @@
 	$product_id = (int) $_REQUEST['id'];
 	$stmt = $db->prepare(
 		"SELECT p.name, p.photo, e.name as ed_izm, p.ed_izm_id, p.in_box, p.barcode
-		 FROM ".DB_TABLE_PREFIX."products p
-		 LEFT JOIN ".DB_TABLE_PREFIX."ed_izm e on e.id = p.ed_izm_id
+		 FROM products p
+		 LEFT JOIN ed_izm e on e.id = p.ed_izm_id
 		 WHERE p.id = ?"
 	);
 	$stmt->execute(array($product_id));

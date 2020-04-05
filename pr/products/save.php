@@ -21,7 +21,7 @@ function strOrNull($s){
 	return ($s == '')?null:$s;
 }
 
-$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."products WHERE name = ?".(isset($_REQUEST['id'])?" and (id != ?)":""));
+$stmt = $db->prepare("SELECT id FROM products WHERE name = ?".(isset($_REQUEST['id'])?" and (id != ?)":""));
 if(isset($_REQUEST['id']))
 	$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['id']));
 else
@@ -32,7 +32,7 @@ if($stmt->fetch()){
 }
 
 if($_REQUEST['barcode'] != ''){
-	$stmt = $db->prepare("SELECT id FROM ".DB_TABLE_PREFIX."products WHERE barcode = ?".(isset($_REQUEST['id'])?" and (id != ?)":""));
+	$stmt = $db->prepare("SELECT id FROM products WHERE barcode = ?".(isset($_REQUEST['id'])?" and (id != ?)":""));
 	if(isset($_REQUEST['id']))
 		$stmt->execute(array($_REQUEST['barcode'], $_REQUEST['id']));
 	else
@@ -44,7 +44,7 @@ if($_REQUEST['barcode'] != ''){
 }
 
 if (isset($_REQUEST['id'])) {
-	$stmt = $db->prepare("UPDATE ".DB_TABLE_PREFIX."products SET name = ?, ed_izm_id = ?, in_box = ?, barcode = ? WHERE id = ?");
+	$stmt = $db->prepare("UPDATE products SET name = ?, ed_izm_id = ?, in_box = ?, barcode = ? WHERE id = ?");
 	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), strOrNull($_REQUEST['barcode']), $_REQUEST['id']))){
 		echo json_encode(array('result' => 'Ошибка изменения товара.', 'error' => '1'));
 		//echo 'Ошибка изменения товара'; print_r($stmt->errorInfo());
@@ -100,7 +100,7 @@ if (isset($_REQUEST['id'])) {
 		if(move_uploaded_file($_FILES['image']['tmp_name'], $fullPath)){
 			$pieces = explode("/", $fullPath);
 			$photoFileName = array_pop($pieces);
-			$stmt = $db->prepare("UPDATE ".DB_TABLE_PREFIX."products SET photo = ? WHERE id = ?");
+			$stmt = $db->prepare("UPDATE products SET photo = ? WHERE id = ?");
 			if(!$stmt->execute(array($photoFileName, $_REQUEST['id']))){
 				echo json_encode(array('result' => 'Ошибка изменения фото товара.', 'error' => '1'));
 				//echo 'Ошибка изменения фото товара'; print_r($stmt->errorInfo());
@@ -115,7 +115,7 @@ if (isset($_REQUEST['id'])) {
 	echo json_encode($result);
 	exit();
 } else {
-	$stmt = $db->prepare("INSERT ".DB_TABLE_PREFIX."products(name, ed_izm_id, in_box, barcode, main_clsf_id, creator) values(?, ?, ?, ?, ?, ?)");
+	$stmt = $db->prepare("INSERT products(name, ed_izm_id, in_box, barcode, main_clsf_id, creator) values(?, ?, ?, ?, ?, ?)");
 	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), strOrNull($_REQUEST['barcode']), $_REQUEST['main_clsf_id'], $_SESSION['user_id']))){
 		echo json_encode(array('result' => 'Ошибка добавления товара.', 'error' => '1'));
 		//echo 'Ошибка добавления товара'; print_r($stmt->errorInfo());

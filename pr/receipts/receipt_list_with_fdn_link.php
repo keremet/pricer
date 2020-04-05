@@ -22,10 +22,10 @@
 		"SELECT r.id, DATE_FORMAT(r.dateTime, '%d-%m-%Y %H:%i:%s') dt
 			, r.totalSum, r.fiscalDriveNumber
 			, s.name, s.address, u.login
-		 FROM ".DB_TABLE_PREFIX."receipt r 
-		    JOIN ".DB_TABLE_PREFIX."users u on r.user_id = u.id 
-		    JOIN ".DB_TABLE_PREFIX."fdn_to_shop l on l.fiscalDriveNumber = r.fiscalDriveNumber
-		    JOIN ".DB_TABLE_PREFIX."shops s on s.id = l.shop_id ".
+		 FROM receipt r 
+		    JOIN users u on r.user_id = u.id 
+		    JOIN fdn_to_shop l on l.fiscalDriveNumber = r.fiscalDriveNumber
+		    JOIN shops s on s.id = l.shop_id ".
 		 ((isset($_GET['user_id']))?"WHERE r.user_id = ?":"").   
 		 " ORDER BY r.dateTime desc
 		 ");

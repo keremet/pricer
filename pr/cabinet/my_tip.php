@@ -10,9 +10,9 @@
     oftTable::header(array("Товар", "Магазин", "Дата", "Цена", "Кол-во", "Кол-во ед. изм", "Цена за ед. изм", "Цена за ед. изм 2", "Товар 2", "Магазин 2", "Цена 2", "Экономия"));
     $stmt = $db->prepare(
         "SELECT p.name product_name, s.name shop_name, f.date_buy, f.price, round(f.price/ifnull(p.in_box, 1), 2) price_ei, f.amount, f.product, f.shop, f.amount*ifnull(p.in_box, 1) amount_ei
-         FROM ".DB_TABLE_PREFIX."fact f
-            JOIN ".DB_TABLE_PREFIX."products p ON p.id = f.product
-            JOIN ".DB_TABLE_PREFIX."shops s ON s.id = f.shop 
+         FROM fact f
+            JOIN products p ON p.id = f.product
+            JOIN shops s ON s.id = f.shop 
          WHERE f.creator=? and f.date_buy > NOW() - INTERVAL 1 MONTH and f.amount>0
          ORDER BY f.date_buy DESC
         ");

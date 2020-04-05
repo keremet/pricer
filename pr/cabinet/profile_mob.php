@@ -11,7 +11,7 @@
 		$clsf_id = (isset($_GET['clsf_id']))?$_GET['clsf_id']:USER_MAIN_CLSF;
 		$stmt = $db->prepare(
 			"SELECT name, id_hi
-			 FROM ".DB_TABLE_PREFIX."consumption_clsf
+			 FROM consumption_clsf
 			 WHERE id = ?"
 		);
 		$stmt->execute(array($clsf_id));
@@ -32,7 +32,7 @@
 		
 		$stmt = $db->prepare(
 			"SELECT id, name
-			 FROM ".DB_TABLE_PREFIX."consumption_clsf
+			 FROM consumption_clsf
 			 WHERE id_hi = ?
 			 ORDER BY name"
 		);

@@ -49,7 +49,7 @@ headerOut('Аналитика');
 $isUserAutorized = ($_SESSION['user_id'] != null);
 
 if($isUserAutorized){
-	$users_ = $db->query("SELECT id, login, name FROM ".DB_TABLE_PREFIX."users order by login")->fetchAll();
+	$users_ = $db->query("SELECT id, login, name FROM users order by login")->fetchAll();
 	$arUsers = array();
 	if($users_){
 		foreach($users_ as $k => $v){
@@ -59,14 +59,14 @@ if($isUserAutorized){
 }
 
 $arProds = array();
-foreach($db->query("SELECT id, name FROM  ".DB_TABLE_PREFIX."products order by name") as $row)
+foreach($db->query("SELECT id, name FROM  products order by name") as $row)
 	$arProds[$row['id']] = $row['name'];
 
 $arEquProds = array();
-foreach($db->query("SELECT id, name FROM  ".DB_TABLE_PREFIX."products_equ_clsf WHERE id_hi is not null order by name") as $row)
+foreach($db->query("SELECT id, name FROM  products_equ_clsf WHERE id_hi is not null order by name") as $row)
 	$arEquProds[$row['id']] = $row['name'];
 
-$shops_ = $db->query("SELECT id, name, address, network_id, town_id FROM ".DB_TABLE_PREFIX."shops order by name")->fetchAll();
+$shops_ = $db->query("SELECT id, name, address, network_id, town_id FROM shops order by name")->fetchAll();
 $arShops = array();
 if($shops_){
 	foreach($shops_ as $k => $v){
@@ -198,18 +198,18 @@ if($shops_){
 		  , f.date_buy
 		  , f.price
 		  , f.product as id_Товара
-		  , ".DB_TABLE_PREFIX."products.name as Товар
-		  , ".DB_TABLE_PREFIX."products.in_box
+		  , products.name as Товар
+		  , products.in_box
 		  , f.amount
-		  , ".DB_TABLE_PREFIX."ed_izm.name as ЕдИзм
+		  , ed_izm.name as ЕдИзм
 		  , f.shop as id_Магазина
-		  , ".DB_TABLE_PREFIX."shops.name as Магазин"
-		  .(($isUserAutorized)?", ".DB_TABLE_PREFIX."users.login":"").
-		 " from ".DB_TABLE_PREFIX."fact f, ".DB_TABLE_PREFIX."shops".(($isUserAutorized)?", ".DB_TABLE_PREFIX."users":"").", ".DB_TABLE_PREFIX."products
-		 left join ".DB_TABLE_PREFIX."ed_izm on ".DB_TABLE_PREFIX."ed_izm.id = ".DB_TABLE_PREFIX."products.ed_izm_id
-		 where f.product = ".DB_TABLE_PREFIX."products.id
-		   and f.shop = ".DB_TABLE_PREFIX."shops.id"
-		   .(($isUserAutorized)?" and f.creator = ".DB_TABLE_PREFIX."users.id":"");
+		  , shops.name as Магазин"
+		  .(($isUserAutorized)?", users.login":"").
+		 " from fact f, shops".(($isUserAutorized)?", users":"").", products
+		 left join ed_izm on ed_izm.id = products.ed_izm_id
+		 where f.product = products.id
+		   and f.shop = shops.id"
+		   .(($isUserAutorized)?" and f.creator = users.id":"");
 
 		if(is_array($_GET['filter']) && in_array('date', $_GET['filter'])){
 			if($_GET['date_from']){
@@ -251,7 +251,7 @@ if($shops_){
 			}
 			$query .= ") or f.product IN (
 						SELECT ep.product_id
-						FROM ".DB_TABLE_PREFIX."equ_products ep
+						FROM equ_products ep
 						WHERE ep.equ_clsf_id IN (";
 			$i = 0;
 			foreach($_GET['equ_product'] as $k => $v){
@@ -276,7 +276,7 @@ if($shops_){
 		} else if(is_array($_GET['equ_product'])){
 			$query .= " and f.product IN (
 						SELECT ep.product_id
-						FROM ".DB_TABLE_PREFIX."equ_products ep
+						FROM equ_products ep
 						WHERE ep.equ_clsf_id IN (";
 			$i = 0;
 			foreach($_GET['equ_product'] as $k => $v){

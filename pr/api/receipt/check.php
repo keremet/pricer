@@ -6,7 +6,7 @@
 		"SELECT fiscalDriveNumber, fiscalDocumentNumber, fiscalSign
 			, DATE_FORMAT(dateTime, '%Y-%m-%dT%H:%i:%s') dt
 			, totalSum
-		 FROM ".DB_TABLE_PREFIX."receipt
+		 FROM receipt
 		 WHERE id = ?
 		 ");
 	$stmtS->execute(array($_GET['id']));
@@ -19,7 +19,7 @@
 	echo "Результат проверки: '".$data."'";
 	if ($data == '') {
 		$stmtU = $db->prepare(
-			"UPDATE ".DB_TABLE_PREFIX."receipt
+			"UPDATE receipt
 			 SET checked = 1
 			 WHERE id = ?
 			 ");

@@ -65,9 +65,9 @@
 					case "copy_node":
 						checkRights();
 						$stmt = $db->prepare($is_file?
-							"insert into ".DB_TABLE_PREFIX."products(name, ed_izm_id, in_box, main_clsf_id, creator) 
-								select name, ed_izm_id, in_box, ?, ? from ".DB_TABLE_PREFIX."products where id=?"
-							:"insert into $tbl_dir(name, id_hi) select name, ? from ".DB_TABLE_PREFIX."products_main_clsf where id=?");
+							"insert into products(name, ed_izm_id, in_box, main_clsf_id, creator) 
+								select name, ed_izm_id, in_box, ?, ? from products where id=?"
+							:"insert into $tbl_dir(name, id_hi) select name, ? from products_main_clsf where id=?");
 						$stmt->execute($is_file?
 							array($_GET['parent'], $_SESSION['user_id'], $id)
 							:array($_GET['parent'], $id));

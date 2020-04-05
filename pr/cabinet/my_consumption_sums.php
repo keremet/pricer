@@ -12,7 +12,7 @@ function consSums($idClsf, $parentIndex, &$consSumP){
 	
 	$stmt = $db->prepare(
 	"SELECT name
-	 FROM ".DB_TABLE_PREFIX."consumption_clsf
+	 FROM consumption_clsf
 	 WHERE id = ?"
 	);
 	$stmt->execute(array($idClsf));
@@ -20,7 +20,7 @@ function consSums($idClsf, $parentIndex, &$consSumP){
 	
 	$stmt = $db->prepare(
 	"SELECT ifnull(sum(price), 0)
-	 FROM ".DB_TABLE_PREFIX."consumption
+	 FROM consumption
 	 WHERE clsf_id = ? and date_buy >= STR_TO_DATE('01-05-2017','%d-%m-%Y')"
 	);
 	$stmt->execute(array($idClsf));
@@ -30,7 +30,7 @@ function consSums($idClsf, $parentIndex, &$consSumP){
 	
 	$stmt = $db->prepare(
 	"SELECT id, name
-	 FROM ".DB_TABLE_PREFIX."consumption_clsf
+	 FROM consumption_clsf
 	 WHERE id_hi = ?
 	 ORDER BY name"
 	);
@@ -45,7 +45,7 @@ function consSums($idClsf, $parentIndex, &$consSumP){
 	$consSumP += $consSum + $consSumChild;
 	
 	$stmt = $db->prepare(
-		"INSERT into ".DB_TABLE_PREFIX."tmp_consumption_sums(`index`, `name`, `sum_own`, `sum_child`)
+		"INSERT into tmp_consumption_sums(`index`, `name`, `sum_own`, `sum_child`)
 		 VALUES(?, ?, ?, ?)"
 	);
 	$stmt->execute(array($parentIndex, $consName, $consSum, $consSumChild));
@@ -53,7 +53,7 @@ function consSums($idClsf, $parentIndex, &$consSumP){
 $s=0;
 
 //Очистка временной таблицы
-$stmt = $db->prepare("DELETE FROM ".DB_TABLE_PREFIX."tmp_consumption_sums");
+$stmt = $db->prepare("DELETE FROM tmp_consumption_sums");
 $stmt->execute();
 
 consSums(1, '', $s);
@@ -74,7 +74,7 @@ consSums(1, '', $s);
 	<?
 	$stmt = $db->prepare(
 	"SELECT `index`, `name`, sum_own, sum_child, sum_own + sum_child sum_all
-	 FROM ".DB_TABLE_PREFIX."tmp_consumption_sums
+	 FROM tmp_consumption_sums
 	 ORDER BY sum_all DESC"
 	);
 	$stmt->execute();

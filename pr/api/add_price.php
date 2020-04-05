@@ -1,6 +1,6 @@
 <?php
 include('../template/connect.php');
-$stmt = $db->prepare("INSERT INTO ".DB_TABLE_PREFIX."product_offers (product,shop,price,creator,date_buy) VALUES (?, ?, ?, ?, CURDATE())");
+$stmt = $db->prepare("INSERT INTO product_offers (product,shop,price,creator,date_buy) VALUES (?, ?, ?, ?, CURDATE())");
 if($stmt->execute(array($_POST['product_id'], $_POST['shop_id'], $_POST['price'], $_POST['token']))){
 	echo json_encode(array('res' => 'OK'));
 }else{

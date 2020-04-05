@@ -6,7 +6,7 @@
         <tr><td>Дата<td>Сумма<td>Действия';
 		$stmt = $db->prepare(
 			"SELECT id, date_buy, price
-			 FROM ".DB_TABLE_PREFIX."consumption
+			 FROM consumption
 			 WHERE clsf_id = ?
 			 ORDER BY date_buy DESC"
 		);
@@ -19,5 +19,5 @@
 		return array('content' => $r, 'product_id' => $id);
 	}
 	
-	doTreeOperation(DB_TABLE_PREFIX.'consumption_clsf', null, 'showProduct');
+	doTreeOperation('consumption_clsf', null, 'showProduct');
 ?>
