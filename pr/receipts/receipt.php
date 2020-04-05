@@ -53,9 +53,9 @@
 			, r.cashTotalSum, r.operator, r.senderAddress
 			, r.receiptCode, r.fiscalSign, r.nds10
 			, r.fiscalDocumentNumber, r.requestNumber, r.ndsNo
-		 FROM receipt r 
-		    JOIN users u on r.user_id = u.id 
-		    JOIN users u_ins on r.ins_user_id = u_ins.id 
+		 FROM receipt r
+		    JOIN users u on r.user_id = u.id
+		    JOIN users u_ins on r.ins_user_id = u_ins.id
 		 WHERE r.id = ?"
 	 );
 	$stmt->execute(array($_GET['id']));
