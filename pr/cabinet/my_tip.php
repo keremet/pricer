@@ -18,15 +18,15 @@
         ");
     $stmtOptim = $db->prepare(
         "SELECT p.name product_name, s.name shop_name, f.price, round(f.price/ifnull(p.in_box, 1), 2) price_ei
-         FROM pricer_fact f
-            JOIN pricer_products p ON p.id = f.product
-            JOIN pricer_shops s ON s.id = f.shop 
+         FROM fact f
+            JOIN products p ON p.id = f.product
+            JOIN shops s ON s.id = f.shop 
          WHERE f.product in (
                 SELECT ?
                 UNION
                 SELECT pp.product_id
-                FROM pricer_equ_products pc
-                    JOIN pricer_equ_products pp ON pp.equ_clsf_id = pc.equ_clsf_id
+                FROM equ_products pc
+                    JOIN equ_products pp ON pp.equ_clsf_id = pc.equ_clsf_id
                 WHERE pc.product_id = ?
             )
             AND (f.product != ? OR f.shop != ?)

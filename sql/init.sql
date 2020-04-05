@@ -229,7 +229,7 @@ CREATE TABLE `receipt_user` (
   `fns_userpwd` varchar(30) NOT NULL PRIMARY KEY,
   `user_id` int(11) NOT NULL,
   `dtLastLimit` DATETIME NOT NULL default '2001-01-01',
-  CONSTRAINT `pr_receipt_user__user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `receipt_user__user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE VIEW `fact`  AS

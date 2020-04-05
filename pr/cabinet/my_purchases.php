@@ -12,8 +12,8 @@
 	oftTable::header(array("Дата", "ИНН магазина", "Название магазина", "Адрес магазина", "Товар", "Цена", "Количество"));
 	$stmt = $db->prepare(
         "SELECT DATE_FORMAT(r.dateTime, '%d-%m-%Y %H:%i:%s') dt, r.userInn, r.user, r.retailPlaceAddress, i.name, i.price, i.quantity
-	     FROM pricer_receipt r 
-		 JOIN pricer_receipt_item i ON i.receipt_id = r.id
+	     FROM receipt r 
+		 JOIN receipt_item i ON i.receipt_id = r.id
 		 WHERE r.user_id=?
 		 ORDER BY r.dateTime desc
         ");
