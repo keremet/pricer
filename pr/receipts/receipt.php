@@ -62,43 +62,54 @@
 	$rowR = $stmt->fetch();
 	if(!$rowR)
 		die("Чек не найден");
+	
+	function tr_out($label, $v) {
+		if( !is_null($v) && $v !=='' )
+			echo '<tr><td>'.$label.':<td>'.$v;
+	}
 ?> 
 	<table border="0" cellpadding="0" cellspacing="2">
-		<tr><td>Дата и время чека:<td><?=$rowR['dt']?>
-		<tr><td>Сумма:<td><?=money_to_str($rowR['totalSum'])?>
-		<tr><td>Продавец:<td><?=$rowR['user']?>
-		<tr><td>Место покупки:<td><?=$rowR['retailPlaceAddress']?>
-<? if($show_login) {?>
-		<tr><td>Покупатель:<td><?=$rowR['login']?>
-		<tr><td>Ввел:<td><?=$rowR['ins_login']?>
-		<tr><td>Дата и время ввода:<td><?=$rowR['dtInsert']?>
-<? } ?>
-		<tr><td>Касса:<td><?=$rowR['fiscalDriveNumber']?>
+		<?
+			tr_out('Дата и время чека', $rowR['dt']);
+			tr_out('Сумма', money_to_str($rowR['totalSum']));
+			tr_out('Продавец', $rowR['user']);
+			tr_out('Место покупки', $rowR['retailPlaceAddress']);
+			if($show_login) {
+				tr_out('Покупатель', $rowR['login']);
+				tr_out('Ввел', $rowR['ins_login']);
+				tr_out('Дата и время ввода', $rowR['dtInsert']);
+			}
+			tr_out('Касса', $rowR['fiscalDriveNumber']);
+		?>
 	</table>
-	<?
-	oftTable::init('Товары');
-	oftTable::header(array('Товар'
-			, 'Цена', 'Кол-во', 'Ст-ть', 'Сумма скидки'
-			, 'Название скидки', 'markupName'
-			, 'НДС 10%', 'НДС 18%', 'НДС'
-		));
-	$stmt = $db->prepare(
-		"SELECT i.sum, i.nds10, i.name, i.price, i.nds18, i.id, i.quantity, i.ndsNo
-			, m.discountName, m.markupName, m.discountSum
-		 FROM receipt_item i
-		 LEFT JOIN receipt_modifier m on m.item_id = i.id
-		 WHERE i.receipt_id = ?
-		 ");
-	$stmt->execute(array($_GET['id']));
-	while ($row = $stmt->fetch()) {
-		oftTable::row(array($row['name']
-			, money_out($row['price']), "<p align=\"right\">".$row['quantity']."</p>", money_out($row['sum']), money_out($row['discountSum'])
-			, $row['discountName'], $row['markupName']	
-			, money_out($row['nds10']), money_out($row['nds18']), money_out($row['ndsNo'])
+<?
+	if ($rowR['rawReceipt'] != "") { 
+		oftTable::init('Товары');
+		oftTable::header(array('Товар'
+				, 'Цена', 'Кол-во', 'Ст-ть', 'Сумма скидки'
+				, 'Название скидки', 'markupName'
+				, 'НДС 10%', 'НДС 18%', 'НДС'
 			));
+		$stmt = $db->prepare(
+			"SELECT i.sum, i.nds10, i.name, i.price, i.nds18, i.id, i.quantity, i.ndsNo
+				, m.discountName, m.markupName, m.discountSum
+			 FROM receipt_item i
+			 LEFT JOIN receipt_modifier m on m.item_id = i.id
+			 WHERE i.receipt_id = ?
+			 ");
+		$stmt->execute(array($_GET['id']));
+		while ($row = $stmt->fetch()) {
+			oftTable::row(array($row['name']
+				, money_out($row['price']), "<p align=\"right\">".$row['quantity']."</p>", money_out($row['sum']), money_out($row['discountSum'])
+				, $row['discountName'], $row['markupName']	
+				, money_out($row['nds10']), money_out($row['nds18']), money_out($row['ndsNo'])
+				));
+		}
+			
+		oftTable::end();
+
 	}
-        
-	oftTable::end();
+
 	if(($_SESSION['user_del_anothers_receipts'] == '1') || ($rowR['user_id'] == $_SESSION['user_id'])){ ?> 
 		<p align="left"><button onclick="receipt_del('<?=$_GET['id']?>');">Удалить</button> <? 
 	}
@@ -106,10 +117,6 @@
 <br/>
 <p align="left"><table border="0" cellpadding="0" cellspacing="2">
 <?
-	function tr_out($label, $v) {
-		if( !is_null($v) && $v !=='' )
-			echo '<tr><td>'.$label.':<td>'.$v;
-	}
 	tr_out('buyerAddress', $rowR['buyerAddress']);
 	tr_out('addressToCheckFiscalSign', $rowR['addressToCheckFiscalSign']);
 	tr_out('kktRegId', $rowR['kktRegId']);
@@ -131,7 +138,11 @@
 ?>
 	</table>
 <br/>
-Чек в неразобранном формате:<br/>
-<?=$rowR['rawReceipt']?>
+<? 
+	echo ($rowR['rawReceipt'] != "")?
+		 "Чек в неразобранном формате:<br/>" . $rowR['rawReceipt']: 
+		 "<b>Внимание! Данные по чеку из налоговой приходят с задержкой. Этот чек ещё не извлечён.</b>";
+?>
+
 </body>
 </html>
