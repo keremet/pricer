@@ -10,6 +10,7 @@
 	<td align="left"><a href="receipt_add.php">Добавить чек</a>
 </table>
 <br/>
+<p align="right">Внимание! Данные по чекам из налоговой приходят с задержкой</p>
 <?php
     session_start();
     $show_login = ($_SESSION['user_show_login'] == "1");
