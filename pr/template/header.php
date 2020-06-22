@@ -15,6 +15,7 @@ if($_REQUEST['exit'] == '1'){
     unset($_SESSION['user_show_login']);
 }
 header('Content-Type: text/html; charset=utf-8');
+include 'settings.php';
 include 'connect.php';
 function headerOut($curmenu, $treesuf = null){
 $tabTitle = 'Ценовичок - '.$curmenu;

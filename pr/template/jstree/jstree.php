@@ -125,6 +125,11 @@
 							$('.fancybox-close').click();
 						}else{
 							window.last_tree_id = data.selected.join(':');
+							<?if($suf=='prod'){?>
+								$('#dataprod .default').html('Загрузка ...');
+							<?}else if($suf=='shop'){?>
+								$('#datashop .default').html('Загрузка ...');
+							<?}?>
 							$.get('<?=$path?>tree.php?suf=<?=$suf?>&operation=get_content&id=' + data.selected.join(':'), function (d) {
 									if(d){
 										$('#data<?=$suf?> .default').html(d.content).show();
