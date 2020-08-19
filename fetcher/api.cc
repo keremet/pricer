@@ -51,15 +51,18 @@ bool getDataFromProverkaCheka(string *answer, const string fn, const string fd, 
         return false;
     }
 
+    cout << "Ответ сервера: " << *answer << endl;
+
+// Извлечение json
     auto json_pos = answer->find("\"json\"");
     if (string::npos == json_pos) {
-        cerr << "JSON не найден" << endl << answer << endl;
+        cerr << "JSON не найден" << endl << *answer << endl;
         return false;
     }
 
     auto bracket1_pos = answer->find('{', json_pos);
     if (string::npos == bracket1_pos) {
-        cerr << "Открывающая скобка не найдена" << endl << answer << endl;
+        cerr << "Открывающая скобка не найдена" << endl << *answer << endl;
         return false;
     }
     answer->erase(0, bracket1_pos);
@@ -75,21 +78,9 @@ bool getDataFromProverkaCheka(string *answer, const string fn, const string fd, 
         }
     }
     if (0 == bracket2_pos) {
-        cerr << "Закрывающая скобка не найдена" << endl << answer << endl;
+        cerr << "Закрывающая скобка не найдена" << endl << *answer << endl;
         return false;
     }
     answer->erase(bracket2_pos + 1);
     return true;
 }
-
-/*
-int main(int argc, char *argv[])
-{
-    string answer;
-    if  (getDataFromProverkaCheka(&answer)) {
-        cout << answer << endl;
-    }
-
-    return 0;
-}
-*/

@@ -1,7 +1,4 @@
-//g++ -DSERVER=\"localhost\" -DLOGIN=\"pricer\" -DPASSWD=\"1\" -O0 -g3 api.cc fetcher.cc -lcurl -lmysqlcppconn && ./a.out
-
 //curl --data "fn=9280440300557546&fd=32947&fp=1257980715&n=1&s=702.41&t=15.08.2020+21%3A57&qr=0" https://proverkacheka.com/check/get
-
 
 #include <iostream>
 #include <memory>
