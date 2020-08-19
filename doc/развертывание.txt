@@ -4,6 +4,8 @@
 
 Название проекта "Ценовичок" - в 6 местах в файле pr/template/header.php
 
+Извлечение чеков выполняется командой fetcher. Для ее компиляции требуется под Ubuntu выполнить команду apt-get install libmysqlcppconn-dev. В файле fetcher/makefile указать сервер, логин и пароль для доступа к БД.
+
 Команды, которые могут пригодиться при тестировании:
 echo "drop database pricer; create database pricer;" | mysql -u root -p1
 mysql -u root -p1 pricer < sql/init.sql
