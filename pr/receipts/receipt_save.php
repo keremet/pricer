@@ -21,7 +21,7 @@ if($_SESSION['user_id']==null)
                        </html>		
 <?
 		} else {
-			header('Location: receipt_list.php');
+			header('Location: receipt_list.php?user_id=' . $_SESSION['user_id']);
 		}
 	}
 	$cor_time = $_POST['time'];
