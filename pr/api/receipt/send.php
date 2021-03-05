@@ -104,4 +104,18 @@ $stmt = $db->prepare(
 $stmt->execute(array($ins_user_id));
 $all_user_receipts = $stmt->fetchColumn();
 echo 'Всего Вами ' . numberof($all_user_receipts, 'загружен', array('', 'о', 'о'))." $all_user_receipts ".numberof($all_user_receipts, 'чек', array('', 'а', 'ов'));
+
+if (1 == $user_id) {
+	$stmt = $db->prepare(
+		"SELECT 1
+		 FROM equ_products e
+		 WHERE e.equ_clsf_id = 5 AND NOT EXISTS (
+			SELECT 1 FROM fact f
+			WHERE f.product = e.product_id AND f.creator = 1 AND f.amount is not null AND f.date_buy >= NOW() - INTERVAL 3 MONTH
+		 )"
+	);
+	$stmt->execute();
+	if ($stmt->fetch())
+		echo "\nПора менять зубную щётку";
+}
 ?>
