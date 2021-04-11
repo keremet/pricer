@@ -105,6 +105,18 @@ $stmt->execute(array($ins_user_id));
 $all_user_receipts = $stmt->fetchColumn();
 echo 'Всего Вами ' . numberof($all_user_receipts, 'загружен', array('', 'о', 'о'))." $all_user_receipts ".numberof($all_user_receipts, 'чек', array('', 'а', 'ов'));
 
+if (1 == $rowCount) {
+	$stmt = $db->prepare(
+		"SELECT CONCAT(s.name, ' - ', s.address)
+		 FROM fdn_to_shop f2s
+		   JOIN shops s ON s.id=f2s.shop_id
+		 WHERE f2s.fiscalDriveNumber = ?"
+	);
+	$stmt->execute(array($p['fn']));
+	$shop = $stmt->fetchColumn();
+	echo ($shop) ? "\nМагазин $shop" : "\nID кассы не привязан к магазину";
+}
+	
 if (1 == $user_id) {
 	$stmt = $db->prepare(
 		"SELECT 1
