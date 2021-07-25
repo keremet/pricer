@@ -1,5 +1,6 @@
 <?session_start();
 header( 'Content-Type: text/html; charset=utf-8' );
+include '../template/settings.php';
 include('../template/connect.php');
 
 if($_SESSION['user_id']==null){
@@ -65,7 +66,8 @@ if (isset($_REQUEST['id'])) {
 			echo json_encode(array('result' => 'Ошибка при загрузке изображения', 'error' => '1'));
 			die();
 		}
-		$fullPath = $_SERVER['DOCUMENT_ROOT'].'/pricer/uploaded/'.$_FILES['image']['name'];
+		$fullPath = $_SERVER['DOCUMENT_ROOT'].'/'.SITE_FOLDER.'uploaded/'.$_FILES['image']['name'];
+		//echo '<br>$fullPath: '.$fullPath.'<br>';
 		if(file_exists($fullPath)){
 			function on_file_exist($path){
 				$result = array();
@@ -115,8 +117,65 @@ if (isset($_REQUEST['id'])) {
 	echo json_encode($result);
 	exit();
 } else {
-	$stmt = $db->prepare("INSERT products(name, ed_izm_id, in_box, barcode, main_clsf_id, creator) values(?, ?, ?, ?, ?, ?)");
-	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), strOrNull($_REQUEST['barcode']), $_REQUEST['main_clsf_id'], $_SESSION['user_id']))){
+
+	if($_FILES['image']['name']){
+		if ($_FILES['image']['size'] > 1048576){
+			echo json_encode(array('result' => 'Слишком большой размер файла', 'error' => '1'));
+			die();
+		}
+
+		$pieces = explode(".", $_FILES['image']['name']);
+		if(!in_array(mb_strtolower($pieces[count($pieces) - 1]), array('png', 'bmp', 'gif', 'jpg', 'jpeg')) ){
+			echo json_encode(array('result' => 'Недопустимый тип файла', 'error' => '1'));
+			die();
+		}
+		if($_FILES['image']['error'] != 0){
+			echo json_encode(array('result' => 'Ошибка при загрузке изображения', 'error' => '1'));
+			die();
+		}
+		$fullPath = $_SERVER['DOCUMENT_ROOT'].'/'.SITE_FOLDER.'uploaded/'.$_FILES['image']['name'];
+		//echo '<br>$fullPath: '.$fullPath.'<br>';
+		if(file_exists($fullPath)){
+			function on_file_exist($path){
+				$result = array();
+				$pieces = explode(".", $path);
+				$ext = array_pop($pieces);
+				$pieces[0] = implode('.', $pieces);
+				$pieces[1] = $ext;
+				$pieces2 = explode("_", $pieces[0]);
+				$num =  array_pop($pieces2);
+				//echo 'окончание названия существующего файла'.$num.'<br>';
+				if(ctype_digit($num)){
+					//echo 'окончание цифровое <br>';
+					$new_num = (int) $num + 1;
+					$new_path = implode('_', $pieces2).'_'.$new_num.'.'.$pieces[1];
+					//echo 'новое название файла: '.$new_path.'<br>';
+				}else{
+					$new_path = $pieces[0].'_0.'.$pieces[1];
+				}
+				if (file_exists($new_path)) {
+					//echo 'новое название файла занято <br>';
+					$result = on_file_exist($new_path);
+				}else{
+					//echo 'новое название файла свободно <br>';
+					$result = $new_path;
+				}
+				return $result;
+			}
+			$fullPath = on_file_exist($fullPath);
+			//echo json_encode(array('result' => 'Файл с таким именем уже загружен', 'error' => '1'));
+			//die();
+		}
+		if(move_uploaded_file($_FILES['image']['tmp_name'], $fullPath)){
+			$pieces = explode("/", $fullPath);
+			$photoFileName = array_pop($pieces);		
+		}else{
+			$photoFileName = '';
+		}
+		//TODO: Дописать удаление предыдущей картинки
+	}
+	$stmt = $db->prepare("INSERT products(name, ed_izm_id, in_box, barcode, main_clsf_id, creator, photo) values(?, ?, ?, ?, ?, ?, ?)");
+	if(!$stmt->execute(array($_REQUEST['product_name'], $_REQUEST['ed_izm'], doKolvo($_REQUEST['in_box']), strOrNull($_REQUEST['barcode']), $_REQUEST['main_clsf_id'], $_SESSION['user_id'], $photoFileName))){
 		echo json_encode(array('result' => 'Ошибка добавления товара.', 'error' => '1'));
 		//echo 'Ошибка добавления товара'; print_r($stmt->errorInfo());
 		exit();
